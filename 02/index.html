@@ -411,7 +411,7 @@
             downloadFile('ai 01.MP4', 'AI Evolution Video Data', 'video/mp4');
         });
 
-        // Image Generation (Virtual File: ai 04.PNG)
+        // Image Generation (Virtual File: ai 04.png)
         openModalBtn.addEventListener('click', async () => {
             modal.classList.add('active');
             if (!infographicImg.src) {
@@ -430,7 +430,7 @@
                         infographicImg.src = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
                         infographicImg.classList.remove('hidden');
                         loader.classList.add('hidden');
-                        console.log("Infographic mapped to virtual path: ai 04.PNG");
+                        console.log("Infographic mapped to virtual path: ai 04.png");
                     }
                 } catch (error) {
                     loader.innerHTML = '<p class="text-red-500">이미지 생성 중 오류가 발생했습니다.</p>';
