@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI의 이해: 패러다임 전환과 진화</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-light: #f0f7ff;
+            --card-light: #ffffff;
+            --primary-light: #7db9f0;
+            --accent-light: #3b82f6;
+            --text-light: #1e293b;
+            
+            --bg-dark: #1a1617;
+            --card-dark: #121011; 
+            --primary-dark: #f9a8d4;
+            --accent-dark: #ec4899;
+            --text-dark: #fce7f3;
+
+            /* Wave colors */
+            --wave-light: linear-gradient(to right, #3b82f6 0%, #93c5fd 25%, #3b82f6 50%, #93c5fd 75%, #3b82f6 100%);
+            --wave-dark: linear-gradient(to right, #ec4899 0%, #f9a8d4 25%, #ec4899 50%, #f9a8d4 75%, #ec4899 100%);
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            transition: all 0.5s ease;
+            scroll-behavior: smooth;
+        }
+
+        .light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* --- Wave Text Effect --- */
+        .wave-text {
+            position: relative;
+            display: inline-block;
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: wave-flow 2.5s linear infinite;
+            font-weight: 900;
+        }
+
+        .light-mode .wave-text {
+            background-image: var(--wave-light);
+        }
+
+        .dark-mode .wave-text {
+            background-image: var(--wave-dark);
+        }
+
+        @keyframes wave-flow {
+            from { background-position: 0% 0%; }
+            to { background-position: -200% 0%; }
+        }
+
+        /* --- Theme Toggle Custom Styling --- */
+        .mode-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .light-mode .mode-toggle {
+            background-color: #ec4899; /* Pink for Dark Mode hint */
+            color: white;
+            border-color: #f9a8d4;
+        }
+
+        .dark-mode .mode-toggle {
+            background-color: #3b82f6; /* Blue for Light Mode hint */
+            color: white;
+            border-color: #93c5fd;
+        }
+
+        .mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* --- Global Card Styles --- */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        /* --- 3-Step Intelligence Hierarchy --- */
+        .step-card {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+            cursor: pointer;
+            border-width: 2px;
+        }
+
+        .light-mode .step-card {
+            background-color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(30, 41, 59, 0.1);
+        }
+
+        .dark-mode .step-card {
+            background-color: rgba(236, 72, 153, 0.05);
+            border-color: rgba(249, 168, 212, 0.2);
+        }
+
+        .step-card:hover {
+            transform: scale(1.03);
+            z-index: 10;
+        }
+
+        .light-mode .step-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-light);
+        }
+
+        .dark-mode .step-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.4);
+            border-color: var(--accent-dark) !important;
+            background-color: rgba(236, 72, 153, 0.15);
+        }
+
+        .step-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            flex-shrink: 0;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-right: 1.25rem;
+        }
+
+        .light-mode .step-icon { background-color: #dbeafe; color: #2563eb; }
+        .dark-mode .step-icon { background-color: rgba(249, 168, 212, 0.2); color: #f9a8d4; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .light-mode .badge { background: #dbeafe; color: #1e40af; }
+        .dark-mode .badge { background: #fce7f3; color: #9d174d; }
+
+        .progress-bar {
+            height: 4px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 101;
+            transition: width 0.1s;
+        }
+        
+        .light-mode .progress-bar { background: var(--accent-light); }
+        .dark-mode .progress-bar { background: var(--accent-dark); }
+
+        /* --- Buttons --- */
+        .btn-action {
+            transition: all 0.3s ease;
+            font-weight: bold;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .light-mode #download-btn { background-color: #1e293b; color: white; }
+        .dark-mode #download-btn { background-color: #fce7f3; color: #9d174d; }
+
+        .light-mode #video-btn { background-color: #ffffff; color: #1e293b; border: 2px solid #1e293b; }
+        .dark-mode #video-btn { background-color: transparent; color: #fce7f3; border: 2px solid #fce7f3; }
+
+        .light-mode #open-infographic { background-color: var(--accent-light); color: white; }
+        .dark-mode #open-infographic { background-color: var(--accent-dark); color: white; }
+
+        /* Modal */
+        #infographic-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #infographic-modal.active { display: flex; }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            border-radius: 2rem;
+            overflow: hidden;
+        }
+
+        .dark-mode .modal-content { background: var(--card-dark); }
+        .close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; cursor: pointer; z-index: 1010; }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="light-mode">
+    <div id="progress" class="progress-bar" style="width: 0%"></div>
+
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="mode-toggle">
+        <i id="theme-icon" class="fas fa-moon text-2xl"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <div class="badge">2025 AI 브리핑 보고서</div>
+        <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-tight">
+            AI의 이해:<br/>
+            <span class="wave-text">지능의 진화</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl max-w-2xl opacity-80 leading-relaxed font-medium mt-4">
+            도구에서 동료로, 약인공지능에서 강인공지능(AGI)으로 향하는<br/> 
+            인공지능 패러다임의 대전환을 대학생의 시선에서 탐구합니다.
+        </p>
+
+        <div class="header-btn-group">
+            <button id="download-btn" class="btn-action hover:scale-105 active:scale-95">
+                <i class="fas fa-download mr-2"></i> 슬라이드 다운로드
+            </button>
+            <button id="video-btn" class="btn-action hover:scale-105 active:scale-95">
+                <i class="fas fa-play-circle mr-2"></i> 영상 시청
+            </button>
+        </div>
+
+        <div class="mt-16">
+            <a href="#history" class="p-4 rounded-full border-2 border-current hover:opacity-70 transition-all duration-300">
+                <i class="fas fa-chevron-down animate-bounce"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Timeline Section -->
+    <section id="history" class="py-24 px-6 max-w-5xl mx-auto">
+        <h2 class="text-3xl font-bold mb-16 flex items-center">
+            <i class="fas fa-history mr-4"></i> 인공지능의 연대기
+        </h2>
+        
+        <div class="relative border-l-2 border-current ml-4 pl-8 space-y-12">
+            <div class="timeline-item relative">
+                <span class="text-sm font-bold opacity-60">1950 - 1956</span>
+                <h3 class="text-xl font-bold">태동과 탄생</h3>
+                <p class="mt-2 opacity-80">앨런 튜링의 '튜링 테스트' 제안과 다트머스 회의를 통한 'AI' 용어의 공식 채택.</p>
+            </div>
+            <div class="timeline-item relative">
+                <span class="text-sm font-bold opacity-60">2010s</span>
+                <h3 class="text-xl font-bold">딥러닝 혁명</h3>
+                <p class="mt-2 opacity-80">빅데이터와 GPU의 결합. AlexNet(2012)과 AlphaGo(2016)가 세상에 충격을 줌.</p>
+            </div>
+            <div class="timeline-item relative">
+                <span class="text-sm font-bold opacity-60">현재 - 2030</span>
+                <h3 class="text-xl font-bold">생성형 AI & AGI</h3>
+                <p class="mt-2 opacity-80">트랜스포머 아키텍처와 AGI 임계점 도래. 인간 지능에 도전하는 자율 시스템.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Intelligence Hierarchy -->
+    <section id="intelligence-steps" class="py-24 px-6 max-w-5xl mx-auto">
+        <h2 class="text-3xl font-bold mb-12">지능의 3단계 계층</h2>
+        <div class="grid grid-cols-1 gap-6 mb-12">
+            <div class="step-card flex items-center p-6 rounded-3xl">
+                <div class="step-icon">1</div>
+                <div>
+                    <h4 class="font-bold">약인공지능 (Narrow AI)</h4>
+                    <p class="text-sm opacity-70">특정 도메인에서만 동작. 현재 상용화 단계.</p>
+                </div>
+            </div>
+            <div class="step-card flex items-center p-6 rounded-3xl">
+                <div class="step-icon">2</div>
+                <div>
+                    <h4 class="font-bold">강인공지능 (AGI)</h4>
+                    <p class="text-sm opacity-70">범용적 학습 및 추론. 인간과 대등한 인지 능력 예측.</p>
+                </div>
+            </div>
+            <div class="step-card flex items-center p-6 rounded-3xl">
+                <div class="step-icon">3</div>
+                <div>
+                    <h4 class="font-bold">초인공지능 (ASI)</h4>
+                    <p class="text-sm opacity-70">인류 전체의 지성을 압도하는 전방위적 지성.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button id="open-infographic" class="btn-action">
+                <i class="fas fa-chart-pie mr-3"></i> 인포그래픽 생성하기
+            </button>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="infographic-modal">
+        <div class="modal-content">
+            <span class="close-modal text-gray-500 hover:text-red-500">&times;</span>
+            <div id="infographic-image-container" class="p-8 flex flex-col items-center justify-center min-h-[400px]">
+                <div id="modal-loader" class="flex flex-col items-center">
+                    <div class="loader mb-4"></div>
+                    <p class="text-sm font-medium animate-pulse">인포그래픽을 시각화하고 있습니다...</p>
+                </div>
+                <img id="ai-infographic" class="hidden w-full h-auto object-contain rounded-xl shadow-lg" alt="AI Hierarchy">
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-24 px-6 text-center opacity-60 text-sm border-t border-current/10">
+        <p>© 2025 인공지능 브리핑 보고서 기반 제작</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+        const progressBar = document.getElementById('progress');
+        const openModalBtn = document.getElementById('open-infographic');
+        const downloadBtn = document.getElementById('download-btn');
+        const videoBtn = document.getElementById('video-btn');
+        const modal = document.getElementById('infographic-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const infographicImg = document.getElementById('ai-infographic');
+        const loader = document.getElementById('modal-loader');
+        const apiKey = ""; 
+
+        // Theme Toggle Logic
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('light-mode')) {
+                body.classList.replace('light-mode', 'dark-mode');
+                // Change to Light Mode Icon (Sun) and Blue hint
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                body.classList.replace('dark-mode', 'light-mode');
+                // Change to Dark Mode Icon (Moon) and Pink hint
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = (winScroll / height * 100) + "%";
+        });
+
+        // File Handlers (Virtual)
+        function downloadFile(name, content, type) {
+            const blob = new Blob([content], { type: type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        downloadBtn.addEventListener('click', () => {
+            downloadFile('ai 03.pdf', 'AI Briefing Slides PDF', 'application/pdf');
+        });
+
+        videoBtn.addEventListener('click', () => {
+            downloadFile('ai 01.MP4', 'AI Evolution Video Data', 'video/mp4');
+        });
+
+        // Image Generation (Virtual File: ai 04.PNG)
+        openModalBtn.addEventListener('click', async () => {
+            modal.classList.add('active');
+            if (!infographicImg.src) {
+                const prompt = "A clean, modern infographic of AI intelligence stages: Narrow AI, AGI, ASI. High-tech icons, professional layout, blue and pink accent colors.";
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            instances: { prompt: prompt },
+                            parameters: { sampleCount: 1 }
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.predictions?.[0]?.bytesBase64Encoded) {
+                        infographicImg.src = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+                        infographicImg.classList.remove('hidden');
+                        loader.classList.add('hidden');
+                        console.log("Infographic mapped to virtual path: ai 04.PNG");
+                    }
+                } catch (error) {
+                    loader.innerHTML = '<p class="text-red-500">이미지 생성 중 오류가 발생했습니다.</p>';
+                }
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+        // Entry Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.timeline-item, .step-card, section h2, header p, .header-btn-group').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
