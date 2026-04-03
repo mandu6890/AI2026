@@ -53,7 +53,7 @@
 
         .card-hover:hover {
             transform: translateY(-16px) scale(1.02);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15), 
                         0 18px 36px -18px var(--theme-color-op);
             border-color: var(--theme-color);
         }
@@ -80,19 +80,32 @@
             to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
+        /* 마우스 위치가 검정색이 되도록 반전시킨 그래디언트 */
         .dynamic-title-gradient {
             --mouse-x: 50%;
             --mouse-y: 50%;
             background: radial-gradient(
                 circle at var(--mouse-x) var(--mouse-y), 
-                #0f172a 0%, 
-                #1e3a8a 30%, 
-                #2563eb 100%
+                #0f172a 0%,    /* 마우스 포인트: 어두운 색 */
+                #1e40af 45%,   /* 중간: 파란색 */
+                #3b82f6 100%   /* 외곽: 밝은 파란색 */
             );
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            transition: transform 0.3s ease;
+            display: inline-block;
+            transition: background 0.1s ease; /* 부드러운 이동을 위해 추가 */
+        }
+
+        .dark .dynamic-title-gradient {
+            background: radial-gradient(
+                circle at var(--mouse-x) var(--mouse-y), 
+                #000000 0%,    /* 다크모드 마우스 포인트: 완전 검정 */
+                #2563eb 50%, 
+                #60a5fa 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
         }
 
         .mode-toggle-btn {
@@ -128,34 +141,35 @@
             color: #FACC15;
         }
 
-        /* 테마 변수 */
+        /* 테마 변수 설정 */
         .theme-blue { --theme-color: #3b82f6; --theme-bg: #eff6ff; --theme-color-op: rgba(59, 130, 246, 0.6); }
         .theme-emerald { --theme-color: #10b981; --theme-bg: #ecfdf5; --theme-color-op: rgba(16, 185, 129, 0.6); }
         .theme-violet { --theme-color: #8b5cf6; --theme-bg: #f5f3ff; --theme-color-op: rgba(139, 92, 246, 0.6); }
         .theme-amber { --theme-color: #f59e0b; --theme-bg: #fffbeb; --theme-color-op: rgba(245, 158, 11, 0.6); }
         
-        .dark .theme-blue { --theme-bg: rgba(30, 58, 138, 0.3); --theme-color-op: rgba(59, 130, 246, 0.8); }
-        .dark .theme-emerald { --theme-bg: rgba(6, 78, 59, 0.3); --theme-color-op: rgba(16, 185, 129, 0.8); }
-        .dark .theme-violet { --theme-bg: rgba(76, 29, 149, 0.3); --theme-color-op: rgba(139, 92, 246, 0.8); }
-        .dark .theme-amber { --theme-bg: rgba(120, 53, 15, 0.3); --theme-color-op: rgba(245, 158, 11, 0.8); }
+        .dark .theme-blue { --theme-bg: rgba(30, 58, 138, 0.3); }
+        .dark .theme-emerald { --theme-bg: rgba(6, 78, 59, 0.3); }
+        .dark .theme-violet { --theme-bg: rgba(76, 29, 149, 0.3); }
+        .dark .theme-amber { --theme-bg: rgba(120, 53, 15, 0.3); }
 
         /* 모달 스타일 */
         .modal-overlay {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
             transition: opacity 0.3s ease;
         }
         .modal-content {
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .modal-open .modal-content {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 overflow-x-hidden">
 
+    <!-- Navigation -->
     <nav class="fixed w-full z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="font-extrabold text-xl tracking-tighter text-blue-600 dark:text-blue-400">AI LITERACY</div>
@@ -175,12 +189,12 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-20 pb-20 px-6 hero-gradient min-h-screen flex items-center justify-center text-center">
+    <section class="pt-32 pb-20 px-6 hero-gradient min-h-screen flex items-center justify-center text-center">
         <div class="max-w-5xl w-full animate-title">
             <span class="inline-block px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-black mb-8 tracking-[0.2em] uppercase">University Portfolio 2024</span>
-            <h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] mb-10 tracking-tight transition-transform duration-700">
+            <h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] mb-10 tracking-tight">
                 AI 리터러시:<br>
-                <span id="dynamic-target" class="dynamic-title-gradient cursor-default inline-block py-2">
+                <span id="dynamic-target" class="dynamic-title-gradient cursor-default py-2">
                     데이터를 읽고,<br>AI로 세상을 그리다
                 </span>
             </h1>
@@ -195,8 +209,8 @@
         </div>
     </section>
 
-    <!-- Philosophy Section -->
-    <section id="philosophy" class="py-24 px-6 bg-white dark:bg-slate-900 transition-colors duration-500">
+    <!-- Core Competencies -->
+    <section id="philosophy" class="py-32 px-6 bg-white dark:bg-slate-900 transition-colors duration-500">
         <div class="max-w-7xl mx-auto text-center">
             <div class="mb-20">
                 <h2 class="text-4xl font-black mb-4 text-slate-900 dark:text-white">Core Competencies</h2>
@@ -229,42 +243,40 @@
     </section>
 
     <!-- Portfolio Grid -->
-    <section id="portfolio" class="py-24 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
+    <section id="portfolio" class="py-32 px-6 bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
         <div class="max-w-7xl mx-auto">
             <div class="mb-16">
                 <h2 class="text-4xl font-black mb-3 text-slate-900 dark:text-white">Portfolio Projects</h2>
                 <p class="text-slate-500 dark:text-slate-400 text-lg">학습의 기록과 창의적 결과물 10선</p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 lg:gap-14" id="portfolio-grid"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="portfolio-grid"></div>
         </div>
     </section>
 
     <!-- Footer Profile -->
-    <footer id="about" class="py-24 px-6 bg-slate-900 dark:bg-black text-white transition-colors duration-500">
+    <footer id="about" class="py-32 px-6 bg-slate-900 dark:bg-black text-white transition-colors duration-500">
         <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-3 gap-20 items-start">
-                <div class="lg:col-span-2">
-                    <h2 class="text-4xl font-black mb-12">Creator Profile</h2>
-                    <div class="flex flex-col md:flex-row items-start gap-10">
-                        <div class="w-40 h-40 rounded-[2.5rem] bg-slate-800 flex items-center justify-center shrink-0 overflow-hidden shadow-[0_20px_50px_rgba(0,102,255,0.3)] border-4 border-blue-600/20">
-                             <img src="https://i.namu.wiki/i/BlqFjYJzMHQnPl7Ju6uALDRV6duAOU4BgN65uQ3TY2-QeQEmgQoJBKCw8XbNX32iyQ2okYVqZcRj1xmIPiL-bw.webp" alt="정민우 프로필" class="w-full h-full object-cover">
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-16">
+                <div class="w-48 h-48 rounded-[3rem] bg-slate-800 flex items-center justify-center shrink-0 overflow-hidden shadow-[0_20px_50px_rgba(0,102,255,0.3)] border-4 border-blue-600/20">
+                    <img src="https://i.namu.wiki/i/BlqFjYJzMHQnPl7Ju6uALDRV6duAOU4BgN65uQ3TY2-QeQEmgQoJBKCw8XbNX32iyQ2okYVqZcRj1xmIPiL-bw.webp" 
+                         alt="정민우 프로필" 
+                         onerror="this.src='https://ui-avatars.com/api/?name=MW&background=0066FF&color=fff&size=200'"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="max-w-2xl text-center md:text-left">
+                    <span class="text-blue-400 font-black text-xs tracking-[0.2em] mb-4 block uppercase">Media & Communication</span>
+                    <h3 class="text-5xl font-black mb-8">정민우 <span class="text-2xl font-light text-slate-400 ml-3">Jeong Min-woo</span></h3>
+                    <p class="text-slate-300 leading-relaxed mb-10 text-xl font-light">
+                        편집을 통한 영상 제작 활동에 관심이 있는 부산대학교 미디어커뮤니케이션학과 학생입니다. AI 기술을 미디어 제작에 접목하여 새로운 차원의 스토리텔링을 구현하는 것을 목표로 합니다.
+                    </p>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="flex items-center space-x-4 bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all group">
+                            <i class="far fa-envelope text-blue-400 text-xl"></i>
+                            <span class="text-sm font-medium">mandu6890@gmail.com</span>
                         </div>
-                        <div class="max-w-xl">
-                            <span class="text-blue-400 font-black text-xs tracking-[0.2em] mb-3 block uppercase">Media & Communication</span>
-                            <h3 class="text-4xl font-black mb-6">정민우 <span class="text-xl font-light text-slate-400 ml-3">Jeong Min-woo</span></h3>
-                            <p class="text-slate-300 leading-relaxed mb-10 text-xl font-light">
-                                편집을 통한 영상 제작 활동에 관심이 있는 부산대 학생 미디어커뮤니케이션 학과 정민우라고 합니다. AI 기술을 미디어 제작에 접목하여 새로운 차원의 스토리텔링을 구현하는 것을 목표로 합니다.
-                            </p>
-                            <div class="grid sm:grid-cols-2 gap-5">
-                                <div class="flex items-center space-x-4 bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all group">
-                                    <i class="far fa-envelope text-blue-400 text-xl group-hover:scale-110 transition-transform"></i>
-                                    <span class="text-sm font-medium">mandu6890@gmai.com</span>
-                                </div>
-                                <div class="flex items-center space-x-4 bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all group">
-                                    <i class="fas fa-university text-blue-400 text-xl group-hover:scale-110 transition-transform"></i>
-                                    <span class="text-sm font-medium">Pusan National Univ.</span>
-                                </div>
-                            </div>
+                        <div class="flex items-center space-x-4 bg-slate-800/40 p-5 rounded-2xl border border-slate-700/50 hover:border-blue-500/50 transition-all group">
+                            <i class="fas fa-university text-blue-400 text-xl"></i>
+                            <span class="text-sm font-medium">Pusan National Univ.</span>
                         </div>
                     </div>
                 </div>
@@ -272,25 +284,28 @@
         </div>
     </footer>
 
-    <!-- Modal for Project Details -->
+    <!-- Project Modal -->
     <div id="project-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-8 modal-overlay">
         <div class="bg-white dark:bg-slate-900 w-full max-w-4xl max-h-[90vh] rounded-[3rem] shadow-2xl overflow-hidden relative modal-content flex flex-col">
             <button onclick="closeModal()" class="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-red-500 transition-colors z-50">
                 <i class="fas fa-times text-xl"></i>
             </button>
             <div id="modal-body" class="overflow-y-auto p-8 md:p-16">
-                <!-- Content will be injected here -->
+                <!-- Content Injected via JS -->
             </div>
         </div>
     </div>
 
     <script>
-        // Mouse Tracker
+        // Mouse Tracker for Dynamic Title
         const dynamicTarget = document.getElementById('dynamic-target');
-        dynamicTarget.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', (e) => {
             const rect = dynamicTarget.getBoundingClientRect();
+            // 텍스트 영역 내에서의 상대적 위치 계산
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            // 변수 업데이트
             dynamicTarget.style.setProperty('--mouse-x', `${x}%`);
             dynamicTarget.style.setProperty('--mouse-y', `${y}%`);
         });
@@ -324,72 +339,138 @@
                 tools: ["NotebookLM", "Google"], 
                 theme: "theme-blue", 
                 icon: "fa-book",
-                description: "구글 노트북LM을 활용하여 인공지능의 정의, 역사적 흐름, 그리고 현대 생성형 AI의 메커니즘을 분석하고 정리한 첫 번째 프로젝트입니다.",
+                description: "구글 노트북LM을 활용하여 인공지능의 정의, 역사적 흐름을 정리한 프로젝트입니다.",
                 content: `
                     <div class="space-y-12">
-                        <header>
-                            <span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 01</span>
-                            <h2 class="text-4xl md:text-5xl font-black mt-4 mb-6 leading-tight">AI의 이해: 구글 노트북LM 실습</h2>
-                            <p class="text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed">구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 방대한 AI 관련 자료를 학습시키고, 효율적인 요약과 통찰을 도출하는 실습을 진행했습니다.</p>
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 01</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">AI의 이해</h2>
+                            </div>
+                            <a href="./02/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
                         </header>
                         
-                        <div class="grid md:grid-cols-2 gap-10">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <h4 class="font-black text-lg mb-4 flex items-center text-blue-600"><i class="fas fa-microchip mr-3"></i>AI란 무엇인가?</h4>
-                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">인간의 학습능력, 추론능력, 지각능력을 컴퓨터 프로그램으로 구현한 기술을 의미합니다. 단순히 입력을 처리하는 것을 넘어 패턴을 인식하고 미래를 예측하는 고도의 지능적 활동을 포함합니다.</p>
-                            </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <h4 class="font-black text-lg mb-4 flex items-center text-blue-600"><i class="fas fa-history mr-3"></i>AI의 역사</h4>
-                                <ul class="text-slate-600 dark:text-slate-400 text-sm space-y-2">
-                                    <li>• 1950년대: 튜링 테스트와 인공지능 용어의 탄생</li>
-                                    <li>• 1980년대: 전문가 시스템과 머신러닝의 발전</li>
-                                    <li>• 2010년대: 딥러닝 혁명과 알파고 쇼크</li>
-                                    <li>• 2020년대: 거대언어모델(LLM)과 생성형 AI 시대</li>
-                                </ul>
-                            </div>
-                        </div>
+                        <p class="text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed">
+                            구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 방대한 AI 관련 자료를 학습시키고, 효율적인 요약과 통찰을 도출하는 실습을 진행했습니다. 인공지능의 역사와 생성형 AI의 발전 과정을 중점적으로 다루었습니다.
+                        </p>
 
-                        <div>
-                            <h4 class="font-black text-2xl mb-6">실습 프로세스</h4>
-                            <div class="space-y-4">
-                                <div class="flex items-center space-x-6 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shrink-0">1</div>
-                                    <div class="text-sm">구글 NotebookLM에 최신 AI 기술 백서 및 역사 자료 업로드</div>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
+                                    <i class="fas fa-brain"></i>
                                 </div>
-                                <div class="flex items-center space-x-6 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shrink-0">2</div>
-                                    <div class="text-sm">AI 소스 가이드를 통한 핵심 개념(Transformer, LLM 등) 질문 및 답변 추출</div>
-                                </div>
-                                <div class="flex items-center space-x-6 p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shrink-0">3</div>
-                                    <div class="text-sm">생성형 AI의 원리(확률적 다음 단어 예측)에 대한 구조적 요약 문서 작성</div>
-                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">AI 원리 통찰</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인간의 지능적 활동을 프로그램으로 구현하는 기술의 정의를 학습하고, 머신러닝과 딥러닝의 기술적 차이를 구조화하였습니다.</p>
                             </div>
-                        </div>
-
-                        <div class="p-10 rounded-[3rem] bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-xl flex flex-col items-center text-center gap-6">
-                            <div>
-                                <h4 class="text-2xl font-black mb-2">학습 결과 및 소감</h4>
-                                <p class="text-blue-50 leading-relaxed font-light italic">"AI 리터러시의 시작은 기술을 맹신하는 것이 아니라, AI가 정보를 생성하는 구조적 원리를 이해하는 데 있습니다."</p>
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">역사적 흐름 분석</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">1950년대 앨런 튜링부터 최신 거대 언어 모델(LLM)에 이르기까지, AI가 거쳐온 황금기와 암흑기, 그리고 부활의 과정을 시계열로 정리했습니다.</p>
                             </div>
-                            <!-- 결과물 보기 버튼 추가 -->
-                            <a href="./02/index.html" class="bg-white text-blue-600 px-12 py-4 rounded-full font-black text-lg hover:scale-105 active:scale-95 transition-all shadow-lg">결과물 보기</a>
                         </div>
                     </div>
                 `
             },
-            { id: 2, title: "데이터 크롤링 및 정제 실습", tools: ["Python", "Colab"], theme: "theme-emerald", icon: "fa-code" },
+            { 
+                id: 2, 
+                title: "데이터 스토리텔링", 
+                tools: ["Gemini", "Storybook"], 
+                theme: "theme-emerald", 
+                icon: "fa-book-open",
+                content: `
+                    <div class="space-y-12">
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 02</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">데이터 스토리텔링</h2>
+                            </div>
+                            <a href="../03/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
+                        </header>
+                        
+                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2rem] border border-emerald-100 dark:border-emerald-800/50 mb-8">
+                            <h4 class="text-emerald-800 dark:text-emerald-300 font-bold text-xl mb-4"><i class="fas fa-magic mr-2"></i>제미나이 스토리북</h4>
+                            <p class="text-lg text-emerald-900/70 dark:text-emerald-400/80 leading-relaxed font-light">
+                                공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력있는 리포트를 작성하여 스토리북으로 만들기
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 text-xl">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">데이터 인사이트 도출</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">공공 데이터 포털의 원시 데이터를 가공하여 핵심 지표를 추출하고, 사회적 현상의 원인을 데이터로 분석합니다.</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 text-xl">
+                                    <i class="fas fa-scroll"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">시각적 스토리텔링</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">분석된 데이터를 기반으로 제미나이를 활용해 독자의 공감을 이끌어내는 서사 구조를 설계하고 인터랙티브 리포트로 제작합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
             { id: 3, title: "프롬프트 엔지니어링 전략", tools: ["Claude", "GPT-4"], theme: "theme-violet", icon: "fa-wand-magic-sparkles" },
-            { id: 4, title: "생성형 AI 이미지 스토리텔링", tools: ["Midjourney", "Canva"], theme: "theme-amber", icon: "fa-palette" },
-            { id: 5, title: "공공 데이터를 활용한 시각화", tools: ["Python", "Pandas"], theme: "theme-emerald", icon: "fa-chart-pie" },
-            { id: 6, title: "AI 윤리와 사회적 책임 고찰", tools: ["Discussion"], theme: "theme-blue", icon: "fa-scale-balanced" },
-            { id: 7, title: "자연어 처리 모델의 활용", tools: ["Python", "HuggingFace"], theme: "theme-violet", icon: "fa-language" },
-            { id: 8, title: "AI 기반 영상 시나리오 제작", tools: ["ChatGPT", "Runway"], theme: "theme-amber", icon: "fa-film" },
-            { id: 9, title: "데이터 분석 기반 문제해결", tools: ["Python", "Scikit-learn"], theme: "theme-emerald", icon: "fa-lightbulb" },
+            { id: 4, title: "AI 이미지 스토리텔링", tools: ["Midjourney", "Canva"], theme: "theme-amber", icon: "fa-palette" },
+            { id: 5, title: "공공 데이터 시각화", tools: ["Python", "Pandas"], theme: "theme-emerald", icon: "fa-chart-pie" },
+            { id: 6, title: "AI 윤리와 사회적 책임", tools: ["Ethics", "Policy"], theme: "theme-blue", icon: "fa-scale-balanced" },
+            { id: 7, title: "자연어 처리 모델 활용", tools: ["Python", "HuggingFace"], theme: "theme-violet", icon: "fa-language" },
+            { id: 8, title: "AI 영상 시나리오 제작", tools: ["ChatGPT", "Runway"], theme: "theme-amber", icon: "fa-film" },
+            { id: 9, title: "데이터 기반 문제해결", tools: ["ML", "Scikit-learn"], theme: "theme-emerald", icon: "fa-lightbulb" },
             { id: 10, title: "최종 AI 리터러시 프로젝트", tools: ["Integrated", "Streamlit"], theme: "theme-violet", icon: "fa-rocket" }
         ];
 
-        // Modal Control
+        // Grid Generation
+        const grid = document.getElementById('portfolio-grid');
+        assignments.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = `bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[3rem] overflow-hidden card-hover group cursor-pointer transition-all duration-500 ${item.theme}`;
+            card.onclick = () => openModal(item.id);
+            
+            const imageUrl = `https://picsum.photos/seed/ai-literacy-${index}/600/400`;
+            
+            card.innerHTML = `
+                <div class="relative h-56 overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-30 transition-opacity"></div>
+                    <img src="${imageUrl}" alt="${item.title}" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute top-6 right-6 w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-xl z-20 border border-white/30 transform group-hover:rotate-12 transition-all">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                </div>
+                <div class="p-8 relative">
+                    <div class="absolute top-0 left-8 right-8 h-1 rounded-full transition-all duration-500 group-hover:h-1.5 opacity-30 group-hover:opacity-100" style="background-color: var(--theme-color);"></div>
+                    <h3 class="font-black text-xl mb-6 leading-tight h-14 line-clamp-2 text-slate-800 dark:text-slate-100 pt-2 transition-colors">
+                        ${item.title}
+                    </h3>
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        ${item.tools.map(tool => `
+                            <span class="text-[9px] font-bold px-3 py-1 rounded-full border border-slate-100 dark:border-slate-800 uppercase tracking-tighter" 
+                                  style="color: var(--theme-color); background-color: var(--theme-bg);">
+                                ${tool}
+                            </span>
+                        `).join('')}
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest" style="color: var(--theme-color);">
+                        <span>Project 0${item.id}</span>
+                        <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Modal Controls
         const modal = document.getElementById('project-modal');
         const modalBody = document.getElementById('modal-body');
 
@@ -401,7 +482,7 @@
                 <div class="text-center py-20">
                     <div class="text-6xl text-slate-200 dark:text-slate-800 mb-8"><i class="fas ${project.icon}"></i></div>
                     <h2 class="text-3xl font-black mb-4">${project.title}</h2>
-                    <p class="text-slate-500">이 프로젝트의 상세 내용은 준비 중입니다.</p>
+                    <p class="text-slate-500">상세 학습 결과는 업데이트 중입니다.</p>
                 </div>
             `;
 
@@ -423,55 +504,6 @@
 
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
-        });
-
-        // Grid Generation
-        const grid = document.getElementById('portfolio-grid');
-        assignments.forEach(item => {
-            const card = document.createElement('div');
-            card.className = `bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[3.5rem] overflow-hidden card-hover group cursor-pointer transition-all duration-500 ${item.theme}`;
-            card.onclick = () => openModal(item.id);
-            
-            const imageUrl = `https://picsum.photos/seed/ai-${item.id + 100}/600/400`;
-            
-            card.innerHTML = `
-                <div class="relative h-64 overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent z-10 opacity-70 group-hover:opacity-40 transition-opacity"></div>
-                    <img src="${imageUrl}" alt="${item.title}" class="w-full h-full object-cover img-zoom grayscale-[30%] group-hover:grayscale-0">
-                    <div class="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-2xl z-20 border border-white/30 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
-                        <i class="fas ${item.icon}"></i>
-                    </div>
-                    <div class="absolute bottom-8 left-8 z-20">
-                        <span class="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-[10px] font-black text-white border border-white/20 uppercase tracking-[0.2em]">
-                            PROJECT 0${item.id}
-                        </span>
-                    </div>
-                </div>
-                <div class="p-10 relative">
-                    <div class="absolute top-0 left-10 right-10 h-1.5 rounded-full transition-all duration-500 group-hover:h-2 opacity-30 group-hover:opacity-100" style="background-color: var(--theme-color);"></div>
-                    <h3 class="font-black text-2xl mb-6 leading-tight group-hover:text-slate-900 dark:group-hover:text-white transition-colors duration-300 h-16 line-clamp-2 text-slate-800 dark:text-slate-200 pt-4">
-                        ${item.title}
-                    </h3>
-                    <div class="flex flex-wrap gap-2.5 mb-10">
-                        ${item.tools.map(tool => `
-                            <span class="text-[10px] font-bold px-4 py-1.5 rounded-full border border-slate-100 dark:border-slate-800 transition-all group-hover:border-transparent group-hover:text-white uppercase tracking-tighter" 
-                                  style="color: var(--theme-color); background-color: var(--theme-bg);">
-                                ${tool}
-                            </span>
-                        `).join('')}
-                    </div>
-                    <div class="pt-8 border-t border-slate-50 dark:border-slate-800/50 flex justify-between items-center">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-2.5 h-2.5 rounded-full animate-pulse shadow-[0_0_12px_var(--theme-color)]" style="background-color: var(--theme-color);"></div>
-                            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-widest">Case Analysis</span>
-                        </div>
-                        <div class="flex items-center font-black text-xs uppercase tracking-tighter transition-all group-hover:mr-2" style="color: var(--theme-color);">
-                            Explore <i class="fas fa-arrow-right ml-2 text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
-            grid.appendChild(card);
         });
     </script>
 </body>
