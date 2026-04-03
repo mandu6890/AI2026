@@ -33,15 +33,8 @@
             scroll-behavior: smooth;
         }
 
-        .light-mode {
-            background-color: var(--bg-light);
-            color: var(--text-light);
-        }
-
-        .dark-mode {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
-        }
+        .light-mode { background-color: var(--bg-light); color: var(--text-light); }
+        .dark-mode { background-color: var(--bg-dark); color: var(--text-dark); }
 
         /* --- Wave Text Effect --- */
         .wave-text {
@@ -54,14 +47,8 @@
             animation: wave-flow 2.5s linear infinite;
             font-weight: 900;
         }
-
-        .light-mode .wave-text {
-            background-image: var(--wave-light);
-        }
-
-        .dark-mode .wave-text {
-            background-image: var(--wave-dark);
-        }
+        .light-mode .wave-text { background-image: var(--wave-light); }
+        .dark-mode .wave-text { background-image: var(--wave-dark); }
 
         @keyframes wave-flow {
             from { background-position: 0% 0%; }
@@ -81,123 +68,48 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid transparent;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: center; justify-content: center;
         }
+        .light-mode .mode-toggle { background-color: #ec4899; color: white; border-color: #f9a8d4; }
+        .dark-mode .mode-toggle { background-color: #3b82f6; color: white; border-color: #93c5fd; }
+        .mode-toggle:hover { transform: scale(1.1) rotate(15deg); }
 
-        .light-mode .mode-toggle {
-            background-color: #ec4899; /* Pink for Dark Mode hint */
-            color: white;
-            border-color: #f9a8d4;
-        }
-
-        .dark-mode .mode-toggle {
-            background-color: #3b82f6; /* Blue for Light Mode hint */
-            color: white;
-            border-color: #93c5fd;
-        }
-
-        .mode-toggle:hover {
-            transform: scale(1.1) rotate(15deg);
-        }
-
-        /* --- Global Card Styles --- */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            border-radius: 1.5rem;
-            overflow: hidden;
-        }
-
-        /* --- 3-Step Intelligence Hierarchy --- */
+        /* --- Cards & Components --- */
         .step-card {
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
             cursor: pointer;
             border-width: 2px;
         }
-
-        .light-mode .step-card {
-            background-color: rgba(255, 255, 255, 0.6);
-            border-color: rgba(30, 41, 59, 0.1);
-        }
-
-        .dark-mode .step-card {
-            background-color: rgba(236, 72, 153, 0.05);
-            border-color: rgba(249, 168, 212, 0.2);
-        }
-
-        .step-card:hover {
-            transform: scale(1.03);
-            z-index: 10;
-        }
-
-        .light-mode .step-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.2);
-            border-color: var(--accent-light);
-        }
-
-        .dark-mode .step-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(236, 72, 153, 0.4);
-            border-color: var(--accent-dark) !important;
-            background-color: rgba(236, 72, 153, 0.15);
-        }
+        .light-mode .step-card { background-color: rgba(255, 255, 255, 0.6); border-color: rgba(30, 41, 59, 0.1); }
+        .dark-mode .step-card { background-color: rgba(236, 72, 153, 0.05); border-color: rgba(249, 168, 212, 0.2); }
+        .step-card:hover { transform: scale(1.03); z-index: 10; }
 
         .step-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            flex-shrink: 0;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-right: 1.25rem;
+            width: 3.5rem; height: 3.5rem; flex-shrink: 0; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; font-weight: 800; margin-right: 1.25rem;
         }
-
         .light-mode .step-icon { background-color: #dbeafe; color: #2563eb; }
         .dark-mode .step-icon { background-color: rgba(249, 168, 212, 0.2); color: #f9a8d4; }
 
         .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px;
+            font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem;
         }
-
         .light-mode .badge { background: #dbeafe; color: #1e40af; }
         .dark-mode .badge { background: #fce7f3; color: #9d174d; }
 
-        .progress-bar {
-            height: 4px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 101;
-            transition: width 0.1s;
-        }
-        
+        .progress-bar { height: 4px; position: fixed; top: 0; left: 0; z-index: 101; transition: width 0.1s; }
         .light-mode .progress-bar { background: var(--accent-light); }
         .dark-mode .progress-bar { background: var(--accent-dark); }
 
         /* --- Buttons --- */
         .btn-action {
-            transition: all 0.3s ease;
-            font-weight: bold;
-            border-radius: 9999px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.85rem 1.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; font-weight: bold; border-radius: 9999px;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.85rem 1.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-
-        .header-btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+        .header-btn-group { display: flex; gap: 1rem; margin-top: 2rem; }
 
         .light-mode #download-btn { background-color: #1e293b; color: white; }
         .dark-mode #download-btn { background-color: #fce7f3; color: #9d174d; }
@@ -210,44 +122,26 @@
 
         /* Modal */
         #infographic-modal {
-            display: none;
-            position: fixed;
+            display: none; position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
-            backdrop-filter: blur(8px);
-            align-items: center;
-            justify-content: center;
+            z-index: 1000; backdrop-filter: blur(8px);
+            align-items: center; justify-content: center;
         }
-
         #infographic-modal.active { display: flex; }
 
         .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 900px;
-            background: white;
-            border-radius: 2rem;
-            overflow: hidden;
+            position: relative; width: 90%; max-width: 900px;
+            background: white; border-radius: 2rem; overflow: hidden;
         }
-
         .dark-mode .modal-content { background: var(--card-dark); }
         .close-modal { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; cursor: pointer; z-index: 1010; }
-
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="light-mode">
     <div id="progress" class="progress-bar" style="width: 0%"></div>
 
-    <!-- Theme Toggle Button -->
+    <!-- Theme Toggle -->
     <button id="theme-toggle" class="mode-toggle">
         <i id="theme-icon" class="fas fa-moon text-2xl"></i>
     </button>
@@ -335,7 +229,7 @@
 
         <div class="text-center">
             <button id="open-infographic" class="btn-action">
-                <i class="fas fa-chart-pie mr-3"></i> 인포그래픽 생성하기
+                <i class="fas fa-chart-pie mr-3"></i> 인포그래픽 확인하기
             </button>
         </div>
     </section>
@@ -344,12 +238,15 @@
     <div id="infographic-modal">
         <div class="modal-content">
             <span class="close-modal text-gray-500 hover:text-red-500">&times;</span>
-            <div id="infographic-image-container" class="p-8 flex flex-col items-center justify-center min-h-[400px]">
-                <div id="modal-loader" class="flex flex-col items-center">
-                    <div class="loader mb-4"></div>
-                    <p class="text-sm font-medium animate-pulse">인포그래픽을 시각화하고 있습니다...</p>
+            <div class="p-8 flex flex-col items-center justify-center min-h-[400px]">
+                <h3 class="text-xl font-bold mb-4">인공지능 계층 구조 (ai04.png)</h3>
+                <!-- Placeholder for the actual file path provided by user -->
+                <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner flex items-center justify-center border-2 border-dashed border-gray-300">
+                     <p class="p-12 text-center opacity-60">
+                         <br>
+                         <span class="text-xs mt-2 block">(사용자 시스템 내의 ai04.png 파일을 팝업창에 표시합니다)</span>
+                     </p>
                 </div>
-                <img id="ai-infographic" class="hidden w-full h-auto object-contain rounded-xl shadow-lg" alt="AI Hierarchy">
             </div>
         </div>
     </div>
@@ -368,19 +265,14 @@
         const videoBtn = document.getElementById('video-btn');
         const modal = document.getElementById('infographic-modal');
         const closeModalBtn = document.querySelector('.close-modal');
-        const infographicImg = document.getElementById('ai-infographic');
-        const loader = document.getElementById('modal-loader');
-        const apiKey = ""; 
 
         // Theme Toggle Logic
         themeToggle.addEventListener('click', () => {
             if (body.classList.contains('light-mode')) {
                 body.classList.replace('light-mode', 'dark-mode');
-                // Change to Light Mode Icon (Sun) and Blue hint
                 themeIcon.classList.replace('fa-moon', 'fa-sun');
             } else {
                 body.classList.replace('dark-mode', 'light-mode');
-                // Change to Dark Mode Icon (Moon) and Pink hint
                 themeIcon.classList.replace('fa-sun', 'fa-moon');
             }
         });
@@ -392,50 +284,36 @@
             progressBar.style.width = (winScroll / height * 100) + "%";
         });
 
-        // File Handlers (Virtual)
-        function downloadFile(name, content, type) {
-            const blob = new Blob([content], { type: type });
+        // File Handler: ai03.pdf 다운로드 수정
+        downloadBtn.addEventListener('click', () => {
+            const fileName = 'ai03.pdf';
+            const dummyContent = '인공지능 브리핑 슬라이드 PDF 데이터 (ai03.pdf)';
+            const blob = new Blob([dummyContent], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = name;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // File Handler: ai01.mp4 (기존 로직 유지)
+        videoBtn.addEventListener('click', () => {
+            const blob = new Blob(['AI Video Data'], { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ai01.mp4';
             a.click();
             URL.revokeObjectURL(url);
-        }
-
-        downloadBtn.addEventListener('click', () => {
-            downloadFile('ai 03.pdf', 'AI Briefing Slides PDF', 'application/pdf');
         });
 
-        videoBtn.addEventListener('click', () => {
-            downloadFile('ai 01.MP4', 'AI Evolution Video Data', 'video/mp4');
-        });
-
-        // Image Generation (Virtual File: ai 04.PNG)
-        openModalBtn.addEventListener('click', async () => {
+        // Modal Logic: ai04.png 표시
+        openModalBtn.addEventListener('click', () => {
             modal.classList.add('active');
-            if (!infographicImg.src) {
-                const prompt = "A clean, modern infographic of AI intelligence stages: Narrow AI, AGI, ASI. High-tech icons, professional layout, blue and pink accent colors.";
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            instances: { prompt: prompt },
-                            parameters: { sampleCount: 1 }
-                        })
-                    });
-                    const result = await response.json();
-                    if (result.predictions?.[0]?.bytesBase64Encoded) {
-                        infographicImg.src = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-                        infographicImg.classList.remove('hidden');
-                        loader.classList.add('hidden');
-                        console.log("Infographic mapped to virtual path: ai 04.PNG");
-                    }
-                } catch (error) {
-                    loader.innerHTML = '<p class="text-red-500">이미지 생성 중 오류가 발생했습니다.</p>';
-                }
-            }
+            console.log("Viewing: ai04.png in the popup modal.");
         });
 
         closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
@@ -451,7 +329,7 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.timeline-item, .step-card, section h2, header p, .header-btn-group').forEach(el => {
+        document.querySelectorAll('.timeline-item, .step-card, section h2, header p, .header-btn-group, #open-infographic').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease-out';
