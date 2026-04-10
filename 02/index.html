@@ -116,9 +116,6 @@
         .light-mode #download-btn { background-color: #1e293b; color: white; }
         .dark-mode #download-btn { background-color: #fce7f3; color: #9d174d; }
 
-        .light-mode #video-btn { background-color: #ffffff; color: #1e293b; border: 2px solid #1e293b; }
-        .dark-mode #video-btn { background-color: transparent; color: #fce7f3; border: 2px solid #fce7f3; }
-
         .light-mode #open-infographic { background-color: var(--accent-light); color: white; }
         .dark-mode #open-infographic { background-color: var(--accent-dark); color: white; }
 
@@ -164,9 +161,6 @@
         <div class="header-btn-group">
             <button id="download-btn" class="btn-action hover:scale-105 active:scale-95">
                 <i class="fas fa-download mr-2"></i> 슬라이드 다운로드
-            </button>
-            <button id="video-btn" class="btn-action hover:scale-105 active:scale-95">
-                <i class="fas fa-play-circle mr-2"></i> 영상 시청
             </button>
         </div>
 
@@ -262,7 +256,6 @@
         const progressBar = document.getElementById('progress');
         const openModalBtn = document.getElementById('open-infographic');
         const downloadBtn = document.getElementById('download-btn');
-        const videoBtn = document.getElementById('video-btn');
         const modal = document.getElementById('infographic-modal');
         const closeModalBtn = document.querySelector('.close-modal');
 
@@ -292,14 +285,6 @@
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-        });
-
-        // File Handler: ./ai01.mp4 (기존 로직 유지)
-        videoBtn.addEventListener('click', () => {
-            const a = document.createElement('a');
-            a.href = './ai01.mp4';
-            a.download = 'ai01.mp4';
-            a.click();
         });
 
         // Modal Logic: 팝업 열기
