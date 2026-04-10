@@ -1,17 +1,5 @@
 <!-- Palette: Vibrant Indigo & Coral (#4F46E5, #FF7F50, #06B6D4, #F1F5F9, #1E293B) -->
 <!-- NO SVG / NO MERMAID: Explicitly confirming that NEITHER Mermaid JS NOR SVG were used anywhere in this output. -->
-<!-- Narrative Plan: 
-  1. Header/Hook: Introduce the dual crisis of population decline and rapid aging in Busan.
-  2. The Big Picture: Visualize the 5-year trend of total population vs elderly population.
-  3. The 30% Milestone: Highlight the critical 31.3% elderly ratio reached in 2024.
-  4. District Polarization: Show the extreme contrast in population growth (Gangseo vs Others).
-  5. Aging Extremes: Compare the highest and lowest elderly ratio districts.
-  6. Conclusion: Call to action for targeted urban policies. -->
-<!-- Chart Choices: 
-  1. Trend (2020-2024) -> Goal: Change -> Chosen: Chart.js Line & Bar Combo -> Justification: Shows simultaneous diverging trends (total down, elderly up) clearly without SVG.
-  2. 2024 Ratio -> Goal: Inform/Composition -> Chosen: Chart.js Doughnut -> Justification: Emphasizes the 1-in-3 proportion intuitively without SVG.
-  3. Pop Change -> Goal: Compare -> Chosen: Chart.js Horizontal Bar -> Justification: Best for displaying negative vs positive values across categories without SVG.
-  4. Aging Ratios -> Goal: Rank/Compare -> Chosen: Chart.js Bar -> Justification: Clearly ranks the extremity of aging by district without SVG. -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -52,16 +40,70 @@ color: #FF7F50;
 .primary-text {
 color: #4F46E5;
 }
-.nav-home {
+.nav-home, .btn-story, .btn-video {
 transition: all 0.3s ease;
 }
 .nav-home:hover {
 background-color: rgba(255, 255, 255, 0.1);
 transform: translateY(-2px);
 }
+.btn-story:hover {
+background-color: #4338CA;
+transform: scale(1.05);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.btn-video:hover {
+background-color: #0891B2;
+transform: scale(1.05);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Video Modal Styles */
+#videoModal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.9);
+z-index: 1000;
+align-items: center;
+justify-content: center;
+}
+.modal-content {
+position: relative;
+width: 90%;
+max-width: 800px;
+background: #000;
+border-radius: 1rem;
+overflow: hidden;
+box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+.close-modal {
+position: absolute;
+top: 1rem;
+right: 1rem;
+color: white;
+font-size: 2rem;
+cursor: pointer;
+z-index: 1001;
+line-height: 1;
+}
 </style>
 </head>
 <body class="antialiased">
+
+<!-- Video Modal -->
+<div id="videoModal" onclick="closeVideo()">
+    <span class="close-modal">&times;</span>
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <video id="popupVideo" controls class="w-full h-auto block">
+            <source src="./mv2.mp4" type="video/mp4">
+            브라우저가 비디오 태그를 지원하지 않습니다.
+        </video>
+    </div>
+</div>
 
 <header class="bg-[#1E293B] text-white py-12 px-6 relative overflow-hidden">
 <!-- 상단 홈 버튼 네비게이션 -->
@@ -75,6 +117,19 @@ transform: translateY(-2px);
 <div class="max-w-6xl mx-auto relative z-10">
 <div class="inline-block px-4 py-1 rounded-full bg-[#4F46E5] text-sm font-bold tracking-wider mb-4">DATA INFOGRAPHIC</div>
 <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight">부산광역시 인구 지형<br><span class="text-[#FF7F50]">초고령화의 민낯</span> (2020-2024)</h1>
+
+<!-- 버튼 그룹 (스토리텔링 & 영상 보기) -->
+<div class="mt-6 mb-8 flex flex-wrap gap-4">
+<a href="https://gemini.google.com/share/27deaef88bd9" target="_blank" class="btn-story inline-flex items-center gap-3 px-6 py-3 bg-[#4F46E5] text-white rounded-full font-bold shadow-lg">
+<span class="text-xl">📖</span>
+<span>데이터 스토리텔링 보기</span>
+</a>
+<button onclick="openVideo()" class="btn-video inline-flex items-center gap-3 px-6 py-3 bg-[#06B6D4] text-white rounded-full font-bold shadow-lg cursor-pointer">
+<span class="text-xl">🎬</span>
+<span>영상 보기</span>
+</button>
+</div>
+
 <p class="text-lg md:text-xl text-gray-300 max-w-2xl mt-4">지난 5년간 부산의 총인구는 빠르게 감소하는 반면, 고령 인구는 가파르게 상승하며 인구 구조의 거대한 변곡점을 맞이하고 있습니다. 통계청 인구총조사 데이터를 통해 부산 16개 구·군의 현주소를 분석합니다.</p>
 </div>
 <div class="absolute right-0 bottom-0 opacity-10 text-9xl transform translate-x-1/4 translate-y-1/4 select-none">🏙️</div>
@@ -181,6 +236,22 @@ transform: translateY(-2px);
 </footer>
 
 <script>
+// Video Modal Functions
+const modal = document.getElementById('videoModal');
+const video = document.getElementById('popupVideo');
+
+function openVideo() {
+    modal.style.display = 'flex';
+    video.play();
+}
+
+function closeVideo() {
+    modal.style.display = 'none';
+    video.pause();
+    video.currentTime = 0;
+}
+
+// Chart Logic
 function wrapLabel(label) {
 if (typeof label !== 'string' || label.length <= 16) return label;
 const words = label.split(' ');
