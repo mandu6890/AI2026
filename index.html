@@ -80,15 +80,14 @@
             to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* 마우스 위치가 검정색이 되도록 반전시킨 그래디언트 */
         .dynamic-title-gradient {
             --mouse-x: 50%;
             --mouse-y: 50%;
             background: radial-gradient(
                 circle at var(--mouse-x) var(--mouse-y), 
-                #0f172a 0%,    /* 마우스 포인트: 어두운 색 */
-                #1e40af 45%,   /* 중간: 파란색 */
-                #3b82f6 100%   /* 외곽: 밝은 파란색 */
+                #0f172a 0%,    
+                #1e40af 45%,   
+                #3b82f6 100%   
             );
             -webkit-background-clip: text;
             background-clip: text;
@@ -100,7 +99,7 @@
         .dark .dynamic-title-gradient {
             background: radial-gradient(
                 circle at var(--mouse-x) var(--mouse-y), 
-                #000000 0%,    /* 다크모드 마우스 포인트: 완전 검정 */
+                #000000 0%,    
                 #2563eb 50%, 
                 #60a5fa 100%
             );
@@ -141,7 +140,6 @@
             color: #FACC15;
         }
 
-        /* 테마 변수 설정 */
         .theme-blue { --theme-color: #3b82f6; --theme-bg: #eff6ff; --theme-color-op: rgba(59, 130, 246, 0.6); }
         .theme-emerald { --theme-color: #10b981; --theme-bg: #ecfdf5; --theme-color-op: rgba(16, 185, 129, 0.6); }
         .theme-violet { --theme-color: #8b5cf6; --theme-bg: #f5f3ff; --theme-color-op: rgba(139, 92, 246, 0.6); }
@@ -152,7 +150,6 @@
         .dark .theme-violet { --theme-bg: rgba(76, 29, 149, 0.3); }
         .dark .theme-amber { --theme-bg: rgba(120, 53, 15, 0.3); }
 
-        /* 모달 스타일 */
         .modal-overlay {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
@@ -297,7 +294,6 @@
     </div>
 
     <script>
-        // Mouse Tracker for Dynamic Title
         const dynamicTarget = document.getElementById('dynamic-target');
         document.addEventListener('mousemove', (e) => {
             const rect = dynamicTarget.getBoundingClientRect();
@@ -307,7 +303,6 @@
             dynamicTarget.style.setProperty('--mouse-y', `${y}%`);
         });
 
-        // Dark Mode Logic
         function toggleDarkMode() {
             const html = document.documentElement;
             const icon = document.getElementById('mode-icon');
@@ -328,7 +323,6 @@
             if(icon) icon.className = 'fas fa-moon';
         }
 
-        // Portfolio Data
         const assignments = [
             { 
                 id: 1, 
@@ -367,7 +361,7 @@
                                 <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 02</span>
                                 <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">데이터 스토리텔링</h2>
                             </div>
-                            <a href="./03/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
+                            <a href="../03/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
                                 <span>결과물 보기</span>
                                 <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
                             </a>
@@ -379,27 +373,38 @@
                                 공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력있는 리포트를 작성하여 스토리북으로 만들기
                             </p>
                         </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 text-xl">
-                                    <i class="fas fa-chart-bar"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">데이터 인사이트 도출</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">원시 데이터를 가공하여 핵심 지표를 추출하고 사회 현상의 원인을 분석합니다.</p>
+                    </div>
+                `
+            },
+            { 
+                id: 3, 
+                title: "웹기술의 이해", 
+                tools: ["HTML5", "Tailwind", "JS"], 
+                theme: "theme-violet", 
+                icon: "fa-code",
+                content: `
+                    <div class="space-y-12">
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 03</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">웹기술의 이해</h2>
                             </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 text-xl">
-                                    <i class="fas fa-scroll"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">시각적 스토리텔링</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인터랙티브 리포트를 통해 독자에게 데이터의 의미를 효과적으로 전달합니다.</p>
-                            </div>
+                            <!-- 경로를 ./04/index.html로 설정 -->
+                            <a href="./04/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
+                        </header>
+                        
+                        <div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8">
+                            <h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fas fa-laptop-code mr-2"></i>모던 웹 구조와 인터랙션</h4>
+                            <p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">
+                                HTML, CSS, JavaScript를 활용하여 반응형 웹사이트를 구축하고 브라우저의 렌더링 원리와 웹 인터랙션을 학습합니다.
+                            </p>
                         </div>
                     </div>
                 `
             },
-            { id: 3, title: "프롬프트 엔지니어링 전략", tools: ["Claude", "GPT-4"], theme: "theme-violet", icon: "fa-wand-magic-sparkles" },
             { id: 4, title: "AI 이미지 스토리텔링", tools: ["Midjourney", "Canva"], theme: "theme-amber", icon: "fa-palette" },
             { id: 5, title: "공공 데이터 시각화", tools: ["Python", "Pandas"], theme: "theme-emerald", icon: "fa-chart-pie" },
             { id: 6, title: "AI 윤리와 사회적 책임", tools: ["Ethics", "Policy"], theme: "theme-blue", icon: "fa-scale-balanced" },
@@ -409,13 +414,12 @@
             { id: 10, title: "최종 AI 리터러시 프로젝트", tools: ["Integrated", "Streamlit"], theme: "theme-violet", icon: "fa-rocket" }
         ];
 
-        // Grid Generation
         const grid = document.getElementById('portfolio-grid');
         assignments.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = `bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[3rem] overflow-hidden card-hover group cursor-pointer transition-all duration-500 ${item.theme}`;
             card.onclick = () => openModal(item.id);
-            const imageUrl = `https://picsum.photos/seed/ai-literacy-${index}/600/400`;
+            const imageUrl = `https://picsum.photos/seed/web-dev-${index}/600/400`;
             card.innerHTML = `
                 <div class="relative h-56 overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-30 transition-opacity"></div>
@@ -446,7 +450,6 @@
             grid.appendChild(card);
         });
 
-        // Modal Controls
         const modal = document.getElementById('project-modal');
         const modalBody = document.getElementById('modal-body');
 
