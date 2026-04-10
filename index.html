@@ -94,7 +94,7 @@
             background-clip: text;
             color: transparent;
             display: inline-block;
-            transition: background 0.1s ease; /* 부드러운 이동을 위해 추가 */
+            transition: background 0.1s ease;
         }
 
         .dark .dynamic-title-gradient {
@@ -301,11 +301,8 @@
         const dynamicTarget = document.getElementById('dynamic-target');
         document.addEventListener('mousemove', (e) => {
             const rect = dynamicTarget.getBoundingClientRect();
-            // 텍스트 영역 내에서의 상대적 위치 계산
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
-            // 변수 업데이트
             dynamicTarget.style.setProperty('--mouse-x', `${x}%`);
             dynamicTarget.style.setProperty('--mouse-y', `${y}%`);
         });
@@ -339,7 +336,6 @@
                 tools: ["NotebookLM", "Google"], 
                 theme: "theme-blue", 
                 icon: "fa-book",
-                description: "구글 노트북LM을 활용하여 인공지능의 정의, 역사적 흐름을 정리한 프로젝트입니다.",
                 content: `
                     <div class="space-y-12">
                         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -352,27 +348,9 @@
                                 <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
                             </a>
                         </header>
-                        
                         <p class="text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-                            구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 방대한 AI 관련 자료를 학습시키고, 효율적인 요약과 통찰을 도출하는 실습을 진행했습니다. 인공지능의 역사와 생성형 AI의 발전 과정을 중점적으로 다루었습니다.
+                            구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 인공지능의 역사와 기초 원리를 학습한 기록입니다.
                         </p>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
-                                    <i class="fas fa-brain"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">AI 원리 통찰</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인간의 지능적 활동을 프로그램으로 구현하는 기술의 정의를 학습하고, 머신러닝과 딥러닝의 기술적 차이를 구조화하였습니다.</p>
-                            </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
-                                    <i class="fas fa-history"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">역사적 흐름 분석</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">1950년대 앨런 튜링부터 최신 거대 언어 모델(LLM)에 이르기까지, AI가 거쳐온 황금기와 암흑기, 그리고 부활의 과정을 시계열로 정리했습니다.</p>
-                            </div>
-                        </div>
                     </div>
                 `
             },
@@ -408,14 +386,14 @@
                                     <i class="fas fa-chart-bar"></i>
                                 </div>
                                 <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">데이터 인사이트 도출</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">공공 데이터 포털의 원시 데이터를 가공하여 핵심 지표를 추출하고, 사회적 현상의 원인을 데이터로 분석합니다.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">원시 데이터를 가공하여 핵심 지표를 추출하고 사회 현상의 원인을 분석합니다.</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
                                 <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 text-xl">
                                     <i class="fas fa-scroll"></i>
                                 </div>
                                 <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">시각적 스토리텔링</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">분석된 데이터를 기반으로 제미나이를 활용해 독자의 공감을 이끌어내는 서사 구조를 설계하고 인터랙티브 리포트로 제작합니다.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인터랙티브 리포트를 통해 독자에게 데이터의 의미를 효과적으로 전달합니다.</p>
                             </div>
                         </div>
                     </div>
@@ -437,9 +415,7 @@
             const card = document.createElement('div');
             card.className = `bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[3rem] overflow-hidden card-hover group cursor-pointer transition-all duration-500 ${item.theme}`;
             card.onclick = () => openModal(item.id);
-            
             const imageUrl = `https://picsum.photos/seed/ai-literacy-${index}/600/400`;
-            
             card.innerHTML = `
                 <div class="relative h-56 overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-30 transition-opacity"></div>
@@ -449,7 +425,7 @@
                     </div>
                 </div>
                 <div class="p-8 relative">
-                    <div class="absolute top-0 left-8 right-8 h-1 rounded-full transition-all duration-500 group-hover:h-1.5 opacity-30 group-hover:opacity-100" style="background-color: var(--theme-color);"></div>
+                    <div class="absolute top-0 left-8 right-8 h-1 rounded-full opacity-30 group-hover:opacity-100" style="background-color: var(--theme-color);"></div>
                     <h3 class="font-black text-xl mb-6 leading-tight h-14 line-clamp-2 text-slate-800 dark:text-slate-100 pt-2 transition-colors">
                         ${item.title}
                     </h3>
@@ -477,16 +453,13 @@
         function openModal(id) {
             const project = assignments.find(p => p.id === id);
             if (!project) return;
-
-            const content = project.content || `
+            modalBody.innerHTML = project.content || `
                 <div class="text-center py-20">
                     <div class="text-6xl text-slate-200 dark:text-slate-800 mb-8"><i class="fas ${project.icon}"></i></div>
                     <h2 class="text-3xl font-black mb-4">${project.title}</h2>
                     <p class="text-slate-500">상세 학습 결과는 업데이트 중입니다.</p>
                 </div>
             `;
-
-            modalBody.innerHTML = content;
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             setTimeout(() => document.body.classList.add('modal-open'), 10);
