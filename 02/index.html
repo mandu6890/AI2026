@@ -70,7 +70,9 @@
             display: flex;
             align-items: center; justify-content: center;
         }
+        /* 라이트 모드일 때: 버튼은 핑크색(다크모드 유도) */
         .light-mode .mode-toggle { background-color: #ec4899; color: white; border-color: #f9a8d4; }
+        /* 다크 모드일 때: 버튼은 블루색(라이트모드 유도) */
         .dark-mode .mode-toggle { background-color: #3b82f6; color: white; border-color: #93c5fd; }
         .mode-toggle:hover { transform: scale(1.1) rotate(15deg); }
 
@@ -239,14 +241,12 @@
         <div class="modal-content">
             <span class="close-modal text-gray-500 hover:text-red-500">&times;</span>
             <div class="p-8 flex flex-col items-center justify-center min-h-[400px]">
-                <h3 class="text-xl font-bold mb-4">인공지능 계층 구조 (ai04.png)</h3>
-                <!-- Placeholder for the actual file path provided by user -->
-                <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner flex items-center justify-center border-2 border-dashed border-gray-300">
-                     <p class="p-12 text-center opacity-60">
-                         <br>
-                         <span class="text-xs mt-2 block">(사용자 시스템 내의 ai04.png 파일을 팝업창에 표시합니다)</span>
-                     </p>
+                <h3 class="text-xl font-bold mb-6">인공지능 계층 구조 분석</h3>
+                <!-- 실제 이미지 경로 연결 -->
+                <div class="w-full rounded-xl overflow-hidden shadow-2xl">
+                     <img id="modal-image" src="./ai04.png" alt="인공지능 계층 인포그래픽" class="w-full h-auto object-cover" onerror="this.parentElement.innerHTML='<p class=\'p-12 text-center opacity-60 border-2 border-dashed border-gray-300\'>[ai04.png 이미지를 찾을 수 없습니다]</p>'">
                 </div>
+                <p class="mt-4 text-sm opacity-60">이미지 파일: ./ai04.png</p>
             </div>
         </div>
     </div>
@@ -270,10 +270,10 @@
         themeToggle.addEventListener('click', () => {
             if (body.classList.contains('light-mode')) {
                 body.classList.replace('light-mode', 'dark-mode');
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeIcon.classList.replace('fa-moon', 'fa-sun'); // 다크모드일 땐 해 아이콘
             } else {
                 body.classList.replace('dark-mode', 'light-mode');
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.classList.replace('fa-sun', 'fa-moon'); // 라이트모드일 땐 달 아이콘
             }
         });
 
@@ -284,36 +284,27 @@
             progressBar.style.width = (winScroll / height * 100) + "%";
         });
 
-        // File Handler: ai03.pdf 다운로드 수정
+        // File Handler: ./ai03.pdf 다운로드
         downloadBtn.addEventListener('click', () => {
-            const fileName = 'ai03.pdf';
-            const dummyContent = '인공지능 브리핑 슬라이드 PDF 데이터 (ai03.pdf)';
-            const blob = new Blob([dummyContent], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
+            a.href = './ai03.pdf';
+            a.download = 'ai03.pdf';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         });
 
-        // File Handler: ai01.mp4 (기존 로직 유지)
+        // File Handler: ./ai01.mp4 (기존 로직 유지)
         videoBtn.addEventListener('click', () => {
-            const blob = new Blob(['AI Video Data'], { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
+            a.href = './ai01.mp4';
             a.download = 'ai01.mp4';
             a.click();
-            URL.revokeObjectURL(url);
         });
 
-        // Modal Logic: ai04.png 표시
+        // Modal Logic: 팝업 열기
         openModalBtn.addEventListener('click', () => {
             modal.classList.add('active');
-            console.log("Viewing: ai04.png in the popup modal.");
         });
 
         closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
