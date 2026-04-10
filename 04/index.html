@@ -1,1 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>웹 기술의 이해 - 디지털 세계의 건축학</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
 
+        body {
+            font-family: 'Pretendard', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* 라이트 모드: 파스텔 블루 */
+        :root {
+            --bg-primary: #f0f7ff;
+            --bg-card: #ffffff;
+            --accent-primary: #a5d8ff;
+            --accent-secondary: #74c0fc;
+            --text-main: #2c3e50;
+            --text-muted: #5a6a7a;
+            --border-color: #dbeafe;
+            --bg-code: #f1f5f9;
+            --text-code: #1e293b;
+            /* 파도 효과 색상 (라이트) */
+            --wave-color-1: #3b82f6;
+            --wave-color-2: #93c5fd;
+            --wave-color-3: #2563eb;
+            /* 버튼 & 배지 (라이트) */
+            --badge-bg: #dbeafe;
+            --badge-text: #2563eb;
+            --btn-fill-bg: #3b82f6;
+            --btn-fill-text: #ffffff;
+            --btn-outline-text: #3b82f6;
+            --btn-outline-border: #3b82f6;
+            --btn-video-bg: #1e293b;
+            --btn-video-text: #ffffff;
+        }
+
+        /* 다크 모드: 파스텔 옐로우/골드 */
+        [data-theme='dark'] {
+            --bg-primary: #1a1a15;
+            --bg-card: #2a2a20;
+            --accent-primary: #ffec99;
+            --accent-secondary: #fcc419;
+            --text-main: #fff9db;
+            --text-muted: #d9d4b0;
+            --border-color: #444433;
+            --bg-code: #0a0a08;
+            --text-code: #ffec99;
+            /* 파도 효과 색상 (다크) */
+            --wave-color-1: #fcc419;
+            --wave-color-2: #fff9db;
+            --wave-color-3: #e67e22;
+            /* 버튼 & 배지 (다크) */
+            --badge-bg: #333322;
+            --badge-text: #fcc419;
+            --btn-fill-bg: #fcc419;
+            --btn-fill-text: #000000;
+            --btn-outline-text: #fcc419;
+            --btn-outline-border: #fcc419;
+            --btn-video-bg: #fff9db;
+            --btn-video-text: #1a1a15;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+        }
+
+        /* 배지 스타일 */
+        .top-badge {
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            transition: all 0.3s ease;
+        }
+
+        /* 한 방향으로 흐르는 파도 애니메이션 */
+        .wave-text {
+            display: inline-block;
+            background: linear-gradient(
+                to right,
+                var(--wave-color-1) 0%,
+                var(--wave-color-2) 25%,
+                var(--wave-color-3) 50%,
+                var(--wave-color-2) 75%,
+                var(--wave-color-1) 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: wave-flow 3s linear infinite;
+            font-weight: 900;
+        }
+
+        @keyframes wave-flow {
+            0% { background-position: 0% center; }
+            100% { background-position: -200% center; }
+        }
+
+        /* 버튼 공통 스타일 */
+        .cta-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.3);
+        }
+
+        /* 채워진 버튼 스타일 */
+        .btn-fill {
+            background-color: var(--btn-fill-bg);
+            color: var(--btn-fill-text);
+        }
+
+        /* 테두리 버튼 스타일 */
+        .btn-outline {
+            background-color: transparent;
+            color: var(--btn-outline-text);
+            border: 2px solid var(--btn-outline-border);
+        }
+
+        /* 영상 보기 버튼 스타일 */
+        .btn-video {
+            background-color: var(--btn-video-bg);
+            color: var(--btn-video-text);
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .badge {
+            background-color: var(--accent-primary);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .code-container {
+            background-color: var(--bg-code);
+            color: var(--text-code);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle-nav {
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            background-color: var(--accent-primary);
+            color: #000;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle-nav:hover {
+            background-color: var(--accent-secondary);
+            transform: scale(1.05);
+        }
+
+        .interactive-section {
+            display: none;
+        }
+
+        .interactive-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-secondary);
+            color: white;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md border-b" style="border-color: var(--border-color); background-color: rgba(var(--bg-card), 0.8);">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <h1 class="text-xl font-extrabold tracking-tight">Web <span style="color: var(--accent-secondary)">Tech</span> Guide</h1>
+            
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <div class="hidden md:flex space-x-6 text-sm font-semibold mr-4">
+                    <a href="#evolution" class="hover:opacity-70">웹의 진화</a>
+                    <a href="#basics" class="hover:opacity-70">핵심 기술</a>
+                    <a href="#modern" class="hover:opacity-70">현대 아키텍처</a>
+                </div>
+                
+                <button class="theme-toggle-nav text-sm" onclick="toggleTheme()" title="테마 전환">
+                    <i id="theme-icon" class="fas fa-sun"></i>
+                    <span id="theme-text" class="hidden sm:inline">라이트 모드</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="py-24 px-6 max-w-6xl mx-auto text-center">
+        <div class="top-badge inline-block mb-4 px-4 py-1 rounded-full text-sm font-bold">
+            Digital Architecture
+        </div>
+        <h2 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            웹 기술의 진화와<br>
+            <span class="wave-text">디지털 세계의 건축학</span>
+        </h2>
+        
+        <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-80 leading-relaxed font-medium mb-10">
+            단순한 정보 전달의 도구에서 시작하여, 이제는 우리의 일상과 비즈니스를 지탱하는 거대한 인프라가 되었습니다. 
+            구조화된 데이터와 동적 인터랙션이 빚어내는 현대 웹 아키텍처의 아름다움을 탐험해보세요.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button class="cta-button btn-fill w-full sm:w-auto px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg">
+                <i class="fas fa-project-diagram"></i>
+                인포그래픽 보기
+            </button>
+            <button class="cta-button btn-outline w-full sm:w-auto px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-3">
+                <i class="fas fa-download"></i>
+                슬라이드 다운로드
+            </button>
+        </div>
+    </header>
+
+    <!-- 1. 웹의 진화 -->
+    <section id="evolution" class="py-16 px-6 max-w-6xl mx-auto">
+        <div class="flex items-center mb-10">
+            <i class="fas fa-history text-3xl mr-4" style="color: var(--accent-secondary)"></i>
+            <h3 class="text-3xl font-bold">웹의 진화: 1.0에서 4.0까지</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card p-8">
+                <div class="badge mb-4">Web 1.0</div>
+                <h4 class="text-xl font-bold mb-2">정적 웹</h4>
+                <p class="text-sm opacity-80 mb-4">(1989-2004)</p>
+                <p class="text-sm">단순히 정보를 읽기만 하는 콘텐츠 소비 중심의 시기입니다.</p>
+            </div>
+            <div class="card p-8">
+                <div class="badge mb-4">Web 2.0</div>
+                <h4 class="text-xl font-bold mb-2">사회적 웹</h4>
+                <p class="text-sm opacity-80 mb-4">참여와 공유</p>
+                <p class="text-sm">사용자가 콘텐츠를 생성하고 소셜 미디어가 발달한 상호작용의 시대입니다.</p>
+            </div>
+            <div class="card p-8">
+                <div class="badge mb-4">Web 3.0</div>
+                <h4 class="text-xl font-bold mb-2">탈중앙화 웹</h4>
+                <p class="text-sm opacity-80 mb-4">지능과 소유</p>
+                <p class="text-sm">시맨틱 웹과 블록체인을 통한 데이터 소유권과 지능형 서비스를 강조합니다.</p>
+            </div>
+            <div class="card p-8">
+                <div class="badge mb-4">Web 4.0</div>
+                <h4 class="text-xl font-bold mb-2">미래의 웹</h4>
+                <p class="text-sm opacity-80 mb-4">몰입형 경험</p>
+                <p class="text-sm">AI, IoT가 결합되어 가상과 현실이 통합되는 유비쿼터스 컴퓨팅 단계입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 핵심 구성 요소 -->
+    <section id="basics" class="py-16 bg-white/30 dark:bg-black/20 rounded-[3rem] mx-4">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <i class="fas fa-code text-3xl mr-4" style="color: var(--accent-secondary)"></i>
+                    <h3 class="text-3xl font-bold">웹 개발의 기초 체력</h3>
+                </div>
+                <div class="flex space-x-2 bg-gray-200 dark:bg-gray-800 p-1 rounded-xl">
+                    <button onclick="showTab('html')" class="tab-btn active px-6 py-2 rounded-lg text-sm font-bold transition-all">HTML</button>
+                    <button onclick="showTab('css')" class="tab-btn px-6 py-2 rounded-lg text-sm font-bold transition-all">CSS</button>
+                    <button onclick="showTab('js')" class="tab-btn px-6 py-2 rounded-lg text-sm font-bold transition-all">JavaScript</button>
+                </div>
+            </div>
+
+            <div id="html" class="interactive-section active card p-10 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                    <h4 class="text-2xl font-bold mb-4">HTML: 웹의 뼈대</h4>
+                    <p class="text-lg opacity-80 mb-6">웹 페이지의 구조와 내용을 정의하는 마크업 언어입니다. 설계도 역할을 수행합니다.</p>
+                    <ul class="space-y-3">
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 시맨틱 태그 활용</li>
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 문서 구조화의 핵심</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 code-container p-6 rounded-2xl border border-dashed border-blue-200 dark:border-gray-700 font-mono text-sm overflow-x-auto shadow-inner">
+                    &lt;article&gt;<br>
+                    &nbsp;&nbsp;&lt;h1&gt;Hello Web!&lt;/h1&gt;<br>
+                    &nbsp;&nbsp;&lt;p&gt;이것은 웹의 구조입니다.&lt;/p&gt;<br>
+                    &lt;/article&gt;
+                </div>
+            </div>
+
+            <div id="css" class="interactive-section card p-10 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                    <h4 class="text-2xl font-bold mb-4">CSS: 웹의 피부</h4>
+                    <p class="text-lg opacity-80 mb-6">디자인과 레이아웃을 담당하며 반응형 디자인으로 모든 기기에 최적화합니다.</p>
+                    <ul class="space-y-3">
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 반응형 디자인 (Media Query)</li>
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 화려한 애니메이션과 스타일</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 code-container p-6 rounded-2xl border border-dashed border-blue-200 dark:border-gray-700 font-mono text-sm overflow-x-auto shadow-inner">
+                    .button {<br>
+                    &nbsp;&nbsp;background: var(--accent-primary);<br>
+                    &nbsp;&nbsp;border-radius: 12px;<br>
+                    &nbsp;&nbsp;transition: 0.3s;<br>
+                    }
+                </div>
+            </div>
+
+            <div id="js" class="interactive-section card p-10 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-10">
+                    <h4 class="text-2xl font-bold mb-4">JavaScript: 웹의 근육</h4>
+                    <p class="text-lg opacity-80 mb-6">동적인 상호작용과 비동기 처리를 담당하여 사용자 경험을 완성합니다.</p>
+                    <ul class="space-y-3">
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 동적 데이터 처리</li>
+                        <li><i class="fas fa-check-circle mr-2" style="color: var(--accent-secondary)"></i> 비동기 프로그래밍</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 code-container p-6 rounded-2xl border border-dashed border-blue-200 dark:border-gray-700 font-mono text-sm overflow-x-auto shadow-inner">
+                    async function fetchData() {<br>
+                    &nbsp;&nbsp;const res = await fetch(url);<br>
+                    &nbsp;&nbsp;const data = await res.json();<br>
+                    &nbsp;&nbsp;console.log('Success!', data);<br>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 현대적 아키텍처 -->
+    <section id="modern" class="py-20 px-6 max-w-6xl mx-auto">
+        <div class="flex items-center mb-10">
+            <i class="fas fa-cubes text-3xl mr-4" style="color: var(--accent-secondary)"></i>
+            <h3 class="text-3xl font-bold">현대적 아키텍처와 트렌드</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card p-8 bg-gradient-to-br from-transparent to-blue-50 dark:to-yellow-900/10">
+                <h4 class="text-xl font-bold mb-4"><i class="fas fa-layer-group mr-2"></i> 프론트엔드 프레임워크</h4>
+                <p class="opacity-80 leading-relaxed mb-4">
+                    React, Vue와 같은 프레임워크는 <b>컴포넌트</b> 중심 개발을 주도하며 최근 서버 컴포넌트(RSC)로 진화 중입니다.
+                </p>
+                <div class="flex gap-2 flex-wrap">
+                    <span class="text-xs font-bold bg-white dark:bg-black/30 px-3 py-1 rounded-md border border-gray-200 dark:border-gray-700">React</span>
+                    <span class="text-xs font-bold bg-white dark:bg-black/30 px-3 py-1 rounded-md border border-gray-200 dark:border-gray-700">Next.js</span>
+                </div>
+            </div>
+
+            <div class="card p-8 bg-gradient-to-br from-transparent to-blue-50 dark:to-yellow-900/10">
+                <h4 class="text-xl font-bold mb-4"><i class="fas fa-server mr-2"></i> 백엔드 & API 진화</h4>
+                <p class="opacity-80 leading-relaxed mb-4">
+                    모놀리식에서 <b>MSA(마이크로서비스)</b>로 변화하며 REST, GraphQL이 데이터 통신의 핵심이 되었습니다.
+                </p>
+                <div class="flex gap-2 flex-wrap">
+                    <span class="text-xs font-bold bg-white dark:bg-black/30 px-3 py-1 rounded-md border border-gray-200 dark:border-gray-700">MSA</span>
+                    <span class="text-xs font-bold bg-white dark:bg-black/30 px-3 py-1 rounded-md border border-gray-200 dark:border-gray-700">GraphQL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 영상 보기 섹션 추가 -->
+        <div class="mt-20 text-center">
+            <h4 class="text-2xl font-bold mb-6">전문가 강의로 더 깊게 배우기</h4>
+            <button class="cta-button btn-video px-10 py-5 rounded-2xl font-extrabold flex items-center justify-center gap-3 mx-auto shadow-xl">
+                <i class="fas fa-play-circle text-2xl"></i>
+                강의 영상 시청하기
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 text-center opacity-60 text-sm border-t" style="border-color: var(--border-color)">
+        <p>© 2026 Web Tech Exploration Guide. Inspired by Modern Digital Architecture.</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+                text.innerText = '라이트 모드';
+            } else {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-moon';
+                text.innerText = '다크 모드';
+            }
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.interactive-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
