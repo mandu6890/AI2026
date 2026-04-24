@@ -111,6 +111,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            text-decoration: none;
         }
         .btn-filled:hover { background-position: right center; transform: scale(1.05); }
 
@@ -162,6 +163,7 @@
         <div class="blob:nth-child(3)"></div>
     </div>
 
+    <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 p-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center p-4 px-10 card shadow-xl rounded-full">
             <h1 class="text-2xl font-extrabold tracking-tight">정민우 <span class="wave-text">Media</span></h1>
@@ -172,6 +174,7 @@
         </div>
     </nav>
 
+    <!-- Header -->
     <header class="pt-72 pb-40 px-4 text-center">
         <div class="max-w-5xl mx-auto scroll-reveal">
             <h1 class="text-6xl md:text-8xl font-extrabold mb-8 leading-tight tracking-tighter">
@@ -225,7 +228,7 @@
             </div>
         </section>
 
-        <!-- 2. Major Section -->
+        <!-- 2. Major Section (UPDATED) -->
         <section class="mb-56 scroll-reveal" id="major">
             <div class="text-center mb-20">
                 <h2 class="text-5xl font-black mb-6">미디어커뮤니케이션학과 <span class="wave-text">소개</span></h2>
@@ -245,9 +248,10 @@
                 </div>
             </div>
             <div class="flex justify-center mt-12">
-                <button onclick="openCardNews()" class="btn-filled px-16 py-7 rounded-full text-2xl shadow-2xl flex items-center gap-5">
-                    <span>📰</span> 학과 카드뉴스 열람하기
-                </button>
+                <!-- 버튼을 '학과소개 PPT 다운로드 하기'로 변경 및 mw2.pdf 연결 -->
+                <a href="mw2.pdf" download="mw2.pdf" class="btn-filled px-16 py-7 rounded-full text-2xl shadow-2xl flex items-center gap-5">
+                    <span>📑</span> 학과소개 PPT 다운로드 하기
+                </a>
             </div>
         </section>
 
@@ -326,7 +330,6 @@
             </div>
             <div class="flex flex-col sm:flex-row justify-center gap-8">
                 <button onclick="openInfographic()" class="btn-filled px-16 py-7 rounded-full text-2xl shadow-2xl flex items-center gap-5">📊 인포그래픽 보기</button>
-                <!-- 보고서 다운로드 버튼을 앵커 태그로 수정하여 mw.pdf 다운로드 활성화 -->
                 <a href="mw.pdf" download="mw.pdf" class="btn-filled px-16 py-7 rounded-full text-2xl shadow-2xl flex items-center gap-5">
                     📥 보고서 다운로드
                 </a>
@@ -353,7 +356,7 @@
         </section>
     </main>
 
-    <!-- 인포그래픽 모달 -->
+    <!-- Modal for Infographic -->
     <div id="infographic-modal" class="modal" onclick="closeInfographic()">
         <div class="max-w-4xl w-full relative animate-fade-in" onclick="event.stopPropagation()">
             <button onclick="closeInfographic()" class="absolute -top-14 right-0 text-white text-4xl hover:scale-110">✕</button>
@@ -363,19 +366,7 @@
         </div>
     </div>
 
-    <!-- 카드뉴스 모달 -->
-    <div id="cardnews-modal" class="modal">
-        <div class="max-w-4xl w-full card p-14 relative animate-fade-in">
-            <button onclick="closeCardNews()" class="absolute top-10 right-10 text-5xl">✕</button>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-center">
-                <div class="card p-10 bg-white/5">📺 방송 실습</div>
-                <div class="card p-10 bg-white/5">📰 언론 저널리즘</div>
-                <div class="card p-10 bg-white/5">💡 광고/PR</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 영상 모달 -->
+    <!-- Modal for Video -->
     <div id="video-modal" class="modal">
         <div class="max-w-5xl w-full relative">
             <button onclick="closeVideoModal()" class="absolute -top-16 right-0 text-white text-5xl hover:scale-110">✕</button>
@@ -412,9 +403,6 @@
 
         function openVideoModal() { videoModal.classList.add('active'); mainVideo.play(); body.style.overflow = 'hidden'; }
         function closeVideoModal() { videoModal.classList.remove('active'); mainVideo.pause(); mainVideo.currentTime = 0; body.style.overflow = 'auto'; }
-        
-        function openCardNews() { document.getElementById('cardnews-modal').classList.add('active'); body.style.overflow = 'hidden'; }
-        function closeCardNews() { document.getElementById('cardnews-modal').classList.remove('active'); body.style.overflow = 'auto'; }
 
         function openInfographic() { infoModal.classList.add('active'); body.style.overflow = 'hidden'; }
         function closeInfographic() { infoModal.classList.remove('active'); body.style.overflow = 'auto'; }
