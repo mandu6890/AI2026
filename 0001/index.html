@@ -3,234 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>진실의 추적자: 가짜 뉴스의 방</title>
+    <title>진실의 추적자: 가짜 뉴스의 숲</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
         
         body {
             font-family: 'Pretendard', sans-serif;
-            background-color: #0f172a;
+            background-color: #020617;
             color: #f1f5f9;
-            overflow-x: hidden;
+            margin: 0;
+            overflow: hidden;
         }
 
-        .terminal-glow {
-            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .step-transition {
-            transition: all 0.5s ease-in-out;
+        canvas {
+            image-rendering: pixelated;
+            background-color: #14532d; /* 기본 잔디색 */
+            border: 4px solid #064e3b;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
 
-        .hidden-step {
+        .modal {
             display: none;
-            opacity: 0;
-            transform: translateY(20px);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            width: 90%;
+            max-width: 500px;
         }
 
-        .active-step {
+        .active-modal {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
         }
 
-        .glitch {
-            animation: glitch 1s linear infinite;
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 90;
         }
 
-        @keyframes glitch {
-            2%, 64% { transform: translate(2px, 0) skew(0deg); }
-            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
-            62% { transform: translate(0, 0) skew(5deg); }
+        .active-overlay {
+            display: block;
+        }
+
+        .ui-panel {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-blur: 8px;
+            border: 1px solid rgba(34, 211, 238, 0.2);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body>
 
-    <!-- Game Header -->
-    <header class="fixed top-0 w-full p-6 flex justify-between items-center bg-slate-900/80 backdrop-blur-md z-50">
-        <div class="flex items-center gap-2">
-            <div class="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
-            <h1 class="text-xl font-bold tracking-tighter text-cyan-400 uppercase">Project: Media Literacy</h1>
+    <!-- UI Header -->
+    <header class="fixed top-0 left-0 w-full p-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3 ui-panel px-4 py-2 rounded-full">
+            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <h1 class="text-sm font-bold tracking-widest text-green-400 uppercase">Field Mission: Truth Hunter</h1>
         </div>
-        <div id="status-display" class="text-sm font-mono text-slate-400">
-            접속자: 익명의 기자 | <span id="timer">00:00</span>
+        <div class="hidden md:block ui-panel px-4 py-2 rounded-full text-xs font-mono text-slate-300">
+            WASD: 이동 | NPC/사물 근처에서 자동 상호작용
         </div>
     </header>
 
-    <main class="w-full max-w-4xl mt-20">
-        
-        <!-- Stage 1: The Intro / Entrance -->
-        <section id="step-1" class="step-transition active-step text-center space-y-8">
-            <div class="p-8 border border-slate-700 rounded-2xl bg-slate-800/50 backdrop-blur">
-                <h2 class="text-4xl font-extrabold mb-4 glitch">진실의 추적자</h2>
-                <p class="text-slate-400 text-lg leading-relaxed">
-                    세상은 수많은 정보로 가득 차 있지만, 그 안에는 교묘하게 조작된 '가짜 뉴스'가 독처럼 퍼져 있습니다.<br>
-                    당신은 뉴스 편집실에 갇혔습니다. 올바른 정보를 판별하고 진실을 찾아 이곳을 탈출하십시오.
-                </p>
-                <div class="mt-10">
-                    <button onclick="nextStep(2)" class="px-10 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold rounded-full transition-all transform hover:scale-105 terminal-glow">
-                        게임 시작하기
-                    </button>
-                </div>
-            </div>
-        </section>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
 
-        <!-- Stage 2: Locked Terminal (Password Puzzle) -->
-        <section id="step-2" class="step-transition hidden-step space-y-6">
-            <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-2xl">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-cyan-400">#01. 잠긴 단말기 해제</h3>
-                    <span class="px-3 py-1 bg-slate-700 rounded text-xs">난이도: 하</span>
-                </div>
-                <p class="text-slate-300 mb-6">
-                    동료 기자가 남긴 메모가 보입니다: <br>
-                    <span class="italic text-yellow-400">"신뢰할 수 있는 뉴스의 3대 요소 중 첫 글자들을 조합해. (사실성, 객관성, 공정성)"</span>
-                </p>
-                <div class="space-y-4">
-                    <input type="text" id="pw-input" placeholder="비밀번호 입력 (한글 3글자)" 
-                           class="w-full p-4 bg-slate-900 border border-slate-600 rounded-lg focus:outline-none focus:border-cyan-400 text-center text-xl tracking-widest">
-                    <button onclick="checkPassword()" class="w-full py-4 bg-slate-700 hover:bg-cyan-600 transition-colors rounded-lg font-bold">
-                        단말기 접속 시도
-                    </button>
-                </div>
-                <div id="pw-hint" class="mt-4 text-red-400 text-center text-sm hidden">잘못된 접근입니다. 다시 생각해보세요.</div>
-            </div>
-        </section>
-
-        <!-- Stage 3: Fact Check Mission (Fake News Detection) -->
-        <section id="step-3" class="step-transition hidden-step space-y-6">
-            <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
-                <h3 class="text-2xl font-bold text-cyan-400 mb-6">#02. 기사 데스킹</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="p-6 bg-white text-slate-900 rounded-lg shadow-inner">
-                        <div class="text-xs font-bold text-red-600 mb-2">[속보] 단독</div>
-                        <h4 class="text-xl font-extrabold mb-3">"서울 상공에 UFO 출몰, 시민들 대피 대소동"</h4>
-                        <p class="text-sm leading-snug text-slate-700">
-                            오늘 오후 3시경 서울 남산타워 인근 상공에 미확인 비행물체가 나타나 약 10분간 머물렀습니다. 
-                            익명의 제보자에 따르면 이 물체는 정체불명의 빛을 내뿜었으며, 정부는 즉각 계엄령을 검토 중이라고 합니다.
-                        </p>
-                        <div class="mt-4 text-[10px] text-slate-400">출처: sns-insider-news.xyz</div>
-                    </div>
-                    <div class="flex flex-col justify-center space-y-4">
-                        <p class="text-slate-300 font-semibold">이 기사에서 '가짜 뉴스'의 징후를 모두 찾으세요:</p>
-                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-slate-900 rounded-lg border border-slate-700 hover:bg-slate-700">
-                            <input type="checkbox" class="form-checkbox h-5 w-5 text-cyan-500" value="source">
-                            <span>신뢰할 수 없는 출처 (URL)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-slate-900 rounded-lg border border-slate-700 hover:bg-slate-700">
-                            <input type="checkbox" class="form-checkbox h-5 w-5 text-cyan-500" value="anonymous">
-                            <span>불분명한 익명 제보자 의존</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer p-3 bg-slate-900 rounded-lg border border-slate-700 hover:bg-slate-700">
-                            <input type="checkbox" class="form-checkbox h-5 w-5 text-cyan-500" value="hyperbole">
-                            <span>자극적이고 확인되지 않은 공포 조장</span>
-                        </label>
-                        <button onclick="checkFactCheck()" class="mt-4 py-4 bg-cyan-600 hover:bg-cyan-500 rounded-lg font-bold">
-                            검토 완료
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stage 4: Result / Escape Success -->
-        <section id="step-4" class="step-transition hidden-step text-center space-y-8">
-            <div class="p-10 border border-cyan-500/50 rounded-3xl bg-slate-800/80 shadow-[0_0_50px_rgba(34,211,238,0.2)]">
-                <div class="w-24 h-24 bg-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <h2 class="text-4xl font-black text-white">탈출 성공!</h2>
-                <p class="text-cyan-400 font-mono text-xl" id="final-time-display"></p>
-                <p class="text-slate-400 max-w-md mx-auto">
-                    훌륭합니다! 당신은 날카로운 리터러시 능력을 발휘해 가짜 뉴스의 함정을 간파했습니다. 
-                    진정한 저널리즘의 가치는 속도가 아니라 '정확함'에서 나옵니다.
-                </p>
-                <div class="pt-6">
-                    <button onclick="location.reload()" class="px-8 py-3 border border-slate-600 hover:bg-slate-700 rounded-lg transition-colors">
-                        다시 도전하기
-                    </button>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Custom Toast Message -->
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-3 bg-red-500 text-white rounded-full font-bold opacity-0 transition-opacity pointer-events-none z-[100]">
-        메시지 내용
+        <!-- Intro screen -->
+        <div id="intro-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/90 text-center p-6 z-20 transition-opacity duration-700">
+            <h2 class="text-4xl font-black mb-4 text-green-400">가짜 뉴스의 숲</h2>
+            <p class="text-slate-400 mb-8 max-w-md leading-relaxed">
+                100x100 크기의 넓은 맵에 흩어진 정보들을 수집하세요.<br>
+                은밀하게 숨어있는 NPC들과 대화하여 암호를 풀고,<br>
+                최종 기사를 검토하여 숲을 탈출해야 합니다.
+            </p>
+            <button onclick="startGame()" class="px-12 py-4 bg-green-600 text-white font-bold rounded-full hover:bg-green-500 transition-all transform hover:scale-105 shadow-lg">
+                수색 시작
+            </button>
+        </div>
     </div>
 
+    <!-- Modals -->
+    <div id="modal-npc1" class="modal ui-panel p-6 rounded-2xl border-2 border-green-500 shadow-2xl">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 bg-slate-700 rounded-full border-2 border-green-400 overflow-hidden flex items-center justify-center">
+                <div class="w-6 h-6 bg-yellow-400 rounded-sm"></div>
+            </div>
+            <h3 class="text-xl font-bold text-green-400">비밀 정보원</h3>
+        </div>
+        <p class="text-slate-300 mb-4 text-sm italic">"이 숲을 나가려면 정보의 뿌리를 알아야 하네. 뉴스의 3요소인 <b>사실성, 객관성, 공정성</b>의 앞 글자를 기억해두게나."</p>
+        <button onclick="closeModal()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded transition-colors">기억하겠습니다</button>
+    </div>
+
+    <div id="modal-pw" class="modal ui-panel p-6 rounded-2xl border-2 border-cyan-500 shadow-2xl">
+        <h3 class="text-xl font-bold text-cyan-400 mb-4"># 잠긴 통제소</h3>
+        <p class="text-slate-300 mb-4 text-sm">정보원이 알려준 3글자 암호를 입력하십시오.</p>
+        <input type="text" id="pw-input" class="w-full p-3 bg-slate-950 border border-slate-600 rounded mb-4 text-center tracking-widest outline-none focus:border-cyan-400" placeholder="***">
+        <button onclick="checkPassword()" class="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded transition-colors">잠금 해제</button>
+    </div>
+
+    <div id="modal-fact" class="modal ui-panel p-6 rounded-2xl border-2 border-orange-500 shadow-2xl">
+        <h3 class="text-xl font-bold text-orange-400 mb-4"># 최종 기사 검증</h3>
+        <div class="bg-white p-4 rounded text-slate-900 mb-4 text-xs leading-relaxed border-l-4 border-red-500">
+            <p class="font-bold mb-1">[단독] "인공지능이 인간의 기억을 지운다?"</p>
+            <p>최근 SNS에서 화제가 된 영상에 따르면... (익명의 누리꾼 A씨 주장) 출처: truth-checker-fake.net</p>
+        </div>
+        <div class="space-y-2 mb-4">
+            <label class="flex items-center gap-2 text-sm cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="checkbox" value="1" class="fact-check"> 출처가 신뢰할 수 없는 도메인임</label>
+            <label class="flex items-center gap-2 text-sm cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="checkbox" value="2" class="fact-check"> 전문가가 아닌 익명의 주장에 의존함</label>
+            <label class="flex items-center gap-2 text-sm cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="checkbox" value="3" class="fact-check"> 공포를 조장하는 낚시성 제목</label>
+        </div>
+        <button onclick="checkFact()" class="w-full py-3 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded">팩트체크 완료</button>
+    </div>
+
+    <div id="modal-success" class="modal ui-panel p-8 rounded-3xl border-4 border-green-400 text-center">
+        <div class="text-6xl mb-4">🌳</div>
+        <h2 class="text-3xl font-black text-white mb-2">탈출 성공!</h2>
+        <p class="text-green-400 mb-6 font-mono">당신은 미디어 리터러시 마스터입니다.</p>
+        <button onclick="location.reload()" class="px-8 py-3 bg-green-600 rounded-full font-bold">새로운 수사 시작</button>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
     <script>
-        let currentStep = 1;
-        let timerSeconds = 0;
-        let timerInterval;
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Settings
+        const tileSize = 64; // 타일 크기를 키워 도트 느낌 강조
+        const worldSize = 100; // 100x100 맵
+        const viewWidth = 12; // 화면에 보일 타일 개수
+        const viewHeight = 8;
+        
+        canvas.width = viewWidth * tileSize;
+        canvas.height = viewHeight * tileSize;
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                timerSeconds++;
-                const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
-                const secs = String(timerSeconds % 60).padStart(2, '0');
-                document.getElementById('timer').innerText = `${mins}:${secs}`;
-            }, 1000);
-        }
+        // Game State
+        let isStarted = false;
+        let isModalOpen = false;
+        let solved = { npc1: false, pw: false, fact: false };
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-        }
+        // Player Data (Simple Humanoid Pixel Art)
+        const player = {
+            worldX: 5 * tileSize, // 시작 위치
+            worldY: 5 * tileSize,
+            width: 40,
+            height: 52,
+            speed: 6,
+            color: '#38bdf8'
+        };
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.opacity = '1';
+        // Entities (NPCs & Objects)
+        const entities = [
+            { id: 'npc1', x: 8, y: 8, type: 'npc', color: '#fbbf24', label: '정보원' },
+            { id: 'pw', x: 25, y: 15, type: 'object', color: '#0ea5e9', label: '통제소' },
+            { id: 'fact', x: 40, y: 40, type: 'object', color: '#f97316', label: '탈출구' }
+        ];
+
+        // Controls
+        const keys = { w: false, a: false, s: false, d: false };
+        window.addEventListener('keydown', e => { if(keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', e => { if(keys.hasOwnProperty(e.key.toLowerCase())) keys[e.key.toLowerCase()] = false; });
+
+        function startGame() {
+            document.getElementById('intro-screen').style.opacity = '0';
             setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2000);
+                document.getElementById('intro-screen').style.display = 'none';
+                isStarted = true;
+                gameLoop();
+            }, 700);
         }
 
-        function nextStep(step) {
-            const currentEl = document.getElementById(`step-${currentStep}`);
-            const nextEl = document.getElementById(`step-${step}`);
+        function openModal(id) {
+            if (isModalOpen) return;
+            if (id === 'pw' && solved.pw) return;
+            if (id === 'fact' && !solved.pw) {
+                // 특정 순서 안내 (메시지 박스 대체)
+                console.log("통제소 암호부터 풀어야 합니다.");
+                return;
+            }
             
-            currentEl.classList.remove('active-step');
-            currentEl.classList.add('hidden-step');
-            
-            setTimeout(() => {
-                nextEl.classList.remove('hidden-step');
-                nextEl.classList.add('active-step');
-                currentStep = step;
-                if(step === 2) startTimer();
-                if(step === 4) {
-                    stopTimer();
-                    const mins = Math.floor(timerSeconds / 60);
-                    const secs = timerSeconds % 60;
-                    document.getElementById('final-time-display').innerText = `소요 시간: ${mins}분 ${secs}초`;
-                }
-            }, 500);
+            isModalOpen = true;
+            document.getElementById(`modal-${id}`).classList.add('active-modal');
+            document.getElementById('overlay').classList.add('active-overlay');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active-modal'));
+            document.getElementById('overlay').classList.remove('active-overlay');
+            isModalOpen = false;
+            Object.keys(keys).forEach(k => keys[k] = false);
         }
 
         function checkPassword() {
-            const input = document.getElementById('pw-input').value.trim();
-            // 사실성, 객관성, 공정성 -> 사객공
-            if (input === '사객공') {
-                nextStep(3);
-            } else {
-                showToast("비밀번호가 일치하지 않습니다.");
-                document.getElementById('pw-hint').classList.remove('hidden');
-            }
+            if (document.getElementById('pw-input').value === '사객공') {
+                solved.pw = true;
+                closeModal();
+            } else { alert("틀린 암호입니다."); }
         }
 
-        function checkFactCheck() {
-            const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(el => el.value);
-            // 모든 체크박스가 정답인 상황으로 구성함
-            if (checked.length === 3) {
-                nextStep(4);
-            } else {
-                showToast("아직 놓친 '가짜'의 흔적이 있습니다. 더 찾아보세요!");
+        function checkFact() {
+            if (document.querySelectorAll('.fact-check:checked').length === 3) {
+                solved.fact = true;
+                closeModal();
+                openModal('success');
+            } else { alert("모든 가짜 흔적을 찾아내세요!"); }
+        }
+
+        // Draw Player (Pixel Art Style)
+        function drawCharacter(ctx, x, y, color, isNPC = false) {
+            // 머리
+            ctx.fillStyle = isNPC ? '#fef3c7' : '#ffedd5';
+            ctx.fillRect(x + 10, y, 20, 20);
+            // 몸통
+            ctx.fillStyle = color;
+            ctx.fillRect(x + 5, y + 20, 30, 20);
+            // 다리
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(x + 8, y + 40, 10, 12);
+            ctx.fillRect(x + 22, y + 40, 10, 12);
+            // 눈
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + 14, y + 6, 4, 4);
+            ctx.fillRect(x + 22, y + 6, 4, 4);
+        }
+
+        function update() {
+            if (!isStarted || isModalOpen) return;
+
+            if (keys.w) player.worldY -= player.speed;
+            if (keys.s) player.worldY += player.speed;
+            if (keys.a) player.worldX -= player.speed;
+            if (keys.d) player.worldX += player.speed;
+
+            // 월드 경계 제한
+            player.worldX = Math.max(0, Math.min(player.worldX, worldSize * tileSize - player.width));
+            player.worldY = Math.max(0, Math.min(player.worldY, worldSize * tileSize - player.height));
+
+            // 상호작용 체크
+            entities.forEach(ent => {
+                const ex = ent.x * tileSize;
+                const ey = ent.y * tileSize;
+                const dist = Math.hypot(player.worldX - ex, player.worldY - ey);
+                if (dist < 50) openModal(ent.id);
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Camera follow: 카메라 중앙 좌표 계산
+            const camX = player.worldX - canvas.width / 2 + player.width / 2;
+            const camY = player.worldY - canvas.height / 2 + player.height / 2;
+
+            // Draw Grass Tiles (Visible area only)
+            const startCol = Math.floor(camX / tileSize);
+            const endCol = startCol + viewWidth + 1;
+            const startRow = Math.floor(camY / tileSize);
+            const endRow = startRow + viewHeight + 1;
+
+            for (let c = startCol; c <= endCol; c++) {
+                for (let r = startRow; r <= endRow; r++) {
+                    if (c < 0 || r < 0 || c >= worldSize || r >= worldSize) continue;
+                    
+                    const screenX = c * tileSize - camX;
+                    const screenY = r * tileSize - camY;
+
+                    // 바닥 타일 (잔디 패턴)
+                    ctx.fillStyle = (c + r) % 2 === 0 ? '#166534' : '#14532d';
+                    ctx.fillRect(screenX, screenY, tileSize, tileSize);
+                    
+                    // 작은 풀잎 데코레이션
+                    ctx.fillStyle = '#15803d';
+                    ctx.fillRect(screenX + 10, screenY + 10, 4, 8);
+                    ctx.fillRect(screenX + 40, screenY + 30, 4, 8);
+                }
             }
+
+            // Draw Entities
+            entities.forEach(ent => {
+                const screenX = ent.x * tileSize - camX;
+                const screenY = ent.y * tileSize - camY;
+                
+                // 화면 안에 있을 때만 그리기
+                if (screenX > -tileSize && screenX < canvas.width && screenY > -tileSize && screenY < canvas.height) {
+                    if (ent.type === 'npc') {
+                        drawCharacter(ctx, screenX + 12, screenY + 6, ent.color, true);
+                    } else {
+                        // 사물 (통제소, 탈출구)
+                        ctx.fillStyle = ent.color;
+                        ctx.fillRect(screenX + 10, screenY + 10, tileSize - 20, tileSize - 20);
+                        ctx.strokeStyle = "white";
+                        ctx.strokeRect(screenX + 10, screenY + 10, tileSize - 20, tileSize - 20);
+                    }
+                    
+                    ctx.fillStyle = "white";
+                    ctx.font = "bold 12px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(ent.label, screenX + tileSize/2, screenY - 10);
+                }
+            });
+
+            // Draw Player at center relative to world
+            const playerScreenX = player.worldX - camX;
+            const playerScreenY = player.worldY - camY;
+            drawCharacter(ctx, playerScreenX, playerScreenY, player.color);
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
         }
     </script>
 </body>
