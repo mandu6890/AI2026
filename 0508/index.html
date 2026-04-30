@@ -1,1 +1,578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>쿠키런 100칸 정령 레이스</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 기본 애니메이션 */
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+    /* 3D 주사위 구조 (기존 단색 스타일 유지) */
+    .dice-container {
+      perspective: 2000px;
+      width: 140px;
+      height: 140px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 6px solid #5d4037;
+      border-radius: 24px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.15);
+      backface-visibility: visible; 
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      align-items: center;
+      justify-items: center;
+      background: white;
+      overflow: hidden;
+    }
+
+    .face-1 { transform: rotateY(0deg) translateZ(70px); }
+    .face-6 { transform: rotateY(180deg) translateZ(70px); }
+    .face-2 { transform: rotateY(90deg) translateZ(70px); }
+    .face-5 { transform: rotateY(-90deg) translateZ(70px); }
+    .face-3 { transform: rotateX(90deg) translateZ(70px); }
+    .face-4 { transform: rotateX(-90deg) translateZ(70px); }
+
+    .dice-shadow {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%) rotateX(90deg);
+      width: 120px;
+      height: 120px;
+      background: rgba(0,0,0,0.4);
+      filter: blur(15px);
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .tossing .dice-shadow { opacity: 1; animation: shadow-pulse 2s ease-out; }
+
+    .dot { 
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      visibility: hidden;
+      line-height: 1;
+      z-index: 10;
+    }
+
+    .pinwheel-svg { width: 34px; height: 34px; }
+
+    .face-1 .dot:nth-child(5) { visibility: visible; }
+    .face-2 .dot:nth-child(1), .face-2 .dot:nth-child(9) { visibility: visible; }
+    .face-3 .dot:nth-child(1), .face-3 .dot:nth-child(5), .face-3 .dot:nth-child(9) { visibility: visible; }
+    .face-4 .dot:nth-child(1), .face-4 .dot:nth-child(3), .face-4 .dot:nth-child(7), .face-4 .dot:nth-child(9) { visibility: visible; }
+    .face-5 .dot:nth-child(1), .face-5 .dot:nth-child(3), .face-5 .dot:nth-child(5), .face-5 .dot:nth-child(7), .face-5 .dot:nth-child(9) { visibility: visible; }
+    .face-6 .dot:nth-child(1), .face-6 .dot:nth-child(3), .face-6 .dot:nth-child(4), .face-6 .dot:nth-child(6), .face-6 .dot:nth-child(7), .face-6 .dot:nth-child(9) { visibility: visible; }
+
+    @keyframes dice-toss {
+      0% { transform: translate(-300px, -200px) rotateX(20deg) rotateY(20deg) rotateZ(10deg) scale(0.8); opacity: 0; }
+      15% { opacity: 1; }
+      40% { transform: translate(60px, 40px) rotateX(200deg) rotateY(160deg) rotateZ(80deg) scale(1.15); }
+      70% { transform: translate(-10px, -5px) rotateX(380deg) rotateY(300deg) rotateZ(150deg) scale(0.98); }
+      100% { transform: translate(0, 0) rotateX(720deg) rotateY(720deg) rotateZ(360deg) scale(1); }
+    }
+
+    @keyframes shadow-pulse {
+      0% { transform: translateX(-50%) rotateX(90deg) scale(0.3); opacity: 0; }
+      40% { transform: translateX(-50%) rotateX(90deg) scale(1.2); opacity: 0.5; }
+      100% { transform: translateX(-50%) rotateX(90deg) scale(1); opacity: 0.3; }
+    }
+
+    .tossing { animation: dice-toss 2s cubic-bezier(0.15, 0.5, 0.3, 1) forwards; }
+
+    /* 말 및 보드 디자인 */
+    .cookie-token {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+      object-fit: contain;
+    }
+    
+    .token-active {
+        filter: drop-shadow(0 0 10px var(--team-color)) !important;
+        transform: scale(1.3);
+        z-index: 100 !important;
+    }
+
+    #board-container { 
+      height: 100%; 
+      overflow-y: auto; 
+      scrollbar-width: thin;
+      background: radial-gradient(circle, #fff 0%, #f1f5f9 100%);
+      scroll-behavior: smooth;
+    }
+
+    .board-cell {
+      aspect-ratio: 1/1;
+      width: 100%;
+      min-height: 85px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cell-bg {
+      position: absolute;
+      inset: 4px;
+      border-radius: 18px;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+    }
+
+    .theme-blue { background-color: #e0f2fe; border: 2px solid #bae6fd; }
+    .theme-pink { background-color: #fdf2f8; border: 2px solid #fce7f3; }
+    .theme-green { background-color: #f0fdf4; border: 2px solid #dcfce7; }
+    .theme-yellow { background-color: #fefce8; border: 2px solid #fef9c3; }
+    .theme-purple { background-color: #f5f3ff; border: 2px solid #ede9fe; }
+
+    .goal-cell .cell-bg { 
+      background: linear-gradient(135deg, #fef08a 0%, #fde047 100%); 
+      border: 3px solid #eab308;
+    }
+
+    .start-cell .cell-bg {
+      background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%);
+      border: 3px solid #0ea5e9;
+    }
+
+    .moving-focus {
+      animation: bounce-soft 0.5s infinite;
+      box-shadow: 0 0 20px rgba(253, 224, 71, 0.8) !important;
+    }
+
+    @keyframes bounce-soft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+  </style>
+</head>
+<body class="h-screen bg-pink-50 font-sans text-slate-800 p-2 md:p-4 flex flex-col overflow-hidden">
+
+  <!-- 1. 초기 로비 화면 (팀 선택 사진 반영) -->
+  <div id="lobby-screen" class="fixed inset-0 bg-pink-900/40 backdrop-blur-md z-[200] flex flex-col items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-white rounded-[50px] shadow-2xl p-6 md:p-10 border-[12px] border-pink-100 text-center">
+      <h1 class="text-4xl font-black text-pink-600 mb-2 italic uppercase tracking-tighter drop-shadow-sm">COOKIE RUN RACE</h1>
+      <p class="text-slate-400 mb-8 font-bold text-sm">함께 달릴 쿠키 친구들을 선택해주세요! (2~5팀)</p>
+      <div id="selection-grid" class="grid grid-cols-5 gap-3 mb-10"></div>
+      <button id="start-game-btn" disabled class="w-full py-5 rounded-3xl font-black text-2xl bg-slate-200 text-slate-400 cursor-not-allowed transition-all shadow-xl hover:scale-105 active:scale-95">
+        경주 시작하기
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. 주사위 연출 오버레이 (단색 유지) -->
+  <div id="dice-overlay" class="fixed inset-0 bg-slate-900/60 z-[150] hidden flex-col items-center justify-center backdrop-blur-md">
+    <div id="dice-view" class="flex flex-col items-center">
+      <div class="dice-container" id="dice-container">
+        <div class="dice-shadow"></div>
+        <div class="cube" id="cube">
+          <div class="cube-face face-1"></div>
+          <div class="cube-face face-2"></div>
+          <div class="cube-face face-3"></div>
+          <div class="cube-face face-4"></div>
+          <div class="cube-face face-5"></div>
+          <div class="cube-face face-6"></div>
+        </div>
+      </div>
+      <div id="dice-result-text" class="mt-16 text-8xl font-black text-yellow-300 transition-all duration-500 italic drop-shadow-[0_4px_0_rgba(0,0,0,0.3)] opacity-0 scale-50">
+        6!
+      </div>
+      <p class="mt-6 text-white text-2xl font-black uppercase bg-pink-500 px-6 py-2 rounded-full shadow-lg"><span id="roller-name"></span></p>
+    </div>
+  </div>
+
+  <!-- 3. 메인 게임 레이아웃 -->
+  <header class="flex items-center justify-between px-6 mb-3">
+    <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm border-2 border-pink-100">
+            <span class="text-xl">🏃</span>
+        </div>
+        <h1 class="text-2xl font-black text-pink-600 italic uppercase tracking-tighter">100칸 쿠키 레이스</h1>
+    </div>
+    <div id="turn-indicator" class="px-6 py-2 bg-white rounded-2xl text-sm font-black shadow-sm border-2 border-pink-100 text-pink-500">준비 완료</div>
+  </header>
+
+  <main class="flex-1 w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-4 px-2 overflow-hidden h-full">
+    <div class="lg:col-span-3 bg-white rounded-[50px] border-[12px] border-white shadow-2xl overflow-hidden flex flex-col relative">
+      <div id="board-container" class="p-6">
+        <div id="board" class="grid grid-cols-5 gap-3 w-full max-w-4xl mx-auto"></div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4 overflow-hidden h-full lg:h-auto">
+      <div class="flex-1 bg-white p-5 rounded-[40px] shadow-xl border-4 border-pink-50 overflow-y-auto">
+        <h2 class="text-xs font-black text-pink-300 mb-4 uppercase tracking-[0.2em] text-center">Players List</h2>
+        <div id="team-selector-list" class="flex flex-col gap-3"></div>
+      </div>
+      <div class="bg-pink-500 p-6 rounded-[40px] shadow-2xl flex flex-col gap-3 shrink-0 border-b-[8px] border-pink-700">
+        <button id="roll-btn" disabled class="w-full py-6 rounded-3xl font-black text-3xl bg-pink-100 text-pink-300 transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase">Roll!</button>
+        <p class="text-[10px] text-center text-pink-200 font-bold uppercase italic tracking-widest">Select your cookie to move</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- 승리 모달 -->
+  <div id="winner-modal" class="fixed inset-0 bg-pink-900/80 flex items-center justify-center z-[300] p-4 hidden backdrop-blur-lg">
+    <div class="bg-white rounded-[60px] p-10 max-w-sm w-full text-center shadow-2xl border-[15px] border-yellow-300">
+      <div class="text-6xl mb-4">🏆</div>
+      <img id="winner-img" src="" class="h-44 mx-auto mb-6 object-contain drop-shadow-2xl animate-bounce">
+      <h2 class="text-4xl font-black text-slate-900 italic uppercase leading-none">Victory!</h2>
+      <p id="winner-name-display" class="text-2xl font-bold text-pink-500 mt-2 mb-10"></p>
+      <button onclick="location.reload()" class="w-full bg-pink-500 text-white py-5 rounded-3xl font-black text-xl shadow-[0_6px_0_#db2777] hover:brightness-110 active:translate-y-1 active:shadow-none">다시 달리기</button>
+    </div>
+  </div>
+
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const Sound = {
+      playDiceRoll: () => {
+        const duration = 0.1;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150 + Math.random() * 100, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime); 
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      },
+      playStep: () => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+      },
+      playResult: () => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+      },
+      playWin: () => {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.15);
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime + i * 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.15 + 0.6);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + i * 0.15);
+          osc.stop(audioCtx.currentTime + i * 0.15 + 0.6);
+        });
+      }
+    };
+
+    const PINWHEEL_SVG = `<svg class="pinwheel-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 50 L50 0 L75 25 Z" fill="currentColor"/><path d="M50 50 L100 50 L75 75 Z" fill="currentColor" opacity="0.8"/><path d="M50 50 L50 100 L25 75 Z" fill="currentColor" opacity="0.6"/><path d="M50 50 L0 50 L25 25 Z" fill="currentColor" opacity="0.4"/></svg>`;
+
+    const DICE_THEMES = {
+      1: { bg: '#e0f2fe', border: '#0284c7', dot: '💧', color: '#0ea5e9' }, 
+      2: { bg: '#1e1b4b', border: '#4338ca', dot: '⭐', color: '#a5b4fc' }, 
+      3: { bg: '#f0fdf4', border: '#16a34a', dot: PINWHEEL_SVG, color: '#22c55e' }, 
+      4: { bg: '#fff7ed', border: '#ea580c', dot: '🔥', color: '#f97316' }, 
+      5: { bg: '#fefce8', border: '#a16207', dot: '⚙️', color: '#ca8a04' }  
+    };
+
+    // 정령별 이미지 경로 고정
+    const COOKIE_DATA = [
+      { id: 1, name: '바다요정', img: 'sea.png' },
+      { id: 2, name: '달빛술사', img: 'moon.png' },
+      { id: 3, name: '바람궁수', img: 'wind.png' },
+      { id: 4, name: '불꽃정령', img: 'fire.png' },
+      { id: 5, name: '시간지기', img: 'time.png' }
+    ];
+
+    let participants = [];
+    let selectedTeamId = null;
+    let isRolling = false;
+    let isMoving = false;
+    const TOTAL_CELLS = 100;
+    const COLS = 5;
+
+    const lobbyScreen = document.getElementById('lobby-screen');
+    const selectionGrid = document.getElementById('selection-grid');
+    const startGameBtn = document.getElementById('start-game-btn');
+    const boardEl = document.getElementById('board');
+    const teamSelectorList = document.getElementById('team-selector-list');
+    const rollBtn = document.getElementById('roll-btn');
+    const diceOverlay = document.getElementById('dice-overlay');
+    const cube = document.getElementById('cube');
+    const diceResultText = document.getElementById('dice-result-text');
+    const rollerName = document.getElementById('roller-name');
+    const diceContainer = document.getElementById('dice-container');
+
+    function initLobby() {
+      COOKIE_DATA.forEach(cookie => {
+        const btn = document.createElement('button');
+        btn.className = "flex flex-col items-center p-3 rounded-3xl border-4 border-slate-50 transition-all hover:bg-pink-50 bg-white shadow-sm";
+        btn.innerHTML = `<img src="${cookie.img}" alt="${cookie.name}" class="w-16 h-16 object-contain mb-2" onerror="this.src='https://via.placeholder.com/64?text=${cookie.name}'"><span class="text-[10px] font-black text-slate-600">${cookie.name}</span>`;
+        btn.onclick = () => {
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const idx = participants.findIndex(p => p.id === cookie.id);
+          if (idx > -1) { 
+              participants.splice(idx, 1); 
+              btn.classList.remove('border-pink-400', 'bg-pink-50'); 
+          } else { 
+              if (participants.length >= 5) return; 
+              participants.push({ ...cookie, pos: 1 }); 
+              btn.classList.add('border-pink-400', 'bg-pink-50'); 
+          }
+          startGameBtn.disabled = participants.length < 2;
+          startGameBtn.className = `w-full py-5 rounded-3xl font-black text-2xl transition-all shadow-xl ${participants.length >= 2 ? 'bg-pink-500 text-white' : 'bg-slate-200 text-slate-400'}`;
+        };
+        selectionGrid.appendChild(btn);
+      });
+    }
+
+    startGameBtn.onclick = () => { 
+        lobbyScreen.classList.add('hidden'); 
+        createBoard(); 
+        updateTeamSelector(); 
+        renderPositions(); 
+    };
+
+    function createBoard() {
+      boardEl.innerHTML = '';
+      const rows = Math.ceil(TOTAL_CELLS / COLS);
+      const themes = ['theme-blue', 'theme-pink', 'theme-green', 'theme-yellow', 'theme-purple'];
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const isEvenRow = r % 2 === 0;
+          const num = isEvenRow ? (r * COLS) + c + 1 : (r * COLS) + (COLS - 1 - c) + 1;
+          if (num > TOTAL_CELLS) continue;
+          const theme = themes[num % themes.length];
+          const specialClass = num === 1 ? 'start-cell' : (num === TOTAL_CELLS ? 'goal-cell' : '');
+          boardEl.insertAdjacentHTML('beforeend', `
+            <div id="cell-${num}" class="board-cell ${specialClass}">
+              <div class="cell-bg ${theme}"></div>
+              <span class="absolute top-3 left-3 text-[12px] font-black text-slate-400 opacity-60 z-10">${num}</span>
+              <div id="tokens-${num}" class="relative z-20 w-full h-full flex flex-wrap items-center justify-center p-2 gap-1"></div>
+            </div>
+          `);
+        }
+      }
+    }
+
+    function updateTeamSelector() {
+      teamSelectorList.innerHTML = '';
+      participants.forEach(p => {
+        const theme = DICE_THEMES[p.id];
+        const isActive = selectedTeamId === p.id;
+        const btn = document.createElement('button');
+        
+        btn.className = `flex items-center gap-4 p-4 rounded-3xl border-4 bg-white transition-all text-left shadow-sm`;
+        if (isActive) {
+            btn.style.borderColor = theme.color;
+            btn.style.backgroundColor = `${theme.color}10`;
+            btn.style.boxShadow = `0 10px 15px -3px ${theme.color}40`;
+            btn.style.transform = 'scale(1.05)';
+        } else {
+            btn.style.borderColor = '#f8fafc';
+        }
+
+        btn.innerHTML = `
+          <div class="relative">
+            <img src="${p.img}" alt="${p.name}" class="w-12 h-12 object-contain" onerror="this.src='https://via.placeholder.com/48?text=${p.name}'">
+            ${p.pos === TOTAL_CELLS ? '<span class="absolute -top-2 -right-2 text-lg">👑</span>' : ''}
+          </div>
+          <div class="flex-1">
+            <div class="text-sm font-black text-slate-800">${p.name} 팀</div>
+            <div class="w-full bg-slate-100 h-2 rounded-full mt-1 overflow-hidden">
+                <div class="h-full transition-all duration-500" style="width: ${p.pos}%; background-color: ${theme.color}"></div>
+            </div>
+          </div>
+          <div class="text-xs font-black px-3 py-1 rounded-full" style="color: ${theme.color}; background-color: ${theme.color}20">${p.pos}칸</div>
+        `;
+        btn.onclick = () => { 
+          if (isRolling || isMoving) return; 
+          selectedTeamId = p.id; 
+          updateTeamSelector(); 
+          renderPositions();
+          rollBtn.disabled = false; 
+          rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase bg-white text-pink-500`; 
+          document.getElementById('turn-indicator').innerText = `${p.name} 팀 출격 대기!`; 
+          focusCell(p.pos);
+        };
+        teamSelectorList.appendChild(btn);
+      });
+    }
+
+    function applyDiceTheme(teamId) {
+      const theme = DICE_THEMES[teamId];
+      const faces = document.querySelectorAll('.cube-face');
+      faces.forEach(face => {
+        face.style.backgroundColor = theme.bg;
+        face.style.borderColor = theme.border;
+        face.innerHTML = Array(9).fill(0).map(() => `<div class="dot" style="color: ${theme.color}">${theme.dot}</div>`).join('');
+      });
+    }
+
+    function focusCell(pos) {
+      const targetCell = document.getElementById(`cell-${pos}`);
+      if (targetCell) {
+        targetCell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        const bg = targetCell.querySelector('.cell-bg');
+        bg.classList.add('moving-focus');
+        setTimeout(() => bg.classList.remove('moving-focus'), 1000);
+      }
+    }
+
+    function renderPositions() {
+      for (let i = 1; i <= TOTAL_CELLS; i++) {
+        const el = document.getElementById(`tokens-${i}`);
+        if(el) el.innerHTML = '';
+      }
+      participants.forEach(p => {
+        const target = document.getElementById(`tokens-${p.pos}`);
+        if(target) {
+          const token = document.createElement('img');
+          const theme = DICE_THEMES[p.id];
+          token.src = p.img;
+          token.alt = p.name;
+          token.className = `cookie-token w-12 h-12`;
+          token.onerror = function() { this.src = `https://via.placeholder.com/48?text=${p.name}`; };
+          
+          if (selectedTeamId === p.id) {
+              token.classList.add('token-active');
+              token.style.setProperty('--team-color', theme.color);
+          } else {
+              token.classList.add('z-10');
+          }
+          
+          target.appendChild(token);
+        }
+      });
+    }
+
+    rollBtn.onclick = () => {
+      if (isRolling || isMoving || !selectedTeamId) return;
+      isRolling = true;
+      rollBtn.disabled = true;
+      const team = participants.find(p => p.id === selectedTeamId);
+      
+      applyDiceTheme(team.id);
+      
+      rollerName.innerText = `${team.name}의 주사위`;
+      diceOverlay.classList.replace('hidden', 'flex');
+      diceResultText.classList.replace('opacity-100', 'opacity-0');
+      diceResultText.classList.replace('scale-100', 'scale-50');
+      diceContainer.classList.add('tossing');
+      
+      cube.style.transform = `rotateX(45deg) rotateY(45deg)`;
+
+      let diceSoundInterval = setInterval(() => Sound.playDiceRoll(), 150);
+      let spinTimer = setInterval(() => {
+        cube.style.transform = `rotateX(${Math.random()*720}deg) rotateY(${Math.random()*720}deg) rotateZ(${Math.random()*720}deg)`;
+      }, 80);
+
+      setTimeout(() => {
+        clearInterval(spinTimer);
+        clearInterval(diceSoundInterval);
+        
+        const result = Math.floor(Math.random() * 6) + 1;
+        const rotations = {
+          1: 'rotateX(720deg) rotateY(720deg)',   
+          6: 'rotateX(720deg) rotateY(900deg)',  
+          2: 'rotateX(720deg) rotateY(630deg)',  
+          5: 'rotateX(720deg) rotateY(810deg)',  
+          3: 'rotateX(630deg) rotateY(720deg)',  
+          4: 'rotateX(810deg) rotateY(720deg)'   
+        };
+        cube.style.transform = rotations[result];
+
+        setTimeout(() => {
+          Sound.playResult();
+          diceResultText.innerText = `${result}!`;
+          diceResultText.classList.replace('opacity-0', 'opacity-100');
+          diceResultText.classList.replace('scale-50', 'scale-100');
+          
+          setTimeout(() => {
+            diceOverlay.classList.replace('flex', 'hidden');
+            diceContainer.classList.remove('tossing');
+            isRolling = false;
+            moveTeamSequentially(result);
+          }, 1200);
+        }, 1200); 
+      }, 1000);
+    };
+
+    async function moveTeamSequentially(steps) {
+      isMoving = true;
+      const team = participants.find(p => p.id === selectedTeamId);
+
+      for (let i = 0; i < steps; i++) {
+        if (team.pos >= TOTAL_CELLS) break;
+        team.pos++;
+        
+        Sound.playStep();
+        renderPositions();
+        updateTeamSelector();
+        focusCell(team.pos);
+        
+        await new Promise(r => setTimeout(r, 450));
+      }
+
+      if (team.pos === TOTAL_CELLS) {
+        Sound.playWin();
+        setTimeout(() => {
+          document.getElementById('winner-modal').classList.remove('hidden');
+          document.getElementById('winner-img').src = team.img;
+          document.getElementById('winner-img').onerror = function() { this.src = 'https://via.placeholder.com/150'; };
+          document.getElementById('winner-name-display').innerText = `${team.name} 팀 승리!`;
+        }, 500);
+      } else {
+          selectedTeamId = null;
+          rollBtn.disabled = true;
+          rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl bg-pink-100 text-pink-300 transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase`;
+          document.getElementById('turn-indicator').innerText = '다음 쿠키를 선택해 주세요';
+          updateTeamSelector();
+          renderPositions();
+      }
+      isMoving = false;
+    }
+
+    initLobby();
+  </script>
+</body>
+</html>
