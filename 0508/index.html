@@ -6,7 +6,7 @@
   <title>미컴 26 동기MT 쿠키 레이스</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 기존 스타일 유지 */
+    /* 애니메이션 및 특수 효과 */
     .fade-in { animation: fadeIn 0.4s ease-out forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -19,8 +19,10 @@
     .face-5 { transform: rotateY(-90deg) translateZ(70px); }
     .face-3 { transform: rotateX(90deg) translateZ(70px); }
     .face-4 { transform: rotateX(-90deg) translateZ(70px); }
+    
     .dice-shadow { position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%) rotateX(90deg); width: 120px; height: 120px; background: rgba(0,0,0,0.4); filter: blur(15px); border-radius: 50%; opacity: 0; }
     .tossing .dice-shadow { opacity: 1; animation: shadow-pulse 2s ease-out; }
+    
     .dot { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; visibility: hidden; line-height: 1; z-index: 10; }
     .pinwheel-svg { width: 34px; height: 34px; }
     .face-1 .dot:nth-child(5) { visibility: visible; }
@@ -29,11 +31,14 @@
     .face-4 .dot:nth-child(1), .face-4 .dot:nth-child(3), .face-4 .dot:nth-child(7), .face-4 .dot:nth-child(9) { visibility: visible; }
     .face-5 .dot:nth-child(1), .face-5 .dot:nth-child(3), .face-5 .dot:nth-child(5), .face-5 .dot:nth-child(7), .face-5 .dot:nth-child(9) { visibility: visible; }
     .face-6 .dot:nth-child(1), .face-6 .dot:nth-child(3), .face-6 .dot:nth-child(4), .face-6 .dot:nth-child(6), .face-6 .dot:nth-child(7), .face-6 .dot:nth-child(9) { visibility: visible; }
+
     @keyframes dice-toss { 0% { transform: translate(-300px, -200px) rotateX(20deg) rotateY(20deg) rotateZ(10deg) scale(0.8); opacity: 0; } 15% { opacity: 1; } 40% { transform: translate(60px, 40px) rotateX(200deg) rotateY(160deg) rotateZ(80deg) scale(1.15); } 70% { transform: translate(-10px, -5px) rotateX(380deg) rotateY(300deg) rotateZ(150deg) scale(0.98); } 100% { transform: translate(0, 0) rotateX(720deg) rotateY(720deg) rotateZ(360deg) scale(1); } }
     @keyframes shadow-pulse { 0% { transform: translateX(-50%) rotateX(90deg) scale(0.3); opacity: 0; } 40% { transform: translateX(-50%) rotateX(90deg) scale(1.2); opacity: 0.5; } 100% { transform: translateX(-50%) rotateX(90deg) scale(1); opacity: 0.3; } }
     .tossing { animation: dice-toss 2s cubic-bezier(0.15, 0.5, 0.3, 1) forwards; }
+
     .cookie-token { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); object-fit: contain; }
     .token-active { filter: drop-shadow(0 0 10px var(--team-color)) !important; transform: scale(1.3); z-index: 100 !important; }
+
     #board-container { height: 100%; overflow-y: auto; scrollbar-width: thin; background: radial-gradient(circle, #fff 0%, #f1f5f9 100%); scroll-behavior: smooth; }
     .board-cell { aspect-ratio: 1/1; width: 100%; min-height: 85px; transition: all 0.3s ease; position: relative; overflow: hidden; }
     .cell-bg { position: absolute; inset: 4px; border-radius: 18px; box-shadow: 0 4px 0 rgba(0,0,0,0.05); }
@@ -94,55 +99,42 @@
 </head>
 <body class="h-screen bg-pink-50 font-sans text-slate-800 flex flex-col overflow-hidden m-0 p-0">
 
-  <!-- [1] 수정: 폰트 크기가 조정된 모던 게임 시작 화면 (Intro) -->
+  <!-- [1] 인트로 화면 -->
   <div id="intro-screen" class="fixed inset-0 z-[300] modern-intro-bg flex flex-col items-center justify-center p-8 text-center">
     <div class="max-w-5xl w-full flex flex-col items-center">
-      <!-- 상단 배지: 크기 최적화 -->
       <div class="mb-6 px-5 py-1.5 rounded-full border border-pink-200 text-pink-400 text-xs md:text-sm font-bold tracking-[0.25em] bg-white/50 backdrop-blur-sm uppercase">
         2026 Recreation Event
       </div>
-      
-      <!-- 메인 타이틀: 폰트 크기 및 행간 조정 -->
       <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.2] hologram-text py-4 px-2">
         미디어커뮤니케이션학과<br class="hidden sm:block">
         26 동기MT 레크레이션
       </h1>
-      
-      <!-- 소제목: 간격 및 폰트 크기 최적화 -->
       <p class="text-base md:text-lg mb-12 text-slate-500 font-medium tracking-tight">
         동기MT에 오신 모두 환영합니다!
       </p>
-      
-      <!-- 시작 버튼: 모던한 크기 유지 -->
       <button id="go-to-selection-btn" class="group relative px-12 py-5 md:px-16 md:py-6 bg-slate-900 text-white rounded-2xl font-bold text-xl md:text-2xl shadow-xl hover:bg-pink-600 transition-all duration-300">
         <span class="relative z-10 uppercase tracking-widest">Game Start</span>
         <div class="absolute inset-0 rounded-2xl bg-pink-500 opacity-0 group-hover:opacity-100 blur-xl transition-opacity"></div>
       </button>
-      
-      <!-- 하단 문구 -->
       <div class="mt-16 text-slate-400 text-[10px] md:text-xs font-medium tracking-widest uppercase opacity-70">
         Media Communication Dept. Class of '26
       </div>
     </div>
   </div>
 
-  <!-- [2] 팀 선택 화면 (Selection) - 기존 유지 -->
+  <!-- [2] 팀 선택 화면 -->
   <div id="lobby-screen" class="fixed inset-0 bg-white z-[200] hidden flex flex-col items-center justify-center p-6 overflow-y-auto">
     <div class="max-w-6xl w-full text-center">
-        <h2 class="text-4xl md:text-5xl font-black text-pink-600 mb-2 italic tracking-tighter">CHOOSE YOUR COOKIE</h2>
+        <h2 class="text-4xl md:text-5xl font-black text-pink-600 mb-2 italic tracking-tighter uppercase">Choose Your Team</h2>
         <p class="text-slate-400 mb-12 font-bold uppercase tracking-widest">경주에 참여할 팀을 모두 선택해 주세요 (2~5팀)</p>
-        
-        <div id="selection-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-16">
-            <!-- JS에서 동적으로 팀 카드 생성 -->
-        </div>
-
+        <div id="selection-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-16"></div>
         <button id="start-game-btn" disabled class="w-full max-w-md py-6 rounded-3xl font-black text-3xl bg-slate-200 text-slate-400 cursor-not-allowed transition-all shadow-xl hover:scale-105 active:scale-95">
           레이스 시작하기
         </button>
     </div>
   </div>
 
-  <!-- [3] 주사위 연출 오버레이 (기존 유지) -->
+  <!-- [3] 주사위 오버레이 -->
   <div id="dice-overlay" class="fixed inset-0 bg-slate-900/60 z-[150] hidden flex-col items-center justify-center backdrop-blur-md">
     <div id="dice-view" class="flex flex-col items-center">
       <div class="dice-container" id="dice-container">
@@ -161,14 +153,13 @@
     </div>
   </div>
 
-  <!-- [4] 메인 게임 레이아웃 (기존 유지) -->
+  <!-- [4] 메인 게임 화면 -->
   <div id="game-screen" class="h-screen flex flex-col p-2 md:p-4 hidden">
     <header class="flex items-center justify-between px-6 mb-3">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm border-2 border-pink-100">
-                <span class="text-xl">🏃</span>
-            </div>
-            <h1 class="text-2xl font-black text-pink-600 italic uppercase tracking-tighter">100칸 쿠키 레이스</h1>
+            <div class="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-sm border-2 border-pink-100"><span class="text-xl">🏃</span></div>
+            <!-- 요청하신 대로 타이틀 문구 수정: 동기MT 레이스 -->
+            <h1 class="text-2xl font-black text-pink-600 italic uppercase tracking-tighter">동기MT 레이스</h1>
         </div>
         <div id="turn-indicator" class="px-6 py-2 bg-white rounded-2xl text-sm font-black shadow-sm border-2 border-pink-100 text-pink-500">준비 완료</div>
     </header>
@@ -179,7 +170,6 @@
                 <div id="board" class="grid grid-cols-5 gap-3 w-full max-w-4xl mx-auto"></div>
             </div>
         </div>
-
         <div class="flex flex-col gap-4 overflow-hidden h-full lg:h-auto">
             <div class="flex-1 bg-white p-5 rounded-[40px] shadow-xl border-4 border-pink-50 overflow-y-auto">
                 <h2 class="text-xs font-black text-pink-300 mb-4 uppercase tracking-[0.2em] text-center">Players List</h2>
@@ -187,13 +177,13 @@
             </div>
             <div class="bg-pink-500 p-6 rounded-[40px] shadow-2xl flex flex-col gap-3 shrink-0 border-b-[8px] border-pink-700">
                 <button id="roll-btn" disabled class="w-full py-6 rounded-3xl font-black text-3xl bg-pink-100 text-pink-300 transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase">Roll!</button>
-                <p class="text-[10px] text-center text-pink-200 font-bold uppercase italic tracking-widest">Select your cookie to move</p>
+                <p class="text-[10px] text-center text-pink-200 font-bold uppercase italic tracking-widest">Select your team to move</p>
             </div>
         </div>
     </main>
   </div>
 
-  <!-- 승리 모달 (기존 유지) -->
+  <!-- 승리 모달 -->
   <div id="winner-modal" class="fixed inset-0 bg-pink-900/80 flex items-center justify-center z-[300] p-4 hidden backdrop-blur-lg">
     <div class="bg-white rounded-[60px] p-10 max-w-sm w-full text-center shadow-2xl border-[15px] border-yellow-300">
       <div class="text-6xl mb-4">🏆</div>
@@ -205,9 +195,9 @@
   </div>
 
   <script>
-    // [시스템 로직 및 소리 데이터]
+    // [소리 시스템]
     let audioCtx;
-    const initAudio = () => { if(!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } if(audioCtx.state === 'suspended') audioCtx.resume(); };
+    const initAudio = () => { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if(audioCtx.state === 'suspended') audioCtx.resume(); };
     const Sound = {
         playDiceRoll: () => { if(!audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(150 + Math.random() * 100, audioCtx.currentTime); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1); },
         playStep: () => { if(!audioCtx) return; const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(440, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.2); },
@@ -223,12 +213,14 @@
       4: { bg: '#fff7ed', border: '#ea580c', dot: '🔥', color: '#f97316' }, 
       5: { bg: '#fefce8', border: '#a16207', dot: '⚙️', color: '#ca8a04' }  
     };
+
+    // [데이터 유지]: 요청하신 파일명 이미지 경로
     const COOKIE_DATA = [
-      { id: 1, name: '바다요정', img: 'https://static.wikia.nocookie.net/cookierun/images/1/15/Sea_Fairy_Cookie_Lobby.png' },
-      { id: 2, name: '달빛술사', img: 'https://static.wikia.nocookie.net/cookierun/images/8/87/Moonlight_Cookie_Lobby.png' },
-      { id: 3, name: '바람궁수', img: 'https://static.wikia.nocookie.net/cookierun/images/e/e0/Wind_Archer_Cookie_Lobby.png' },
-      { id: 4, name: '불꽃정령', img: 'https://static.wikia.nocookie.net/cookierun/images/3/36/Fire_Spirit_Cookie_Lobby.png' },
-      { id: 5, name: '시간지기', img: 'https://static.wikia.nocookie.net/cookierun/images/5/5a/Timekeeper_Cookie_Lobby.png' }
+      { id: 1, name: '바다요정', img: 'sea.png' },
+      { id: 2, name: '달빛술사', img: 'moon.png' },
+      { id: 3, name: '바람궁수', img: 'wind.png' },
+      { id: 4, name: '불꽃정령', img: 'fire.png' },
+      { id: 5, name: '시간지기', img: 'time.png' }
     ];
 
     let participants = [];
@@ -238,28 +230,17 @@
     const TOTAL_CELLS = 100;
     const COLS = 5;
 
-    // [화면 전환 로직]
+    // [화면 제어]
     const introScreen = document.getElementById('intro-screen');
     const lobbyScreen = document.getElementById('lobby-screen');
     const gameScreen = document.getElementById('game-screen');
     const goToSelectionBtn = document.getElementById('go-to-selection-btn');
     const startGameBtn = document.getElementById('start-game-btn');
 
-    goToSelectionBtn.onclick = () => {
-      initAudio();
-      introScreen.classList.add('hidden');
-      lobbyScreen.classList.remove('hidden');
-    };
+    goToSelectionBtn.onclick = () => { initAudio(); introScreen.classList.add('hidden'); lobbyScreen.classList.remove('hidden'); };
+    startGameBtn.onclick = () => { lobbyScreen.classList.add('hidden'); gameScreen.classList.remove('hidden'); createBoard(); updateTeamSelector(); renderPositions(); };
 
-    startGameBtn.onclick = () => { 
-        lobbyScreen.classList.add('hidden'); 
-        gameScreen.classList.remove('hidden');
-        createBoard(); 
-        updateTeamSelector(); 
-        renderPositions(); 
-    };
-
-    // [팀 선택 로직]
+    // [로비 초기화]
     function initLobby() {
       const selectionGrid = document.getElementById('selection-grid');
       COOKIE_DATA.forEach(cookie => {
@@ -268,7 +249,7 @@
         btn.className = "team-card flex flex-col items-center p-6 rounded-[40px] border-4 border-slate-100 transition-all bg-white shadow-xl group";
         btn.innerHTML = `
             <div class="w-32 h-32 mb-4 bg-slate-50 rounded-full flex items-center justify-center p-4 group-hover:bg-pink-50 transition-colors">
-                <img src="${cookie.img}" alt="${cookie.name}" class="w-full h-full object-contain" onerror="this.src='https://via.placeholder.com/128?text=${cookie.name}'">
+                <img src="${cookie.img}" alt="${cookie.name}" class="w-full h-full object-contain">
             </div>
             <span class="text-xl font-black text-slate-800">${cookie.name} 팀</span>
         `;
@@ -343,7 +324,16 @@
           </div>
           <div class="text-xs font-black px-3 py-1 rounded-full" style="color: ${theme.color}; background-color: ${theme.color}20">${p.pos}칸</div>
         `;
-        btn.onclick = () => { if (isRolling || isMoving) return; selectedTeamId = p.id; updateTeamSelector(); renderPositions(); rollBtn.disabled = false; rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase bg-white text-pink-500`; document.getElementById('turn-indicator').innerText = `${p.name} 팀 출동 준비!`; focusCell(p.pos); };
+        btn.onclick = () => { 
+          if (isRolling || isMoving) return; 
+          selectedTeamId = p.id; 
+          updateTeamSelector(); 
+          renderPositions(); 
+          rollBtn.disabled = false; 
+          rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl transition-all shadow-[0_6px_0_#db2777] active:translate-y-1 active:shadow-none uppercase bg-white text-pink-500`; 
+          document.getElementById('turn-indicator').innerText = `${p.name} 팀 출동 준비!`; 
+          focusCell(p.pos); 
+        };
         teamSelectorList.appendChild(btn);
       });
     }
@@ -357,7 +347,10 @@
           const theme = DICE_THEMES[p.id];
           token.src = p.img;
           token.className = `cookie-token w-10 h-10 md:w-12 md:h-12`;
-          if (selectedTeamId === p.id) { token.classList.add('token-active'); token.style.setProperty('--team-color', theme.color); }
+          if (selectedTeamId === p.id) { 
+              token.classList.add('token-active'); 
+              token.style.setProperty('--team-color', theme.color); 
+          }
           target.appendChild(token);
         }
       });
@@ -371,7 +364,11 @@
       const team = participants.find(p => p.id === selectedTeamId);
       const theme = DICE_THEMES[team.id];
       const faces = document.querySelectorAll('.cube-face');
-      faces.forEach(face => { face.style.backgroundColor = theme.bg; face.style.borderColor = theme.border; face.innerHTML = Array(9).fill(0).map(() => `<div class="dot" style="color: ${theme.color}">${theme.dot}</div>`).join(''); });
+      faces.forEach(face => { 
+          face.style.backgroundColor = theme.bg; 
+          face.style.borderColor = theme.border; 
+          face.innerHTML = Array(9).fill(0).map(() => `<div class="dot" style="color: ${theme.color}">${theme.dot}</div>`).join(''); 
+      });
       rollerName.innerText = `${team.name} 팀의 주사위`;
       diceOverlay.classList.replace('hidden', 'flex');
       diceContainer.classList.add('tossing');
@@ -393,8 +390,21 @@
     async function moveTeamSequentially(steps) {
       isMoving = true; const team = participants.find(p => p.id === selectedTeamId);
       for (let i = 0; i < steps; i++) { if (team.pos >= TOTAL_CELLS) break; team.pos++; Sound.playStep(); renderPositions(); updateTeamSelector(); focusCell(team.pos); await new Promise(r => setTimeout(r, 450)); }
-      if (team.pos === TOTAL_CELLS) { Sound.playWin(); setTimeout(() => { document.getElementById('winner-modal').classList.remove('hidden'); document.getElementById('winner-img').src = team.img; document.getElementById('winner-name-display').innerText = `${team.name} 팀 승리!`; }, 500); } 
-      else { selectedTeamId = null; rollBtn.disabled = true; rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl bg-pink-100 text-pink-300 transition-all shadow-[0_6px_0_#db2777] uppercase`; document.getElementById('turn-indicator').innerText = '다음 팀을 선택해 주세요'; updateTeamSelector(); renderPositions(); }
+      if (team.pos === TOTAL_CELLS) { 
+          Sound.playWin(); 
+          setTimeout(() => { 
+              document.getElementById('winner-modal').classList.remove('hidden'); 
+              document.getElementById('winner-img').src = team.img; 
+              document.getElementById('winner-name-display').innerText = `${team.name} 팀 승리!`; 
+          }, 500); 
+      } else { 
+          selectedTeamId = null; 
+          rollBtn.disabled = true; 
+          rollBtn.className = `w-full py-6 rounded-3xl font-black text-3xl bg-pink-100 text-pink-300 transition-all shadow-[0_6px_0_#db2777] uppercase`; 
+          document.getElementById('turn-indicator').innerText = '다음 팀을 선택해 주세요'; 
+          updateTeamSelector(); 
+          renderPositions(); 
+      }
       isMoving = false;
     }
 
