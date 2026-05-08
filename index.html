@@ -389,7 +389,6 @@
                                 <span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 03</span>
                                 <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">웹기술의 이해</h2>
                             </div>
-                            <!-- 경로를 ./04/index.html로 설정 -->
                             <a href="./04/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group">
                                 <span>결과물 보기</span>
                                 <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
@@ -405,7 +404,34 @@
                     </div>
                 `
             },
-            { id: 4, title: "AI 이미지 스토리텔링", tools: ["Midjourney", "Canva"], theme: "theme-amber", icon: "fa-palette" },
+            { 
+                id: 4, 
+                title: "코랩 데이터 분석", 
+                tools: ["Python", "Colab"], 
+                theme: "theme-amber", 
+                icon: "fa-chart-pie",
+                content: `
+                    <div class="space-y-12">
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-amber-600 dark:text-amber-400 font-black tracking-widest text-xs uppercase">Assignment 04</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 데이터 분석</h2>
+                            </div>
+                            <a href="./06/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
+                        </header>
+                        
+                        <div class="bg-amber-50 dark:bg-amber-900/20 p-8 rounded-[2rem] border border-amber-100 dark:border-amber-800/50 mb-8">
+                            <h4 class="text-amber-800 dark:text-amber-300 font-bold text-xl mb-4"><i class="fas fa-database mr-2"></i>Python 활용 데이터 분석</h4>
+                            <p class="text-lg text-amber-900/70 dark:text-amber-400/80 leading-relaxed font-light">
+                                구글 코랩(Google Colab) 환경에서 파이썬 라이브러리를 활용하여 원시 데이터를 정제하고 유의미한 통계 지표를 산출하는 과정을 학습합니다.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
             { id: 5, title: "공공 데이터 시각화", tools: ["Python", "Pandas"], theme: "theme-emerald", icon: "fa-chart-pie" },
             { id: 6, title: "AI 윤리와 사회적 책임", tools: ["Ethics", "Policy"], theme: "theme-blue", icon: "fa-scale-balanced" },
             { id: 7, title: "자연어 처리 모델 활용", tools: ["Python", "HuggingFace"], theme: "theme-violet", icon: "fa-language" },
