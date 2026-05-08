@@ -18,6 +18,7 @@
         .stat-card:hover { transform: translateY(-5px); }
         .download-btn { transition: all 0.2s; border: 1px solid #e2e8f0; }
         .download-btn:hover { background-color: #f8fafc; border-color: #4f46e5; color: #4f46e5; }
+        .insight-box { border-left: 4px solid #4f46e5; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -38,10 +39,11 @@
         </header>
 
         <!-- CHILD SAFETY TAB CONTENT -->
-        <div id="tab-child" class="space-y-8">
+        <div id="tab-child" class="space-y-8 animate-in fade-in duration-500">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold text-slate-800">어린이 보행 안전 데이터</h2>
-                <a href="061.pdf" download class="download-btn flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-semibold text-slate-600 shadow-sm">
+                <!-- 수정된 다운로드 버튼 -->
+                <a href="061.pdf" download="어린이보행안전_기사문.pdf" class="download-btn flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-semibold text-slate-600 shadow-sm">
                     <i class="fa-solid fa-file-pdf text-red-500"></i> 기사문 PDF 다운로드
                 </a>
             </div>
@@ -97,13 +99,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Result Interpretation -->
+            <div class="card p-8 bg-indigo-50 border-none">
+                <h3 class="text-lg font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> 결과 해석: 어린이 보행 안전
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="insight-box p-4 bg-white rounded-r-lg shadow-sm">
+                        <h4 class="font-bold text-slate-800 mb-2">분기별 위험도 변화</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            연초(1~2월)에는 방학의 영향으로 사고율이 낮으나, <span class="font-bold text-indigo-600">개학기인 3월부터 가파른 상승세</span>를 보입니다. 특히 기온이 오르고 야외 활동이 활발해지는 5월에 사고가 집중되는 경향이 뚜렷합니다.
+                        </p>
+                    </div>
+                    <div class="insight-box p-4 bg-white rounded-r-lg shadow-sm">
+                        <h4 class="font-bold text-slate-800 mb-2">요일별 집중 현상</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            주 후반으로 갈수록 사고 위험이 증가하며, <span class="font-bold text-orange-600">금요일은 평일 중 가장 높은 사고 발생률</span>을 기록합니다. 이는 방과 후 학원 이동이나 주말 활동을 위한 이동량이 겹치는 시간대의 영향으로 분석됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ELDERLY DRIVER TAB CONTENT -->
-        <div id="tab-elderly" class="hidden space-y-8">
+        <div id="tab-elderly" class="hidden space-y-8 animate-in fade-in duration-500">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold text-slate-800">고령 운전자 사고 비율 데이터</h2>
-                <a href="062.pdf" download class="download-btn flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-semibold text-slate-600 shadow-sm">
+                <!-- 수정된 다운로드 버튼 -->
+                <a href="062.pdf" download="고령운전자사고_기사문.pdf" class="download-btn flex items-center gap-2 px-4 py-2 bg-white rounded-lg text-sm font-semibold text-slate-600 shadow-sm">
                     <i class="fa-solid fa-file-pdf text-red-500"></i> 기사문 PDF 다운로드
                 </a>
             </div>
@@ -160,6 +184,27 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Result Interpretation -->
+            <div class="card p-8 bg-red-50 border-none">
+                <h3 class="text-lg font-bold text-red-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-user-clock"></i> 결과 해석: 고령 운전자 사고 추이
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="insight-box p-4 bg-white rounded-r-lg shadow-sm border-red-500">
+                        <h4 class="font-bold text-slate-800 mb-2">사고 점유율의 급격한 상승</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            지난 5년간 전체 교통사고 건수는 소폭 감소하거나 정체된 반면, <span class="font-bold text-red-600">고령 운전자가 가해자인 사고의 점유율은 매년 약 1.5~2%p씩 증가</span>하고 있습니다. 이는 교통 정책의 초점이 고령층 관리로 이동해야 함을 시사합니다.
+                        </p>
+                    </div>
+                    <div class="insight-box p-4 bg-white rounded-r-lg shadow-sm border-red-500">
+                        <h4 class="font-bold text-slate-800 mb-2">사회적 인프라와의 상관관계</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            2024년 고령 운전자 사고 비율이 21%를 상회한 것은 운전자의 신체 능력 변화와 도로 환경의 부조화를 보여줍니다. <span class="font-bold text-blue-600">면허 반납 제도 실효성 제고</span> 및 보조 주행 장치 지원 등의 입체적 대안이 필요한 시점입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <footer class="mt-12 py-8 text-center text-slate-400 text-sm">
@@ -168,7 +213,7 @@
     </div>
 
     <script>
-        // 데이터 준비
+        // 데이터셋
         const childData = [
             { m: "01월", d: [10, 24, 28, 30, 26, 18, 18] },
             { m: "02월", d: [11, 18, 17, 22, 26, 21, 17] },
@@ -192,7 +237,7 @@
             { year: "2024", total: 196349, elderly: 42369, ratio: 21.58 }
         ];
 
-        // 탭 전환 로직
+        // 탭 전환 시스템
         function switchTab(type) {
             const childTab = document.getElementById('tab-child');
             const elderlyTab = document.getElementById('tab-elderly');
@@ -213,12 +258,11 @@
                 btnElderly.classList.remove('text-slate-400');
                 btnChild.classList.remove('tab-active');
                 btnChild.classList.add('text-slate-400');
-                // 고령운전자 차트 렌더링 지연 실행
                 renderElderlyChart();
             }
         }
 
-        // 어린이 사고 히트맵 생성
+        // 히트맵 동적 생성
         const heatmapBody = document.getElementById('heatmap-body');
         const maxVal = Math.max(...childData.flatMap(m => m.d));
         
@@ -239,7 +283,6 @@
 
         // 차트 초기화
         window.onload = () => {
-            // 어린이 월별 차트
             new Chart(document.getElementById('childMonthlyChart'), {
                 type: 'line',
                 data: {
@@ -259,7 +302,10 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { display: false } } }
+                    scales: { 
+                        y: { beginAtZero: true, grid: { borderDash: [5, 5] } },
+                        x: { grid: { display: false } }
+                    }
                 }
             });
         };
@@ -281,7 +327,8 @@
                             borderWidth: 4,
                             fill: false,
                             yAxisID: 'y1',
-                            tension: 0.3
+                            tension: 0.3,
+                            pointBackgroundColor: '#ef4444'
                         },
                         {
                             label: '고령운전자 사고건수',
