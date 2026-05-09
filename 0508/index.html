@@ -68,23 +68,22 @@
       background: white;
       transition: all 0.3s ease;
       z-index: 1;
-      border: 4px solid #f1f5f9; /* 기본 상태 외곽선 */
+      border: 4px solid #f1f5f9;
     }
     
-    /* 선택되었을 때 외곽선에만 홀로그램 적용 */
     .team-card.selected {
-      border-color: transparent; /* 원본 보더 투명화 */
+      border-color: transparent;
     }
 
     .team-card.selected::before {
       content: "";
       position: absolute;
-      inset: -4px; /* 보더 두께만큼 확장 */
+      inset: -4px;
       z-index: -1;
       background: var(--holo-gradient);
       background-size: 300% 300%;
       animation: border-holo 3s ease infinite;
-      border-radius: 44px; /* 카드의 rounded-[40px] 보다 약간 크게 */
+      border-radius: 44px;
     }
 
     .intro-title {
@@ -146,6 +145,7 @@
     .theme-skyblue { background: #bae6fd; border: 2px solid #0ea5e9; color: #0369a1; } 
     .theme-lightred { background: #fecaca; border: 2px solid #ef4444; color: #b91c1c; } 
     .theme-warp { background: #7c3aed; border: 2px solid #5b21b6; color: #ffffff; box-shadow: 0 4px 0 #4c1d95; }
+    .theme-swap { background: #22c55e; border: 2px solid #166534; color: #ffffff; box-shadow: 0 4px 0 #14532d; }
     .theme-isle { background: #fbbf24; border: 2px solid #92400e; color: #78350f; box-shadow: 0 4px 0 #451a03; }
     .theme-isle-cell { background: #fef08a; border: 3px solid #eab308; box-shadow: 0 6px 0 rgba(0,0,0,0.1); color: #eab308; }
     .theme-isle-bonus { background: #fef08a; border: 3px solid #eab308; box-shadow: 0 6px 0 rgba(0,0,0,0.1); color: #0369a1; }
@@ -304,7 +304,6 @@
   </div>
 
   <script>
-    // 오디오 설정
     let audioCtx;
     const initAudio = () => { if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if(audioCtx.state === 'suspended') audioCtx.resume(); };
     const Sound = {
@@ -339,32 +338,87 @@
     const isleMap = {};
 
     function initBoardMap() {
-      for (let i = 1; i <= TOTAL_CELLS; i++) {
-        if (i === 1 || i === TOTAL_CELLS) { boardMap[i] = { type: 1, value: 0 }; continue; }
+      // 1. 사용자 지정 보드 (1~56번)
+      const userSpecs = {
+        2: { type: 2, value: 1 },
+        4: { type: 4, warpTo: 7 },
+        6: { type: 3, value: 1 },
+        7: { type: 4, warpTo: 4 },
+        8: { type: 2, value: 2 },
+        11: { type: 4, warpTo: 15 },
+        12: { type: 3, value: 2 },
+        13: { type: 3, value: 1 },
+        14: { type: 5, value: 0 },
+        15: { type: 4, warpTo: 11 },
+        16: { type: 2, value: 2 },
+        18: { type: 6, value: 0 },
+        19: { type: 3, value: 3 },
+        21: { type: 3, value: 1 },
+        22: { type: 5, value: 0 },
+        23: { type: 2, value: 2 },
+        24: { type: 3, value: 2 },
+        26: { type: 3, value: 2 },
+        27: { type: 4, warpTo: 32 },
+        30: { type: 2, value: 2 },
+        31: { type: 3, value: 1 },
+        32: { type: 4, warpTo: 27 },
+        36: { type: 3, value: 3 },
+        38: { type: 6, value: 0 },
+        40: { type: 5, value: 0 },
+        42: { type: 3, value: 3 },
+        46: { type: 2, value: 1 },
+        49: { type: 4, warpTo: 53 },
+        50: { type: 5, value: 0 },
+        52: { type: 2, value: 1 },
+        53: { type: 4, warpTo: 49 },
+        56: { type: 6, value: 0 }
+      };
+
+      // 1~56번 초기화
+      for (let i = 1; i <= 56; i++) {
+        if (userSpecs[i]) {
+          boardMap[i] = { type: userSpecs[i].type, value: userSpecs[i].value || 0 };
+          if (userSpecs[i].type === 4) {
+            warps[i] = userSpecs[i].warpTo;
+          }
+        } else {
+          boardMap[i] = { type: 1, value: 0 }; // 일반 보드
+        }
+      }
+
+      // 57~250번 초기화 (랜덤)
+      for (let i = 57; i <= TOTAL_CELLS; i++) {
+        if (i === TOTAL_CELLS) { boardMap[i] = { type: 1, value: 0 }; continue; }
+        
         const rand = Math.random();
-        if (rand < 0.10) boardMap[i] = { type: 2, value: Math.floor(Math.random() * 5) + 1 };
-        else if (rand < 0.18) boardMap[i] = { type: 3, value: Math.floor(Math.random() * 5) + 1 };
-        else if (rand < 0.22) boardMap[i] = { type: 5, value: 0 }; 
+        if (rand < 0.10) boardMap[i] = { type: 2, value: Math.floor(Math.random() * 3) + 1 }; // 보너스 (최대 3)
+        else if (rand < 0.18) boardMap[i] = { type: 3, value: Math.floor(Math.random() * 3) + 1 }; // 패널티 (최대 3)
+        else if (rand < 0.22) boardMap[i] = { type: 5, value: 0 }; // 무인도
+        else if (rand < 0.25) boardMap[i] = { type: 6, value: 0 }; // 위치변환
+        else if (rand < 0.28) { 
+           // 워프 생성 (56번 이후 랜덤 구간)
+           // 무조건 5칸 이내로 워프되게 설정
+           boardMap[i] = { type: 4, value: 0 };
+           let offset = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 5) + 1);
+           let target = i + offset;
+           // 범위 보정 (57~249 사이)
+           if (target < 57) target = i + Math.abs(offset);
+           if (target >= TOTAL_CELLS) target = i - Math.abs(offset);
+           
+           warps[i] = target;
+           // 대상 지점이 일반 칸이면 해당 지점도 워프로 만들어 짝을 맞춤 (선택사항이나 시각적 일관성을 위해 유지)
+           if (!boardMap[target] || boardMap[target].type === 1) {
+              boardMap[target] = { type: 4, value: 0 };
+              warps[target] = i;
+           }
+        }
         else boardMap[i] = { type: 1, value: 0 };
       }
-      const normalCells = Object.keys(boardMap).filter(k => boardMap[k].type === 1 && k != 1 && k != TOTAL_CELLS);
-      for(let i=0; i < 10; i++) {
-        if(normalCells.length < 2) break;
-        const pos1 = parseInt(normalCells.splice(Math.floor(Math.random() * normalCells.length), 1)[0]);
-        const pos2 = parseInt(normalCells.splice(Math.floor(Math.random() * normalCells.length), 1)[0]);
-        warps[pos1] = pos2; warps[pos2] = pos1;
-        boardMap[pos1].type = 4; boardMap[pos2].type = 4;
-      }
+
+      // 무인도 맵 초기화
       for (let i = 1; i <= ISLE_TOTAL_CELLS; i++) {
-        if (i === 1 || i === ISLE_TOTAL_CELLS) { 
-          isleMap[i] = { type: 1, value: 0 }; 
-          continue; 
-        }
-        if (i % 2 === 0) {
-          isleMap[i] = { type: 2, value: 1 };
-        } else {
-          isleMap[i] = { type: 1, value: 0 };
-        }
+        if (i === 1 || i === ISLE_TOTAL_CELLS) { isleMap[i] = { type: 1, value: 0 }; continue; }
+        if (i % 2 === 0) isleMap[i] = { type: 2, value: 3 }; else isleMap[i] = { type: 1, value: 0 };
       }
     }
     initBoardMap();
@@ -426,18 +480,19 @@
 
     toggleBoardBtn.onclick = () => {
       if (currentBoardType === 'main') switchToIsle(); else switchToMain();
-      renderPositions();
     };
 
     function switchToIsle() {
         currentBoardType = 'isle'; toggleBoardBtn.innerText = '게임보드';
         mainBoardContainer.classList.add('hidden'); isleBoardContainer.classList.remove('hidden');
+        renderPositions(); // 보드 전환 즉시 모든 참여자의 말 다시 렌더링
         setTimeout(drawIslePathLine, 10);
     }
 
     function switchToMain() {
         currentBoardType = 'main'; toggleBoardBtn.innerText = '무인도';
         isleBoardContainer.classList.add('hidden'); mainBoardContainer.classList.remove('hidden');
+        renderPositions(); // 보드 전환 즉시 모든 참여자의 말 다시 렌더링
         setTimeout(drawPathLine, 10);
     }
 
@@ -453,15 +508,8 @@
         btn.onclick = () => {
           initAudio();
           const idx = participants.findIndex(p => p.id === cookie.id);
-          if (idx > -1) { 
-              participants.splice(idx, 1); 
-              btn.classList.remove('selected');
-          }
-          else { 
-              if (participants.length >= 5) return; 
-              participants.push({ ...cookie, pos: 1, isIsle: false, islePos: 1 }); 
-              btn.classList.add('selected');
-          }
+          if (idx > -1) { participants.splice(idx, 1); btn.classList.remove('selected'); }
+          else { if (participants.length >= 5) return; participants.push({ ...cookie, pos: 1, isIsle: false, islePos: 1 }); btn.classList.add('selected'); }
           startGameBtn.disabled = participants.length < 2;
           startGameBtn.className = `w-full max-w-md py-6 rounded-3xl font-black text-3xl ${participants.length >= 2 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-400'}`;
         };
@@ -494,6 +542,7 @@
             case 3: typeClass = 'theme-lightred'; label = `-${cellData.value}`; break;
             case 4: typeClass = 'theme-warp'; label = `<span class="text-[12px] font-black leading-tight">워프<br><span class="text-white text-[14px] underline">${warps[num]}</span></span>`; break;
             case 5: typeClass = 'theme-isle'; label = `<span class="text-xs">무인도</span><br>🏝️`; break;
+            case 6: typeClass = 'theme-swap'; label = `<span class="text-xs font-black">위치 전환</span><br>🔄`; break;
             default: typeClass = 'theme-white'; label = '';
           }
           boardEl.insertAdjacentHTML('beforeend', `<div id="cell-${num}" class="board-cell"><div class="cell-bg ${typeClass}">${label}</div><span class="absolute top-1 left-1 text-[10px] font-bold text-slate-400 z-10">${num}</span><div id="tokens-${num}" class="tokens-container"></div></div>`);
@@ -666,34 +715,55 @@
       }, 1200);
     };
 
-    async function handleCellEffects(team) {
+    async function handleCellEffects(team, isChained = false) {
       if (team.pos >= TOTAL_CELLS) return;
       const cellData = boardMap[team.pos];
+      
       if (cellData.type === 5) {
           showInteractionPopup(`🏝️ 무인도에 갇혔습니다! 🏝️`, "#92400e"); Sound.playMinus();
           await new Promise(r => setTimeout(r, 1000));
           team.isIsle = true; team.islePos = 1; switchToIsle();
           renderPositions(); updateTeamSelector(); focusIsleCell(team.islePos); return;
       }
-      else if (cellData.type === 4) {
-        const targetPos = warps[team.pos];
-        showInteractionPopup(`🌀 워프 이동! - ${targetPos}번 🌀`, "#7c3aed"); Sound.playWarp();
-        await new Promise(r => setTimeout(r, 1000));
-        team.pos = targetPos; renderPositions(); updateTeamSelector(); focusCell(team.pos); return; 
-      } 
-      else if (cellData.type === 2) { 
+      
+      if (!isChained) {
+          if (cellData.type === 4) {
+              const targetPos = warps[team.pos];
+              showInteractionPopup(`🌀 워프 이동! - ${targetPos}번 🌀`, "#7c3aed"); Sound.playWarp();
+              await new Promise(r => setTimeout(r, 1000));
+              team.pos = targetPos; renderPositions(); updateTeamSelector(); focusCell(team.pos); 
+              await handleCellEffects(team, true); 
+              return; 
+          }
+          else if (cellData.type === 6) {
+              const others = participants.filter(p => p.id !== team.id && !p.isIsle);
+              if (others.length > 0) {
+                  const targetTeam = others[Math.floor(Math.random() * others.length)];
+                  showInteractionPopup(`🔄 위치 전환! ${targetTeam.name} 팀과 교체 🔄`, "#166534"); Sound.playWarp();
+                  await new Promise(r => setTimeout(r, 1000));
+                  const myOldPos = team.pos;
+                  team.pos = targetTeam.pos;
+                  targetTeam.pos = myOldPos;
+                  renderPositions(); updateTeamSelector(); focusCell(team.pos);
+                  await handleCellEffects(team, true);
+              }
+              return;
+          }
+      }
+
+      if (cellData.type === 2) { 
         const bonusSteps = cellData.value;
         showInteractionPopup(`✨ 보너스! +${bonusSteps} ✨`, "#0ea5e9"); Sound.playBonus();
         await new Promise(r => setTimeout(r, 1000));
         for (let i = 0; i < bonusSteps; i++) { if (team.pos >= TOTAL_CELLS) break; team.pos++; Sound.playStep(); renderPositions(); updateTeamSelector(); focusCell(team.pos); await new Promise(r => setTimeout(r, 300)); }
-        await handleCellEffects(team);
+        await handleCellEffects(team, false);
       } 
       else if (cellData.type === 3) { 
         const minusSteps = cellData.value;
         showInteractionPopup(`💥 마이너스! -${minusSteps} 💥`, "#ef4444"); Sound.playMinus();
         await new Promise(r => setTimeout(r, 1000));
         for (let i = 0; i < minusSteps; i++) { if (team.pos <= 1) break; team.pos--; Sound.playStep(); renderPositions(); updateTeamSelector(); focusCell(team.pos); await new Promise(r => setTimeout(r, 300)); }
-        await handleCellEffects(team);
+        await handleCellEffects(team, false);
       }
     }
 
@@ -707,8 +777,7 @@
       if (team.pos >= TOTAL_CELLS) {
         showInteractionPopup(`🏆 ${team.name} 팀 골인!!! 🏆`, team.color);
         isMoving = false; selectedTeamId = null; updateTeamSelector();
-        setTimeout(showFinalResult, 1000);
-        return;
+        setTimeout(showFinalResult, 1000); return;
       }
       await handleCellEffects(team);
       isMoving = false; selectedTeamId = null; updateTeamSelector();
@@ -745,9 +814,7 @@
         showInteractionPopup(`🕊️ 무인도 탈출 성공! 🕊️`, "#22c55e"); Sound.playBonus();
         await new Promise(r => setTimeout(r, 1000));
         team.isIsle = false; team.islePos = 1; switchToMain();
-      } else {
-        await handleIsleCellEffects(team);
-      }
+      } else { await handleIsleCellEffects(team); }
       isMoving = false; selectedTeamId = null; updateTeamSelector();
     }
 
