@@ -1,1 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Real Busan - 진짜 부산을 만나다</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/10.12.16/framer-motion.umd.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
 
+        .hero-gradient {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1590664095641-7fa05f689813?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .layer-card:hover {
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .busan-blue { color: #003580; }
+        .bg-busan-blue { background-color: #003580; }
+        
+        .section-in-view {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .section-in-view.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 sticky-nav border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="text-2xl font-black busan-blue tracking-tighter">BUSAN LAYERS</div>
+            <div class="hidden md:flex space-x-10 font-medium text-gray-600 items-center">
+                <a href="#history" class="hover:text-blue-700">역사 체험</a>
+                <a href="#food" class="hover:text-blue-700">미식 경험</a>
+                <a href="#local" class="hover:text-blue-700">로컬 브랜드</a>
+                <!-- Updated Button: Download Project Plan -->
+                <a href="bs.pdf" download="bs.pdf" class="bg-busan-blue text-white px-5 py-2 rounded-full hover:bg-blue-800 transition flex items-center gap-2">
+                    <i class="fas fa-file-download"></i> 기획서 다운로드
+                </a>
+            </div>
+            <button class="md:hidden text-2xl"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-screen hero-gradient flex items-center justify-center text-center text-white px-4">
+        <div class="max-w-4xl">
+            <h2 class="text-xl md:text-2xl font-light mb-4 tracking-widest animate-pulse">BUSAN TOURISM CAMPAIGN</h2>
+            <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight">진짜 부산을<br>만나다</h1>
+            <p class="text-lg md:text-xl font-light mb-10 opacity-90 leading-relaxed">
+                마천루 뒤에 숨겨진 100년의 시간.<br>
+                단순한 관광을 넘어 부산의 진짜 층위를 탐험하세요.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#history" class="bg-white text-blue-900 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition">탐험 시작하기</a>
+                <a href="bs.pdf" download class="border-2 border-white px-10 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-blue-900 transition">기획서 다운로드</a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </section>
+
+    <!-- Content Layer 1: History -->
+    <section id="history" class="py-24 px-6 max-w-7xl mx-auto section-in-view">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <span class="text-blue-600 font-bold tracking-widest">LAYER 01</span>
+                <h3 class="text-4xl font-black mt-4 mb-6">피란 수도의<br>타임머신</h3>
+                <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                    화려한 고층 빌딩 숲에서 조금만 벗어나면, 대한민국 현대사의 아픔과 희망이 담긴 골목이 나타납니다. 감천문화마을의 예술과 영도 깡깡이 마을의 망치 소리를 따라 100년의 시간을 걸어보세요.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="bg-blue-100 p-2 rounded-lg mr-4 text-blue-600"><i class="fas fa-clock"></i></span>
+                        <div>
+                            <h4 class="font-bold">임시수도기념관 야간 개장</h4>
+                            <p class="text-gray-500">근대 건축물 아래서 즐기는 차 한 잔의 여유</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="bg-blue-100 p-2 rounded-lg mr-4 text-blue-600"><i class="fas fa-headphones"></i></span>
+                        <div>
+                            <h4 class="font-bold">깡깡이 마을 '소리' 산책</h4>
+                            <p class="text-gray-500">조선소의 생동감 넘치는 현장음을 담은 오디오 가이드</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="rounded-3xl overflow-hidden shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1620577638069-79758f80f1ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="감천문화마을" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Layer 2: Food -->
+    <section id="food" class="py-24 bg-gray-900 text-white px-6">
+        <div class="max-w-7xl mx-auto section-in-view">
+            <div class="text-center mb-16">
+                <span class="text-blue-400 font-bold tracking-widest">LAYER 02</span>
+                <h3 class="text-4xl font-black mt-4">마이 부산 테이블</h3>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">부산의 맛은 당신의 손끝에서 완성됩니다. 부추와 다대기로 나만의 황금 비율을 찾아보세요.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="layer-card bg-gray-800 p-8 rounded-3xl border border-gray-700">
+                    <div class="text-4xl mb-6">🍲</div>
+                    <h4 class="text-xl font-bold mb-4">국밥 커스텀 클래스</h4>
+                    <p class="text-gray-400">외국인 친구와 함께 배우는 돼지국밥 다대기 조절법과 부추 무침의 비결.</p>
+                </div>
+                <div class="layer-card bg-gray-800 p-8 rounded-3xl border border-gray-700">
+                    <div class="text-4xl mb-6">🛒</div>
+                    <h4 class="text-xl font-bold mb-4">국제시장 장바구니 투어</h4>
+                    <p class="text-gray-400">현지 셰프와 함께 상인들과 소통하며 제철 식재료를 직접 고르는 미식 탐험.</p>
+                </div>
+                <div class="layer-card bg-gray-800 p-8 rounded-3xl border border-gray-700">
+                    <div class="text-4xl mb-6">🍢</div>
+                    <h4 class="text-xl font-bold mb-4">로컬 포장마차 도슨트</h4>
+                    <p class="text-gray-400">부산 어묵과 물떡의 유래를 들으며 즐기는 야시장 미식 가이드 투어.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Layer 3: Local Brand -->
+    <section id="local" class="py-24 px-6 max-w-7xl mx-auto section-in-view">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2 order-2 md:order-1">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="h-64 bg-blue-100 rounded-2xl overflow-hidden shadow-lg"><img src="https://images.unsplash.com/photo-1501333195204-748981f4229b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Cafe"></div>
+                    <div class="h-64 bg-gray-200 rounded-2xl mt-12 overflow-hidden shadow-lg"><img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover" alt="Bookstore"></div>
+                </div>
+            </div>
+            <div class="md:w-1/2 order-1 md:order-2">
+                <span class="text-blue-600 font-bold tracking-widest">LAYER 03</span>
+                <h3 class="text-4xl font-black mt-4 mb-6">NO MORE CHAIN<br>로컬 앵커 스토어</h3>
+                <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                    어디에나 있는 프랜차이즈는 이제 그만. 부산의 젊은 창작자들이 만든 독립서점, 로스터리 카페, 사투리 팝업 스토어에서 부산의 오늘을 경험하세요.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-6">
+                    <p class="text-blue-900 font-medium">"부산 사투리로 디자인한 굿즈를 파는 팝업 스토어, 부기와 함께하는 사투리 퀴즈 이벤트에 초대합니다!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Mascot: Boogi -->
+    <section class="py-24 bg-blue-50">
+        <div class="max-w-4xl mx-auto text-center px-6 section-in-view">
+            <div class="w-48 h-48 mx-auto mb-8 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-blue-200">
+                <span class="text-6xl">🐦</span> <!-- Placeholder for Boogi Icon -->
+            </div>
+            <h3 class="text-3xl font-black mb-4">부산 대표 캐릭터 '부기'와 함께!</h3>
+            <p class="text-gray-600 mb-10 text-lg">타이완 팬미팅을 휩쓴 부산의 슈퍼스타 부기가<br>숏폼 영상으로 부산의 숨은 맛집을 직접 소개합니다.</p>
+            <div class="flex justify-center gap-4">
+                <i class="fab fa-instagram text-3xl text-pink-600 cursor-pointer"></i>
+                <i class="fab fa-tiktok text-3xl text-black cursor-pointer"></i>
+                <i class="fab fa-youtube text-3xl text-red-600 cursor-pointer"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-16 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center border-t border-gray-300 pt-10">
+            <div class="text-xl font-black busan-blue mb-6 md:mb-0">BUSAN LAYERS</div>
+            <div class="flex space-x-8 text-sm text-gray-500">
+                <a href="#">개인정보 처리방침</a>
+                <a href="#">이용약관</a>
+                <a href="#">관광안내센터</a>
+                <a href="#">제휴문의</a>
+            </div>
+            <div class="mt-8 md:mt-0 text-gray-400 text-sm">
+                &copy; 2026 Busan Metropolitan City. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section-in-view').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
