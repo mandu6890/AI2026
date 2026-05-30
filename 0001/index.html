@@ -134,7 +134,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between select-none">
 
-    <!-- 글로벌 헤더 바 (게임룸 제외 영역에서만 노출 혹은 최소화) -->
+    <!-- 글로벌 헤더 바 -->
     <header id="global-header" class="bg-slate-900 border-b border-slate-800 px-6 py-3.5 flex items-center justify-between z-10 transition-all duration-500">
         <div class="flex items-center space-x-3">
             <div class="bg-indigo-600 text-white p-1.5 rounded font-bold font-orbitron tracking-wider text-lg shadow-lg shadow-indigo-500/20">
@@ -265,32 +265,46 @@
                     <div class="space-y-2">
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
                             <span class="text-slate-300">새 레이어 생성 (Lane 1)</span>
-                            <span class="font-mono font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Ctrl + Shift + N</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: Q</span>
+                                <span class="font-mono font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Ctrl + Shift + N</span>
+                            </div>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
                             <span class="text-slate-300">선택 영역 해제 (Lane 2)</span>
-                            <span class="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Ctrl + D</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: W</span>
+                                <span class="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Ctrl + D</span>
+                            </div>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
                             <span class="text-slate-300">레이어 복제 (Lane 3)</span>
-                            <span class="font-mono font-bold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded">Ctrl + J</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: E</span>
+                                <span class="font-mono font-bold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded">Ctrl + J</span>
+                            </div>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
                             <span class="text-slate-300">자유 변형 (Lane 4)</span>
-                            <span class="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Ctrl + T</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: R</span>
+                                <span class="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Ctrl + T</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 플레이 가이드 팁 -->
-            <div class="bg-indigo-950/30 border border-indigo-500/20 p-3 rounded-xl text-xs text-indigo-300 flex items-center space-x-2 mb-6">
-                <i class="fa-solid fa-keyboard text-sm"></i>
-                <p>실제 포토샵 단축키 그대로 누르세요! (보조 모드로 키보드 Q, W, E, R 한 키 조작도 동시 감지됩니다.)</p>
+            <div class="bg-indigo-950/40 border border-indigo-500/30 p-4 rounded-xl text-xs text-indigo-300 flex items-center gap-3 mb-6">
+                <i class="fa-solid fa-keyboard text-lg animate-pulse"></i>
+                <p class="leading-relaxed">
+                    <strong>[매우 중요 - 브라우저 충돌 방지]</strong> 웹사이트 내 탭 전환 및 창 닫힘 충돌을 방지하기 위해, 실제 단축키 대신 <strong>단일 키 <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">Q</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">W</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">E</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">R</kbd></strong>을 타이핑하여 플레이하시는 것을 강력히 권장합니다!
+                </p>
             </div>
 
             <div class="flex space-x-3">
-                <button onclick="changeScreen('screen-lecture')" class="w-1/3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-xs transition-colors">
+                <button onclick="changeScreen('screen-lecture')" class="w-1/3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 px-4 rounded-xl text-xs transition-colors">
                     이전 화면으로
                 </button>
                 <button onclick="changeScreen('screen-game')" class="w-2/3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold py-3.5 px-4 rounded-xl text-xs shadow-xl shadow-indigo-600/30 transition-all flex items-center justify-center space-x-2">
@@ -300,7 +314,7 @@
             </div>
         </div>
 
-        <!-- ==================== [화면 3] 인게임 전용 리듬액션 전장 (Image_3d6616 최적화) ==================== -->
+        <!-- ==================== [화면 3] 인게임 전용 리듬액션 전장 ==================== -->
         <div id="screen-game" class="hidden w-full max-w-[1240px] bg-slate-950 rounded-2xl border-2 border-indigo-500/30 shadow-2xl overflow-hidden flex flex-col relative h-[620px]">
             
             <!-- 3, 2, 1 카운트다운 전면 오버레이 -->
@@ -404,10 +418,10 @@
                             
                             <!-- 레인 보드 가상 터치 입력판 -->
                             <div class="absolute bottom-1.5 left-0 right-0 flex justify-around text-[9px] text-slate-500 font-bold z-10 pointer-events-none">
-                                <button onclick="handleVirtualClick(0)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+Shift+N <span class="text-sky-500 block text-[8px]">(Q)</span></button>
-                                <button onclick="handleVirtualClick(1)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+D <span class="text-emerald-500 block text-[8px]">(W)</span></button>
-                                <button onclick="handleVirtualClick(2)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+J <span class="text-violet-500 block text-[8px]">(E)</span></button>
-                                <button onclick="handleVirtualClick(3)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+T <span class="text-rose-500 block text-[8px]">(R)</span></button>
+                                <button onclick="handleVirtualClick(0)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+Shift+N <span class="text-sky-500 block text-[9px] font-black font-orbitron">(Q)</span></button>
+                                <button onclick="handleVirtualClick(1)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+D <span class="text-emerald-500 block text-[9px] font-black font-orbitron">(W)</span></button>
+                                <button onclick="handleVirtualClick(2)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+J <span class="text-violet-500 block text-[9px] font-black font-orbitron">(E)</span></button>
+                                <button onclick="handleVirtualClick(3)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+T <span class="text-rose-500 block text-[9px] font-black font-orbitron">(R)</span></button>
                             </div>
 
                             <!-- 타격 스파크 및 PERFECT/GREAT 피드백 용기 -->
@@ -421,11 +435,11 @@
                             <!-- Row 1 -->
                             <div class="flex space-x-1">
                                 <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Tab</div>
-                                <div id="key-q" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">Q</div>
-                                <div id="key-w" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">W</div>
-                                <div id="key-e" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">E</div>
-                                <div id="key-r" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">R</div>
-                                <div id="key-t" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 animate-pulse">T</div>
+                                <div id="key-q" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-sky-400">Q</div>
+                                <div id="key-w" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-emerald-400">W</div>
+                                <div id="key-e" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-violet-400">E</div>
+                                <div id="key-r" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-rose-400">R</div>
+                                <div id="key-t" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">T</div>
                                 <div id="key-y" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">Y</div>
                                 <div id="key-u" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">U</div>
                                 <div id="key-i" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">I</div>
@@ -488,7 +502,7 @@
                         <i class="fa-solid fa-compact-disc text-indigo-400 animate-spin text-md"></i>
                     </div>
 
-                    <!-- COMBO DISPLAY (이미지와 매치) -->
+                    <!-- COMBO DISPLAY -->
                     <div class="text-center my-3" id="combo-container">
                         <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">COMBO</div>
                         <div id="combo-display-main" class="text-6xl font-black font-orbitron text-amber-400 tracking-tighter my-0.5">0</div>
@@ -497,22 +511,22 @@
 
                     <!-- KEY GUIDE -->
                     <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-3 space-y-1.5 text-[10.5px]">
-                        <span class="text-[8.5px] text-indigo-400 font-bold tracking-wider block mb-1">KEY GUIDE</span>
+                        <span class="text-[8.5px] text-indigo-400 font-bold tracking-wider block mb-1">KEY MAP GUIDE</span>
                         <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
                             <span class="text-slate-400">새 레이어</span>
-                            <span class="text-[9.5px] text-slate-300 font-mono">Ctrl + Shift + N</span>
+                            <span class="text-[10px] text-sky-400 font-black font-orbitron">Q <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+Shift+N</span></span>
                         </div>
                         <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
                             <span class="text-slate-400">선택 해제</span>
-                            <span class="text-[9.5px] text-slate-300 font-mono">Ctrl + D</span>
+                            <span class="text-[10px] text-emerald-400 font-black font-orbitron">W <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+D</span></span>
                         </div>
                         <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
                             <span class="text-slate-400">레이어 복제</span>
-                            <span class="text-[9.5px] text-slate-300 font-mono">Ctrl + J</span>
+                            <span class="text-[10px] text-violet-400 font-black font-orbitron">E <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+J</span></span>
                         </div>
                         <div class="flex items-center justify-between pb-1">
                             <span class="text-slate-400">자유 변형</span>
-                            <span class="text-[9.5px] text-slate-300 font-mono">Ctrl + T</span>
+                            <span class="text-[10px] text-rose-400 font-black font-orbitron">R <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+T</span></span>
                         </div>
                     </div>
 
@@ -563,7 +577,7 @@
                         <div class="space-y-3.5">
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+Shift+N (새 레이어 생성)</span>
+                                    <span>Ctrl+Shift+N (새 레이어 생성 / Q)</span>
                                     <span id="stat-csn" class="text-rose-400 font-bold">오답률 28%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -572,7 +586,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+D (선택 해제)</span>
+                                    <span>Ctrl+D (선택 해제 / W)</span>
                                     <span id="stat-cd" class="text-amber-400 font-bold">오답률 15%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -581,7 +595,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+J / Ctrl+T 조합</span>
+                                    <span>Ctrl+J / Ctrl+T 조합 (E / R)</span>
                                     <span id="stat-other" class="text-emerald-400 font-bold">오답률 5%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -602,8 +616,8 @@
                             </p>
                             
                             <ul class="text-xs space-y-2 text-slate-300">
-                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 오답률 높은 Ctrl+Shift+N 노드 배치율 +40% 증가</li>
-                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 성공률이 완벽한 Ctrl+D 구간 속도 미세 조율</li>
+                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 오답률 높은 Q(Ctrl+Shift+N) 노드 배치율 +40% 증가</li>
+                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 성공률이 완벽한 W(Ctrl+D) 구간 속도 미세 조율</li>
                                 <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 집중 공략 오답 단어 노트 복습 세션 편성</li>
                             </ul>
                         </div>
@@ -758,17 +772,17 @@
         let gameLoopInterval = null;
         let spawnInterval = null;
         
-        // 난이도 상승 계수
-        let baseSpeed = 4.0;
-        let currentSpeedFactor = 4.0; 
-        let noteSpawnSpeed = 1900; // ms
+        // --- [수정] 난이도 하향 조정 (기존 4.0 -> 변경 2.4로 속도 대폭 감속) ---
+        let baseSpeed = 2.4;
+        let currentSpeedFactor = 2.4; 
+        let noteSpawnSpeed = 2200; // ms (노트 간 간격도 여유롭게 제공)
 
         // 판정 결과 누적기
         let perfectCount = 0;
         let greatCount = 0;
         let missCount = 0;
 
-        // 게임용 단축키 매핑 정보 (스크린샷에 나타난 레이어 복제, 새 레이어 등 적용)
+        // 게임용 단축키 매핑 정보 (스크린샷 매칭 및 권장 물리 단일키 매핑)
         const lanes = [0, 1, 2, 3];
         const shortcutMapping = [
             { id: 0, text: 'Ctrl+Shift+N', comboName: 'Ctrl+Shift+N', fallbackKey: 'q', desc: '새 레이어 생성', color: '#38bdf8', keyColorClass: 'key-active-blue' },
@@ -860,9 +874,9 @@
             gameLoopInterval = setInterval(() => {
                 if (!gameActive) return;
                 
-                // 속도 점진적 증가
-                if (currentSpeedFactor < 6.8) {
-                    currentSpeedFactor += 0.002;
+                // --- [수정] 속도 점진적 가속치 하향 조정 (기존 0.002 -> 변경 0.0008로 속도 상승 폭 완화) ---
+                if (currentSpeedFactor < 3.8) {
+                    currentSpeedFactor += 0.0008;
                     const speedMeter = document.getElementById('speed-meter');
                     if (speedMeter) {
                         speedMeter.innerText = `SPEED: ${(currentSpeedFactor / baseSpeed).toFixed(1)}x`;
@@ -876,8 +890,8 @@
                         noteElement.style.top = `${note.position}px`;
                     }
 
-                    // 판정선이 265px~275px 사이에 위치하고 있으며, 바닥(320px)에 완전히 닿아버린 경우 MISS 처리
-                    if (note.position > 300 && !note.isJudged) {
+                    // 판정선 하단(300px)에 완전히 닿아버린 경우 MISS 처리
+                    if (note.position > 295 && !note.isJudged) {
                         triggerMiss(note.id);
                     }
                 });
@@ -943,14 +957,14 @@
             matchedNotes.sort((a, b) => b.position - a.position);
             const targetNote = matchedNotes[0];
 
-            // 3D Perspective 변환 하강 궤도 상, 완벽 타겟 중심지는 약 250px 부근입니다.
-            const diff = Math.abs(targetNote.position - 250);
+            // 느려진 속도에 맞춤화된 완벽 판정 기준 스케일 (약 250px)
+            const diff = Math.abs(targetNote.position - 245);
 
-            if (diff < 26) {
+            if (diff < 28) {
                 triggerJudgement('PERFECT', targetNote);
-            } else if (diff < 52) {
+            } else if (diff < 55) {
                 triggerJudgement('GREAT', targetNote);
-            } else if (diff < 80) {
+            } else if (diff < 82) {
                 triggerJudgement('MISS', targetNote);
             }
         }
@@ -1307,10 +1321,10 @@
                     // 기본 파란 불빛으로 점등
                     keyElement.classList.add('key-glow');
                     // 특수 레인 컬러와 연동되는 특수 키 캡 점등 연출 보강
-                    if (keySymbol === 'n') keyElement.classList.add('key-active-blue');
-                    if (keySymbol === 'd') keyElement.classList.add('key-active-green');
-                    if (keySymbol === 'j') keyElement.classList.add('key-active-purple');
-                    if (keySymbol === 't') keyElement.classList.add('key-active-rose');
+                    if (keySymbol === 'q' || keySymbol === 'n') keyElement.classList.add('key-active-blue');
+                    if (keySymbol === 'w' || keySymbol === 'd') keyElement.classList.add('key-active-green');
+                    if (keySymbol === 'e' || keySymbol === 'j') keyElement.classList.add('key-active-purple');
+                    if (keySymbol === 'r' || keySymbol === 't') keyElement.classList.add('key-active-rose');
                 } else {
                     keyElement.classList.remove('key-glow', 'key-active-blue', 'key-active-green', 'key-active-purple', 'key-active-rose');
                 }
@@ -1330,13 +1344,13 @@
 
             if (!gameActive) return;
 
-            // 브라우저 기본 단축키 간섭 강제 차단 (Ctrl+D, Ctrl+J, Ctrl+T 등)
-            if (isCtrl && (key === 'd' || key === 'j' || key === 't' || key === 'n' || key === 'a')) {
+            // 브라우저 기본 단축키 간섭 강제 차단 (Ctrl+D, Ctrl+J, Ctrl+T 등 브라우저 단에서 통제 가능한 키)
+            if (isCtrl && (key === 'd' || key === 'j' || key === 't' || key === 'n' || key === 'a' || key === 's')) {
                 e.preventDefault();
                 e.stopPropagation();
             }
 
-            // [1] 실제 포토샵 단축키 조합 판정
+            // [1] 실제 포토샵 단축키 조합 판정 (작동 가능한 브라우저 단축키 차단 성공 시 매칭)
             let detectedShortcut = null;
             if (isCtrl && isShift && key === 'n') {
                 detectedShortcut = 'Ctrl+Shift+N';
@@ -1353,7 +1367,7 @@
                 return;
             }
 
-            // [2] 쾌적한 데모/테스트를 위한 단일 대응 키 (Q, W, E, R)
+            // [2] 쾌적한 데모/테스트 및 브라우저 차단 우회를 위한 단일 대응 키 (Q, W, E, R)
             if (key === 'q') checkShortcutInput(null, 0);
             if (key === 'w') checkShortcutInput(null, 1);
             if (key === 'e') checkShortcutInput(null, 2);
