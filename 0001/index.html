@@ -15,21 +15,21 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #030408;
             color: #f8fafc;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto; /* 세로 스크롤을 전면 허용하여 해상도 대응 */
         }
         .font-orbitron {
             font-family: 'Orbitron', sans-serif;
         }
         
-        /* 3D 입체 투영 트랙 디자인 */
+        /* 정교한 판정 동기화를 위해 원근법 투영(Perspective) 제거 및 2D 평면 전장 레이아웃 구축 */
         .perspective-container {
-            perspective: 500px;
-            perspective-origin: 50% 25%;
+            perspective: none;
         }
         .rhythm-track {
-            transform: rotateX(24deg);
-            transform-style: preserve-3d;
-            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(3,7,18,0.9) 100%);
+            transform: none !important;
+            transform-style: flat;
+            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(3,7,18,0.95) 100%);
         }
 
         /* 야근 마왕 보스 호버 효과 */
@@ -101,6 +101,12 @@
             box-shadow: 0 0 18px #f43f5e, inset 0 0 5px #ffffff;
             transform: translateY(2px);
         }
+        .key-active-orange {
+            background-color: #f97316 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 18px #f97316, inset 0 0 5px #ffffff;
+            transform: translateY(2px);
+        }
 
         /* 대미지 플로팅 피드백 */
         @keyframes dmg-flow {
@@ -158,7 +164,7 @@
         
         <!-- ==================== [화면 1] 강의 플랫폼 연동 UI ==================== -->
         <div id="screen-lecture" class="w-full max-w-6xl bg-slate-900/90 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-            <!-- 좌측: 강의 비디오 영역 -->
+            <!-- 좌측: 강의 비디오 영역 및 트레이닝 연동 카드 (8칸) -->
             <div class="lg:col-span-8 p-6 flex flex-col justify-between border-r border-slate-800">
                 <div>
                     <div class="flex justify-between items-center mb-4">
@@ -178,12 +184,31 @@
                                 <i class="fa-solid fa-check text-xl"></i>
                             </div>
                             <span class="text-white font-bold text-lg">🎉 1강 완강을 완료했습니다!</span>
-                            <p class="text-indigo-200 text-xs mt-1">학습 내용을 바탕으로 단축키 지각 훈련에 진입하세요.</p>
+                            <p class="text-indigo-200 text-xs mt-1">학습 내용을 바탕으로 아래 단축키 지각 훈련에 진입하세요.</p>
                         </div>
+                    </div>
+
+                    <!-- [이동 완료] 단축키 트레이닝 시작하기 카드 (강의 비디오 바로 아래 배치) -->
+                    <div class="mt-6 bg-gradient-to-r from-indigo-950/80 to-slate-950/80 border border-indigo-500/30 p-5 rounded-2xl text-center shadow-xl shadow-indigo-950/40">
+                        <div class="flex justify-center mb-2.5">
+                            <span class="relative flex h-3 w-3">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                            </span>
+                        </div>
+                        <h4 class="text-sm font-bold text-white mb-1.5">1강 연동 단축키 트레이닝 플러그인 활성화</h4>
+                        <p class="text-xs text-slate-300 mb-4 max-w-lg mx-auto leading-relaxed">
+                            방금 수강한 1강의 단축키 5종(Ctrl+Q, A, S, D, Z)을 실제 리듬 액션 게임으로 손가락에 직접 각인시킬 수 있습니다.
+                        </p>
+                        
+                        <button onclick="changeScreen('screen-intro')" class="w-full max-w-md mx-auto bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-gamepad animate-pulse text-lg"></i>
+                            <span>단축키 트레이닝 시작하기</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="mt-4 p-4 bg-slate-800/40 rounded-xl flex items-start space-x-3 text-xs text-slate-400">
+                <div class="mt-6 p-4 bg-slate-800/40 rounded-xl flex items-start space-x-3 text-xs text-slate-400">
                     <span class="text-lg">💡</span>
                     <p class="leading-relaxed">
                         **교육용 게임이 성공하는 유일한 열쇠**는 학습자의 내부 동기입니다. 이 솔루션은 유료 강의를 자발적으로 구매하고 완강한 직후의 의욕적인 시점에 바로 피지컬 훈련을 침투시키는 영리한 연계 모델입니다.
@@ -191,7 +216,7 @@
                 </div>
             </div>
 
-            <!-- 우측: 커리큘럼 및 연동 버튼 -->
+            <!-- 우측: 커리큘럼 정보 (4칸) -->
             <div class="lg:col-span-4 p-6 bg-slate-950/60 flex flex-col justify-between">
                 <div>
                     <h3 class="font-bold text-white text-sm mb-4">학습 커리큘럼</h3>
@@ -212,17 +237,10 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="mt-6 pt-4 border-t border-slate-800">
-                    <div class="bg-indigo-950/40 border border-indigo-500/20 p-4 rounded-xl text-center">
-                        <h4 class="text-xs font-bold text-white mb-2">훈련 코스 연동 완료</h4>
-                        <p class="text-[11px] text-slate-400 mb-4">방금 배운 핵심 단축키 4종을 리듬 액션 비트로 신체 각인해보세요.</p>
-                        
-                        <button onclick="changeScreen('screen-intro')" class="w-full bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl text-xs shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-gamepad animate-pulse"></i>
-                            <span>단축키 트레이닝 시작하기</span>
-                        </button>
-                    </div>
+                
+                <div class="mt-6 p-4 bg-slate-900/40 rounded-xl border border-slate-800/80 text-[11px] text-slate-400">
+                    <div class="font-bold text-slate-300 mb-1"><i class="fa-solid fa-circle-info text-indigo-400 mr-1"></i> 트레이닝 진행 안내</div>
+                    실제 실무 영상 편집 및 이미지 디자인에 주로 사용되는 마스터 단축키 5종에 특화된 피지컬 배틀을 제공합니다.
                 </div>
             </div>
         </div>
@@ -248,48 +266,40 @@
                         </div>
                     </div>
                     <p class="text-xs text-slate-300 leading-relaxed my-4">
-                        "야근 마왕은 쉬지 않고 긴급 업무 노트를 던집니다. 마우스를 잡고 툴바를 뒤지는 순진한 행동은 통하지 않습니다. 오직 배운 **단축키 콤보 공격**만이 야근의 굴레에서 벗어나 마왕을 격퇴할 강력한 포격이 됩니다!"
+                        "야근 마왕은 쉬지 않고 긴급 수정 업무 보드를 떨어트립니다. 머뭇거리는 순진한 행동은 통하지 않습니다. 오직 배운 **편집기 전용 단축키 콤보**만이 야근의 굴레에서 벗어나 마왕을 격퇴할 강력한 포격이 됩니다!"
                     </p>
                     <div class="bg-rose-950/40 border border-rose-900/20 p-2.5 rounded-lg text-[10px] text-rose-300 flex items-center space-x-2">
                         <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>보드를 놓쳐 판정선을 넘어가면 내 MENTAL HP가 대폭 깎입니다!</span>
+                        <span>보드가 판정선에 닿으면 내 MENTAL HP가 대폭 깎집니다!</span>
                     </div>
                 </div>
 
                 <!-- 획득할 단축키 리스트 -->
                 <div class="p-5 bg-slate-950/80 rounded-2xl border border-slate-800 flex flex-col justify-between">
                     <h4 class="text-xs font-bold text-indigo-400 mb-3 flex justify-between items-center">
-                        <span>금일 트레이닝 단축키 (4종)</span>
-                        <span class="text-[9px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">Photoshop CC</span>
+                        <span>금일 트레이닝 단축키 (5종)</span>
+                        <span class="text-[9px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">Editor Master</span>
                     </h4>
                     <div class="space-y-2">
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
-                            <span class="text-slate-300">새 레이어 생성 (Lane 1)</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: Q</span>
-                                <span class="font-mono font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Ctrl + Shift + N</span>
-                            </div>
+                            <span class="text-slate-300">프로젝트 종료 (Lane 1)</span>
+                            <span class="font-mono font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Ctrl + Q</span>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
-                            <span class="text-slate-300">선택 영역 해제 (Lane 2)</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: W</span>
-                                <span class="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Ctrl + D</span>
-                            </div>
+                            <span class="text-slate-300">클립 전체 선택 (Lane 2)</span>
+                            <span class="font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Ctrl + A</span>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
-                            <span class="text-slate-300">레이어 복제 (Lane 3)</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: E</span>
-                                <span class="font-mono font-bold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded">Ctrl + J</span>
-                            </div>
+                            <span class="text-slate-300">작업 파일 저장 (Lane 3)</span>
+                            <span class="font-mono font-bold text-violet-400 bg-violet-500/10 px-2 py-0.5 rounded">Ctrl + S</span>
                         </div>
                         <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
-                            <span class="text-slate-300">자유 변형 (Lane 4)</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="font-mono text-[9px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">입력키: R</span>
-                                <span class="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Ctrl + T</span>
-                            </div>
+                            <span class="text-slate-300">선택 영역 해제 (Lane 4)</span>
+                            <span class="font-mono font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Ctrl + D</span>
+                        </div>
+                        <div class="p-2 bg-slate-900 rounded border border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-slate-300">작업 실행 취소 (Lane 5)</span>
+                            <span class="font-mono font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded">Ctrl + Z</span>
                         </div>
                     </div>
                 </div>
@@ -299,7 +309,7 @@
             <div class="bg-indigo-950/40 border border-indigo-500/30 p-4 rounded-xl text-xs text-indigo-300 flex items-center gap-3 mb-6">
                 <i class="fa-solid fa-keyboard text-lg animate-pulse"></i>
                 <p class="leading-relaxed">
-                    <strong>[매우 중요 - 브라우저 충돌 방지]</strong> 웹사이트 내 탭 전환 및 창 닫힘 충돌을 방지하기 위해, 실제 단축키 대신 <strong>단일 키 <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">Q</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">W</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">E</kbd>, <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-100 rounded border border-slate-700">R</kbd></strong>을 타이핑하여 플레이하시는 것을 강력히 권장합니다!
+                    <strong>[암기 집중 훈련 모드 적용]</strong> 인게임 내 보드에는 키 힌트가 노출되지 않으며 오직 <strong>기능 설명</strong>만 보고 단축키를 떠올려야 합니다! 올바른 키를 입력하는 즉시 유도 원형 포격이 보스에게 날아갑니다.
                 </p>
             </div>
 
@@ -347,7 +357,10 @@
                         <span class="text-[9px] text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded font-bold uppercase tracking-wider block w-max mb-3">TARGET MONSTER</span>
                         
                         <!-- 마왕 SVG 이미지 -->
-                        <div class="flex justify-center my-1.5">
+                        <div class="flex justify-center my-1.5 relative">
+                            <!-- 대미지 팝업 컨테이너 (로컬 절대좌표) -->
+                            <div id="damage-container" class="absolute inset-0 flex items-center justify-center pointer-events-none"></div>
+                            
                             <div class="animate-monster relative" id="boss-sprite">
                                 <svg class="w-24 h-24" viewBox="0 0 100 100">
                                     <circle cx="50" cy="55" r="30" fill="#2d1b4e" stroke="#6d28d9" stroke-width="2" />
@@ -367,7 +380,7 @@
                         <div class="mt-4">
                             <div class="flex justify-between text-xs mb-1">
                                 <span class="text-slate-400">몬스터 HP</span>
-                                <span id="boss-hp-text" class="text-rose-400 font-bold font-orbitron">100%</span>
+                                <span id="boss-hp-text" class="text-rose-400 font-bold font-orbitron">100</span>
                             </div>
                             <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                                 <div id="boss-hp-bar" class="h-full bg-gradient-to-r from-rose-500 to-purple-600 w-full transition-all duration-300"></div>
@@ -405,23 +418,29 @@
                     
                     <!-- 3D 원근법 레인 공간 -->
                     <div class="perspective-container flex-grow w-full relative h-[310px] overflow-hidden">
+                        <!-- 실시간 판정 글자 출력부 -->
+                        <div id="judgment-text" class="text-3xl font-black tracking-widest uppercase absolute bottom-24 left-1/2 transform -translate-x-1/2 pointer-events-none z-30"></div>
+                        
                         <div class="rhythm-track w-full h-full absolute inset-0 flex justify-between border-x-2 border-slate-800/80 px-1">
                             
-                            <!-- 4개 리듬 레인 가이드 -->
-                            <div id="lane-0" class="w-1/4 h-full relative border-r border-slate-800/20 bg-gradient-to-t from-sky-950/15 to-transparent"></div>
-                            <div id="lane-1" class="w-1/4 h-full relative border-r border-slate-800/20 bg-gradient-to-t from-emerald-950/15 to-transparent"></div>
-                            <div id="lane-2" class="w-1/4 h-full relative border-r border-slate-800/20 bg-gradient-to-t from-violet-950/15 to-transparent"></div>
-                            <div id="lane-3" class="w-1/4 h-full relative bg-gradient-to-t from-rose-950/15 to-transparent"></div>
+                            <!-- 5개 리듬 레인 가이드 -->
+                            <div id="lane-0" class="w-[20%] h-full relative border-r border-slate-800/20 bg-gradient-to-t from-sky-950/15 to-transparent"></div>
+                            <div id="lane-1" class="w-[20%] h-full relative border-r border-slate-800/20 bg-gradient-to-t from-emerald-950/15 to-transparent"></div>
+                            <div id="lane-2" class="w-[20%] h-full relative border-r border-slate-800/20 bg-gradient-to-t from-violet-950/15 to-transparent"></div>
+                            <div id="lane-3" class="w-[20%] h-full relative border-r border-slate-800/20 bg-gradient-to-t from-rose-950/15 to-transparent"></div>
+                            <div id="lane-4" class="w-[20%] h-full relative bg-gradient-to-t from-orange-950/15 to-transparent"></div>
 
-                            <!-- 레이저 일루미네이션 판정 수평 라인 -->
-                            <div class="absolute bottom-12 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 via-sky-300 to-emerald-400 shadow-[0_0_20px_rgba(56,189,248,1)] z-10"></div>
+                            <!-- 레이저 일루미네이션 판정 수평 라인 ( Miss 충돌 라인 ) -->
+                            <!-- 정확도 100% 매칭을 위해 top 기준 절대 좌표 적용 -->
+                            <div id="judgment-line" class="absolute top-[250px] left-0 right-0 h-1.5 bg-gradient-to-r from-sky-400 via-sky-300 to-orange-400 shadow-[0_0_20px_rgba(56,189,248,1)] z-10"></div>
                             
                             <!-- 레인 보드 가상 터치 입력판 -->
-                            <div class="absolute bottom-1.5 left-0 right-0 flex justify-around text-[9px] text-slate-500 font-bold z-10 pointer-events-none">
-                                <button onclick="handleVirtualClick(0)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+Shift+N <span class="text-sky-500 block text-[9px] font-black font-orbitron">(Q)</span></button>
-                                <button onclick="handleVirtualClick(1)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+D <span class="text-emerald-500 block text-[9px] font-black font-orbitron">(W)</span></button>
-                                <button onclick="handleVirtualClick(2)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+J <span class="text-violet-500 block text-[9px] font-black font-orbitron">(E)</span></button>
-                                <button onclick="handleVirtualClick(3)" class="w-1/4 text-center hover:text-white pointer-events-auto cursor-pointer">Ctrl+T <span class="text-rose-500 block text-[9px] font-black font-orbitron">(R)</span></button>
+                            <div class="absolute bottom-1.5 left-0 right-0 flex justify-around text-[8px] text-slate-500 font-bold z-10 pointer-events-none">
+                                <button onclick="handleVirtualClick(0)" class="w-[20%] text-center hover:text-white pointer-events-auto cursor-pointer font-orbitron">Lane 1</button>
+                                <button onclick="handleVirtualClick(1)" class="w-[20%] text-center hover:text-white pointer-events-auto cursor-pointer font-orbitron">Lane 2</button>
+                                <button onclick="handleVirtualClick(2)" class="w-[20%] text-center hover:text-white pointer-events-auto cursor-pointer font-orbitron">Lane 3</button>
+                                <button onclick="handleVirtualClick(3)" class="w-[20%] text-center hover:text-white pointer-events-auto cursor-pointer font-orbitron">Lane 4</button>
+                                <button onclick="handleVirtualClick(4)" class="w-[20%] text-center hover:text-white pointer-events-auto cursor-pointer font-orbitron">Lane 5</button>
                             </div>
 
                             <!-- 타격 스파크 및 PERFECT/GREAT 피드백 용기 -->
@@ -434,11 +453,11 @@
                         <div class="grid grid-rows-4 gap-1 text-[8.5px] font-bold text-slate-400">
                             <!-- Row 1 -->
                             <div class="flex space-x-1">
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Tab</div>
+                                <div id="key-tab" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Tab</div>
                                 <div id="key-q" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-sky-400">Q</div>
-                                <div id="key-w" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-emerald-400">W</div>
-                                <div id="key-e" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-violet-400">E</div>
-                                <div id="key-r" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-rose-400">R</div>
+                                <div id="key-w" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">W</div>
+                                <div id="key-e" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">E</div>
+                                <div id="key-r" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">R</div>
                                 <div id="key-t" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">T</div>
                                 <div id="key-y" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">Y</div>
                                 <div id="key-u" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">U</div>
@@ -448,41 +467,41 @@
                             </div>
                             <!-- Row 2 -->
                             <div class="flex space-x-1">
-                                <div class="w-10 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Caps</div>
-                                <div id="key-a" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">A</div>
-                                <div id="key-s" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">S</div>
-                                <div id="key-d" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">D</div>
-                                <div id="key-f" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">F</div>
+                                <div id="key-caps" class="w-10 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Caps</div>
+                                <div id="key-a" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-emerald-400">A</div>
+                                <div id="key-s" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-violet-400">S</div>
+                                <div id="key-d" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-rose-400">D</div>
+                                <div id="key-f" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron">F</div>
                                 <div id="key-g" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">G</div>
                                 <div id="key-h" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">H</div>
                                 <div id="key-j" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">J</div>
                                 <div id="key-k" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">K</div>
                                 <div id="key-l" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">L</div>
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Enter</div>
+                                <div id="key-enter" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Enter</div>
                             </div>
                             <!-- Row 3 -->
                             <div class="flex space-x-1">
                                 <div id="key-shift" class="w-14 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Shift</div>
-                                <div id="key-z" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">Z</div>
+                                <div id="key-z" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron text-orange-400">Z</div>
                                 <div id="key-x" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">X</div>
                                 <div id="key-c" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">C</div>
                                 <div id="key-v" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">V</div>
                                 <div id="key-b" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">B</div>
                                 <div id="key-n" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">N</div>
                                 <div id="key-m" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">M</div>
-                                <div class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">&lt;</div>
-                                <div class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">&gt;</div>
-                                <div class="w-12 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Shift</div>
+                                <div id="key-comma" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-bold">&lt;</div>
+                                <div id="key-period" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-bold">&gt;</div>
+                                <div id="key-shift-right" class="w-12 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Shift</div>
                             </div>
                             <!-- Row 4 -->
                             <div class="flex space-x-1">
                                 <div id="key-ctrl" class="w-10 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Ctrl</div>
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Win</div>
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Alt</div>
-                                <div class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80">Space Bar</div>
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Alt</div>
-                                <div class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">FN</div>
-                                <div class="w-10 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Ctrl</div>
+                                <div id="key-meta" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Win</div>
+                                <div id="key-alt" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Alt</div>
+                                <div id="key-space" class="flex-grow py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron">Space Bar</div>
+                                <div id="key-alt-right" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Alt</div>
+                                <div id="key-fn" class="w-8 py-1 bg-slate-950 rounded text-center border border-slate-800/80 font-orbitron">FN</div>
+                                <div id="key-ctrl-right" class="w-10 py-1 bg-slate-950 rounded text-center border border-slate-800/80">Ctrl</div>
                             </div>
                         </div>
                     </div>
@@ -495,8 +514,8 @@
                         <div class="flex items-center space-x-2.5">
                             <span class="text-lg">🎵</span>
                             <div>
-                                <h5 class="text-[11px] font-bold text-white leading-none">Layer Up!</h5>
-                                <span class="text-[8.5px] text-slate-500">Photoshop Rhythm Beat</span>
+                                <h5 class="text-[11px] font-bold text-white leading-none">Shortcut Power!</h5>
+                                <span class="text-[8.5px] text-slate-500">Editor Rhythm Beat</span>
                             </div>
                         </div>
                         <i class="fa-solid fa-compact-disc text-indigo-400 animate-spin text-md"></i>
@@ -506,27 +525,31 @@
                     <div class="text-center my-3" id="combo-container">
                         <div class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">COMBO</div>
                         <div id="combo-display-main" class="text-6xl font-black font-orbitron text-amber-400 tracking-tighter my-0.5">0</div>
-                        <div class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full inline-block font-bold">x1.5</div>
+                        <div class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full inline-block font-bold">RHYTHM MULTIPLIER</div>
                     </div>
 
                     <!-- KEY GUIDE -->
                     <div class="bg-slate-900/40 border border-slate-800 rounded-xl p-3 space-y-1.5 text-[10.5px]">
-                        <span class="text-[8.5px] text-indigo-400 font-bold tracking-wider block mb-1">KEY MAP GUIDE</span>
+                        <span class="text-[8.5px] text-indigo-400 font-bold tracking-wider block mb-1">암기 가이드 (보드 힌트 없음)</span>
                         <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
-                            <span class="text-slate-400">새 레이어</span>
-                            <span class="text-[10px] text-sky-400 font-black font-orbitron">Q <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+Shift+N</span></span>
+                            <span class="text-slate-400">프로젝트 종료</span>
+                            <span class="text-[10px] text-sky-400 font-black font-orbitron">Ctrl + Q</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
+                            <span class="text-slate-400">전체 선택</span>
+                            <span class="text-[10px] text-emerald-400 font-black font-orbitron">Ctrl + A</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
+                            <span class="text-slate-400">파일 저장</span>
+                            <span class="text-[10px] text-violet-400 font-black font-orbitron">Ctrl + S</span>
                         </div>
                         <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
                             <span class="text-slate-400">선택 해제</span>
-                            <span class="text-[10px] text-emerald-400 font-black font-orbitron">W <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+D</span></span>
-                        </div>
-                        <div class="flex items-center justify-between border-b border-slate-800/50 pb-1">
-                            <span class="text-slate-400">레이어 복제</span>
-                            <span class="text-[10px] text-violet-400 font-black font-orbitron">E <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+J</span></span>
+                            <span class="text-[10px] text-rose-400 font-black font-orbitron">Ctrl + D</span>
                         </div>
                         <div class="flex items-center justify-between pb-1">
-                            <span class="text-slate-400">자유 변형</span>
-                            <span class="text-[10px] text-rose-400 font-black font-orbitron">R <span class="text-slate-500 font-normal font-mono text-[9px] ml-1">Ctrl+T</span></span>
+                            <span class="text-slate-400">실행 취소(되돌리기)</span>
+                            <span class="text-[10px] text-orange-400 font-black font-orbitron">Ctrl + Z</span>
                         </div>
                     </div>
 
@@ -577,7 +600,7 @@
                         <div class="space-y-3.5">
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+Shift+N (새 레이어 생성 / Q)</span>
+                                    <span>Ctrl+Q (종료) / Ctrl+A (전체 선택)</span>
                                     <span id="stat-csn" class="text-rose-400 font-bold">오답률 28%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -586,7 +609,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+D (선택 해제 / W)</span>
+                                    <span>Ctrl+S (저장) / Ctrl+D (선택 해제)</span>
                                     <span id="stat-cd" class="text-amber-400 font-bold">오답률 15%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -595,7 +618,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-xs mb-1 text-slate-300">
-                                    <span>Ctrl+J / Ctrl+T 조합 (E / R)</span>
+                                    <span>Ctrl+Z (실행 취소)</span>
                                     <span id="stat-other" class="text-emerald-400 font-bold">오답률 5%</span>
                                 </div>
                                 <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -616,8 +639,8 @@
                             </p>
                             
                             <ul class="text-xs space-y-2 text-slate-300">
-                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 오답률 높은 Q(Ctrl+Shift+N) 노드 배치율 +40% 증가</li>
-                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 성공률이 완벽한 W(Ctrl+D) 구간 속도 미세 조율</li>
+                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 오답률 높은 Ctrl+Q / Ctrl+A 노드 배치율 +40% 증가</li>
+                                <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 성공률이 완벽한 Ctrl+S / Ctrl+D 구간 속도 미세 조율</li>
                                 <li class="flex items-center"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 집중 공략 오답 단어 노트 복습 세션 편성</li>
                             </ul>
                         </div>
@@ -646,7 +669,7 @@
                     🏆
                 </div>
                 <h2 class="text-2xl font-black text-white">1강 단축키 트레이닝 수료!</h2>
-                <p class="text-indigo-300 text-xs mt-1">포토샵 레이어 편 야근 마왕 격파에 성공하셨습니다.</p>
+                <p class="text-indigo-300 text-xs mt-1">에디터 컨트롤 편 야근 마왕 격파에 성공하셨습니다.</p>
 
                 <!-- 도장 이미지 오버레이 (S랭크) -->
                 <div id="grade-badge" class="absolute top-6 right-6 transform rotate-12 border-4 border-emerald-500 text-emerald-400 font-black font-orbitron text-xl px-4 py-2 rounded-xl bg-emerald-500/10 shadow-lg select-none">
@@ -764,7 +787,7 @@
         let combo = 0;
         let maxCombo = 0;
         let playerHp = 100;
-        let bossHp = 100;
+        let bossHp = 100; // 절대값 고정
         
         let activeNotes = [];
         let noteIdCounter = 0;
@@ -772,31 +795,33 @@
         let gameLoopInterval = null;
         let spawnInterval = null;
         
-        // --- [수정] 난이도 하향 조정 (기존 4.0 -> 변경 2.4로 속도 대폭 감속) ---
-        let baseSpeed = 2.4;
-        let currentSpeedFactor = 2.4; 
-        let noteSpawnSpeed = 2200; // ms (노트 간 간격도 여유롭게 제공)
+        // --- 낙하 기본 속도 (기본 속도 감속 및 콤보 연계 설계) ---
+        let baseSpeed = 1.4;
+        let currentSpeedFactor = 1.4; 
+        let noteSpawnSpeed = 2000; // ms 
 
         // 판정 결과 누적기
         let perfectCount = 0;
         let greatCount = 0;
         let missCount = 0;
 
-        // 게임용 단축키 매핑 정보 (스크린샷 매칭 및 권장 물리 단일키 매핑)
-        const lanes = [0, 1, 2, 3];
+        // 게임용 임의 매핑 단축키 정보 (5레인)
+        const lanes = [0, 1, 2, 3, 4];
         const shortcutMapping = [
-            { id: 0, text: 'Ctrl+Shift+N', comboName: 'Ctrl+Shift+N', fallbackKey: 'q', desc: '새 레이어 생성', color: '#38bdf8', keyColorClass: 'key-active-blue' },
-            { id: 1, text: 'Ctrl+D', comboName: 'Ctrl+D', fallbackKey: 'w', desc: '선택 영역 해제', color: '#10b981', keyColorClass: 'key-active-green' },
-            { id: 2, text: 'Ctrl+J', comboName: 'Ctrl+J', fallbackKey: 'e', desc: '레이어 복제', color: '#8b5cf6', keyColorClass: 'key-active-purple' },
-            { id: 3, text: 'Ctrl+T', comboName: 'Ctrl+T', fallbackKey: 'r', desc: '자유 변형', color: '#f43f5e', keyColorClass: 'key-active-rose' }
+            { id: 0, text: 'Ctrl+Q', comboName: 'Ctrl+Q', fallbackKey: 'q', desc: '프로젝트 종료', color: '#38bdf8', keyColorClass: 'key-active-blue' },
+            { id: 1, text: 'Ctrl+A', comboName: 'Ctrl+A', fallbackKey: 'a', desc: '클립 전체 선택', color: '#10b981', keyColorClass: 'key-active-green' },
+            { id: 2, text: 'Ctrl+S', comboName: 'Ctrl+S', fallbackKey: 's', desc: '작업 파일 저장', color: '#8b5cf6', keyColorClass: 'key-active-purple' },
+            { id: 3, text: 'Ctrl+D', comboName: 'Ctrl+D', fallbackKey: 'd', desc: '선택 영역 해제', color: '#f43f5e', keyColorClass: 'key-active-rose' },
+            { id: 4, text: 'Ctrl+Z', comboName: 'Ctrl+Z', fallbackKey: 'z', desc: '실행 취소(되돌리기)', color: '#f97316', keyColorClass: 'key-active-orange' }
         ];
 
         // AI 리포트 저장을 위한 오답/정확도 트래커
         let statTracker = {
-            'Ctrl+Shift+N': { total: 0, miss: 0 },
+            'Ctrl+Q': { total: 0, miss: 0 },
+            'Ctrl+A': { total: 0, miss: 0 },
+            'Ctrl+S': { total: 0, miss: 0 },
             'Ctrl+D': { total: 0, miss: 0 },
-            'Ctrl+J': { total: 0, miss: 0 },
-            'Ctrl+T': { total: 0, miss: 0 }
+            'Ctrl+Z': { total: 0, miss: 0 }
         };
 
         // 3-2-1 카운트다운 함수
@@ -843,10 +868,11 @@
             missCount = 0;
             
             statTracker = {
-                'Ctrl+Shift+N': { total: 0, miss: 0 },
+                'Ctrl+Q': { total: 0, miss: 0 },
+                'Ctrl+A': { total: 0, miss: 0 },
+                'Ctrl+S': { total: 0, miss: 0 },
                 'Ctrl+D': { total: 0, miss: 0 },
-                'Ctrl+J': { total: 0, miss: 0 },
-                'Ctrl+T': { total: 0, miss: 0 }
+                'Ctrl+Z': { total: 0, miss: 0 }
             };
 
             updateGameUI();
@@ -857,7 +883,10 @@
             });
 
             const judgmentText = document.getElementById('judgment-text');
-            if (judgmentText) judgmentText.innerText = '';
+            if (judgmentText) {
+                judgmentText.innerText = '';
+                judgmentText.className = 'text-3xl font-black tracking-widest uppercase absolute bottom-24 left-1/2 transform -translate-x-1/2 pointer-events-none z-30';
+            }
 
             const playLogList = document.getElementById('play-log-list');
             if (playLogList) playLogList.innerHTML = '<div class="text-slate-500 italic text-center py-4">전장 분석기 가동 중...</div>';
@@ -873,15 +902,6 @@
             // 노트 프레임 제어 루프
             gameLoopInterval = setInterval(() => {
                 if (!gameActive) return;
-                
-                // --- [수정] 속도 점진적 가속치 하향 조정 (기존 0.002 -> 변경 0.0008로 속도 상승 폭 완화) ---
-                if (currentSpeedFactor < 3.8) {
-                    currentSpeedFactor += 0.0008;
-                    const speedMeter = document.getElementById('speed-meter');
-                    if (speedMeter) {
-                        speedMeter.innerText = `SPEED: ${(currentSpeedFactor / baseSpeed).toFixed(1)}x`;
-                    }
-                }
 
                 activeNotes.forEach(note => {
                     note.position += currentSpeedFactor;
@@ -890,8 +910,8 @@
                         noteElement.style.top = `${note.position}px`;
                     }
 
-                    // 판정선 하단(300px)에 완전히 닿아버린 경우 MISS 처리
-                    if (note.position > 295 && !note.isJudged) {
+                    // [수정] 보드 끝(하단)이 판정선(250px)에 닿으면 바로 즉시 MISS 처리 (보드 높이 36px 고려: 250 - 36 = 214)
+                    if (note.position >= 214 && !note.isJudged) {
                         triggerMiss(note.id);
                     }
                 });
@@ -905,7 +925,7 @@
         }
 
         function spawnNote() {
-            const randomLane = Math.floor(Math.random() * 4);
+            const randomLane = Math.floor(Math.random() * 5); // 5개 레인 중 생성
             const shortcutInfo = shortcutMapping[randomLane];
 
             const noteId = noteIdCounter++;
@@ -923,13 +943,11 @@
             activeNotes.push(noteData);
             statTracker[shortcutInfo.comboName].total += 1; // AI 통계용 카운트
 
+            // 단축키 힌트(Ctrl 어쩌구)를 완전히 배제하고 오직 기능 설명만 표시하는 보드
             const noteHtml = `
-                <div id="note-${noteId}" class="absolute left-1/2 transform -translate-x-1/2 w-[90%] py-2.5 px-2 bg-slate-900/95 rounded-xl border-2 text-center select-none pointer-events-none transition-all duration-75 flex flex-col items-center shadow-lg" 
-                     style="top: 0px; border-color: ${noteData.color}; box-shadow: 0 0 15px ${noteData.color}40;">
-                    <div class="text-[9px] font-black uppercase text-white tracking-wide bg-slate-800/80 px-2 py-0.5 rounded flex items-center gap-1">
-                        <span style="color: ${noteData.color}">Ps</span> ${noteData.label}
-                    </div>
-                    <div class="text-xs font-black font-mono mt-1" style="color: ${noteData.color}">${noteData.shortcut}</div>
+                <div id="note-${noteId}" class="absolute left-1/2 transform -translate-x-1/2 w-[92%] h-[36px] bg-slate-900/95 rounded-lg border-2 flex items-center justify-center text-center select-none pointer-events-none transition-all duration-75 shadow-lg" 
+                     style="top: 0px; border-color: ${noteData.color}; box-shadow: 0 0 10px ${noteData.color}40;">
+                    <span class="text-[10px] font-bold text-white tracking-tight px-1">${noteData.label}</span>
                 </div>
             `;
             
@@ -953,19 +971,13 @@
 
             if (matchedNotes.length === 0) return;
 
-            // 판정선에 가장 근접한 노트 하나 타겟팅
+            // 판정선 전 최하단(가장 멀리 내려간) 노트를 즉시 PERFECT 타격 판정
             matchedNotes.sort((a, b) => b.position - a.position);
             const targetNote = matchedNotes[0];
 
-            // 느려진 속도에 맞춤화된 완벽 판정 기준 스케일 (약 250px)
-            const diff = Math.abs(targetNote.position - 245);
-
-            if (diff < 28) {
+            // 보드가 판정선을 넘지 않은 유효 구역 내에 있다면 나타나자마자 언제든 즉시 입력 성공
+            if (targetNote.position < 254) {
                 triggerJudgement('PERFECT', targetNote);
-            } else if (diff < 55) {
-                triggerJudgement('GREAT', targetNote);
-            } else if (diff < 82) {
-                triggerJudgement('MISS', targetNote);
             }
         }
 
@@ -975,43 +987,91 @@
             checkShortcutInput(mapped.text, laneIndex);
         }
 
+        // 투사체 발사 및 보스 피해량 산출 시각화
+        function launchProjectile(laneIndex, startY, damageAmount) {
+            const gameContainer = document.getElementById('screen-game');
+            if (!gameContainer) return;
+
+            // 하얗게 빛나는 작은 구체 생성
+            const projectile = document.createElement('div');
+            projectile.className = 'absolute w-3.5 h-3.5 bg-white rounded-full shadow-[0_0_12px_5px_#ffffff] z-40 transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1)';
+            
+            const laneEl = document.getElementById(`lane-${laneIndex}`);
+            const bossEl = document.getElementById('boss-sprite');
+            
+            if (!laneEl || !bossEl) return;
+            
+            const gameRect = gameContainer.getBoundingClientRect();
+            const laneRect = laneEl.getBoundingClientRect();
+            const bossRect = bossEl.getBoundingClientRect();
+            
+            const startX = (laneRect.left + laneRect.width / 2) - gameRect.left;
+            const startYPos = (laneRect.top + startY) - gameRect.top;
+            
+            const targetX = (bossRect.left + bossRect.width / 2) - gameRect.left;
+            const targetY = (bossRect.top + bossRect.height / 2) - gameRect.top;
+            
+            projectile.style.left = `${startX}px`;
+            projectile.style.top = `${startYPos}px`;
+            
+            gameContainer.appendChild(projectile);
+            
+            // 다음 프레임에 보스로 유도 발사 애니메이션 가동
+            requestAnimationFrame(() => {
+                projectile.style.left = `${targetX}px`;
+                projectile.style.top = `${targetY}px`;
+                projectile.style.transform = 'scale(0.8)';
+            });
+            
+            // [FIX] 보스에 도달 시 폭발 효과 및 실제 데미지 적용
+            // 기존 transitionend는 속성 변경마다 중복 호출될 수 있어, 500ms(duration-500) 후 딱 한 번 실행되도록 setTimeout으로 수정
+            setTimeout(() => {
+                projectile.remove();
+                
+                bossHp = Math.max(0, bossHp - damageAmount);
+                showDamage(damageAmount);
+                updateGameUI();
+                checkGameEndStatus();
+            }, 500);
+        }
+
         function triggerJudgement(type, note) {
             note.isJudged = true;
             
-            // 노트 엘리먼트 제거
             const noteEl = document.getElementById(`note-${note.id}`);
+            const notePosition = note.position;
             if (noteEl) noteEl.remove();
 
             // 메모리 해제
             activeNotes = activeNotes.filter(n => n.id !== note.id);
 
-            // 레이저 판정 라인 전용 플래시 불꽃 이펙트
+            // 타격 스파크
             createHitSpark(note.lane, type);
 
             // 성적 갱신 및 콤보 팝 애니메이션 연출
-            const judgmentText = document.getElementById('judgment-text');
-            if (judgmentText) {
-                judgmentText.className = 'text-3xl font-black tracking-widest uppercase absolute bottom-24 left-1/2 transform -translate-x-1/2 pointer-events-none z-30'; // 초기화
+            // [수정] 성적 갱신 및 콤보 팝 애니메이션 연출
+            if (type === 'PERFECT') {
+                const scoreGain = 100 + (combo * 100);
+                score += scoreGain;
 
-                if (type === 'PERFECT') {
-                    score += 1000;
-                    combo++;
-                    perfectCount++;
-                    bossHp = Math.max(0, bossHp - 12);
-                    judgmentText.innerText = 'PERFECT';
-                    judgmentText.className += ' text-sky-400 judgment-pop';
-                    showDamage(12);
-                    addPlayLog(note.label, 'PERFECT', '#38bdf8');
-                } else if (type === 'GREAT') {
-                    score += 500;
-                    combo++;
-                    greatCount++;
-                    bossHp = Math.max(0, bossHp - 6);
-                    judgmentText.innerText = 'GREAT';
-                    judgmentText.className += ' text-emerald-400 judgment-pop';
-                    showDamage(6);
-                    addPlayLog(note.label, 'GREAT', '#10b981');
+                // [수정] 보스 타격 데미지: 공식 3 + 콤보수 적용
+                const dmgAmount = 3 + combo;
+
+                combo++;
+                perfectCount++;
+
+                // 콤보 비례 자동 가속 설계 (콤보마다 0.08씩 점진적 누적 속도 상승)
+                currentSpeedFactor = baseSpeed + (combo * 0.08);
+
+                // 하얀색 유도 구체 투사체 발사 (데미지는 도착 시 적용)
+                launchProjectile(note.lane, notePosition, dmgAmount);
+
+                const judgmentText = document.getElementById('judgment-text');
+                if (judgmentText) {
+                    judgmentText.className = 'text-3xl font-black tracking-widest uppercase absolute bottom-24 left-1/2 transform -translate-x-1/2 pointer-events-none z-30 text-sky-400 judgment-pop';
+                    judgmentText.innerText = `PERFECT! +${scoreGain}`;
                 }
+                addPlayLog(note.label, `PERFECT (+${scoreGain})`, '#38bdf8');
             }
 
             if (combo > maxCombo) {
@@ -1026,7 +1086,6 @@
             }
 
             updateGameUI();
-            checkGameEndStatus();
         }
 
         function triggerMiss(noteId) {
@@ -1043,8 +1102,12 @@
                 activeNotes = activeNotes.filter(n => n.id !== noteId);
             }
 
+            // 미스 시 콤보 및 낙하 속도 초기화
             combo = 0;
-            playerHp = Math.max(0, playerHp - 15); // 미스 시 멘탈 붕괴 에너지 타격
+            currentSpeedFactor = baseSpeed;
+            
+            // [수정] 피격 페널티 15 -> 5로 완화
+            playerHp = Math.max(0, playerHp - 5); 
 
             const judgmentText = document.getElementById('judgment-text');
             if (judgmentText) {
@@ -1052,7 +1115,7 @@
                 judgmentText.innerText = 'MISS';
             }
 
-            // 마왕이 놀리는 도발 애니메이션으로 렌더링 변경
+            // 마왕 도발 애니메이션 전환
             const bossSprite = document.getElementById('boss-sprite');
             if (bossSprite) {
                 bossSprite.innerHTML = `
@@ -1060,7 +1123,6 @@
                         <circle cx="50" cy="55" r="30" fill="#2d1b4e" stroke="#6d28d9" stroke-width="2" />
                         <circle cx="40" cy="50" r="4.5" fill="#f43f5e" />
                         <circle cx="60" cy="50" r="4.5" fill="#f43f5e" />
-                        <!-- Tongue out mocking mouth -->
                         <path d="M 44 60 Q 50 78 56 60" fill="#f43f5e" />
                         <path d="M 30 35 Q 18 16 35 26" fill="#f43f5e" />
                         <path d="M 70 35 Q 82 16 65 26" fill="#f43f5e" />
@@ -1107,8 +1169,9 @@
             if (laneIndex === 1) spark.style.background = 'radial-gradient(circle, #fff 0%, #10b981 50%, transparent 75%)';
             if (laneIndex === 2) spark.style.background = 'radial-gradient(circle, #fff 0%, #8b5cf6 50%, transparent 75%)';
             if (laneIndex === 3) spark.style.background = 'radial-gradient(circle, #fff 0%, #f43f5e 50%, transparent 75%)';
+            if (laneIndex === 4) spark.style.background = 'radial-gradient(circle, #fff 0%, #f97316 50%, transparent 75%)';
             
-            const leftPercents = [12.5, 37.5, 62.5, 87.5];
+            const leftPercents = [10, 30, 50, 70, 90];
             spark.style.left = `calc(${leftPercents[laneIndex]}% - 55px)`;
             spark.style.bottom = '15px'; 
             
@@ -1124,14 +1187,12 @@
             damageEl.className = 'damage-pop text-yellow-400 font-orbitron font-black text-3xl absolute z-30';
             damageEl.innerText = `-${amount}`;
             
-            // 난수 분사각도
             damageEl.style.left = `${Math.floor(Math.random() * 50) - 25}px`;
             container.appendChild(damageEl);
 
             const bossSprite = document.getElementById('boss-sprite');
             if (bossSprite) {
                 bossSprite.classList.add('boss-shake');
-                // 빨갛게 피격 상태로 묘사
                 bossSprite.innerHTML = `
                     <svg class="w-24 h-24" viewBox="0 0 100 100">
                         <circle cx="50" cy="55" r="30" fill="#b91c1c" stroke="#dc2626" stroke-width="2" />
@@ -1179,17 +1240,18 @@
         }
 
         function updateGameUI() {
+            // 점수창 및 콤보 실시간 반영
             const scoreDisplay = document.getElementById('score-display');
             if (scoreDisplay) scoreDisplay.innerText = String(score).padStart(6, '0');
 
             const comboMain = document.getElementById('combo-display-main');
             if (comboMain) comboMain.innerText = combo;
 
-            // HP 바 렌더링
+            // HP 바 렌더링 (보스 HP를 100 기점으로 1:1 차감 표시)
             const bossHpBar = document.getElementById('boss-hp-bar');
             const bossHpText = document.getElementById('boss-hp-text');
             if (bossHpBar) bossHpBar.style.width = `${bossHp}%`;
-            if (bossHpText) bossHpText.innerText = `${bossHp}%`;
+            if (bossHpText) bossHpText.innerText = `${bossHp}`;
 
             const playerHpBar = document.getElementById('player-hp-bar');
             const playerHpText = document.getElementById('player-hp-text');
@@ -1210,6 +1272,12 @@
                 let totalNotes = totalHit + missCount;
                 let accuracy = totalNotes > 0 ? Math.round((totalHit / totalNotes) * 100) : 100;
                 accuracyDisplay.innerText = `${accuracy}%`;
+            }
+
+            // 실시간 배속 상태 정보 출력
+            const speedMeter = document.getElementById('speed-meter');
+            if (speedMeter) {
+                speedMeter.innerText = `SPEED: ${(currentSpeedFactor / baseSpeed).toFixed(1)}x`;
             }
         }
 
@@ -1244,8 +1312,8 @@
         function generateAIReport(isVictory) {
             const badgEl = document.getElementById('grade-badge');
             
-            let totalMiss = statTracker['Ctrl+Shift+N'].miss + statTracker['Ctrl+D'].miss + statTracker['Ctrl+J'].miss + statTracker['Ctrl+T'].miss;
-            let totalSpawn = statTracker['Ctrl+Shift+N'].total + statTracker['Ctrl+D'].total + statTracker['Ctrl+J'].total + statTracker['Ctrl+T'].total;
+            let totalMiss = statTracker['Ctrl+Q'].miss + statTracker['Ctrl+A'].miss + statTracker['Ctrl+S'].miss + statTracker['Ctrl+D'].miss + statTracker['Ctrl+Z'].miss;
+            let totalSpawn = statTracker['Ctrl+Q'].total + statTracker['Ctrl+A'].total + statTracker['Ctrl+S'].total + statTracker['Ctrl+D'].total + statTracker['Ctrl+Z'].total;
             let accuracy = totalSpawn > 0 ? Math.round(((totalSpawn - totalMiss) / totalSpawn) * 100) : 100;
             
             let grade = 'F';
@@ -1267,12 +1335,12 @@
             }
 
             // 통계 바 업그레이드
-            updateStatBar('csn', statTracker['Ctrl+Shift+N']);
-            updateStatBar('cd', statTracker['Ctrl+D']);
+            updateStatBar('csn', statTracker['Ctrl+Q']);
+            updateStatBar('cd', statTracker['Ctrl+A']);
             
-            // 기타 병합 연합 오답 산출
-            let otherMiss = statTracker['Ctrl+J'].miss + statTracker['Ctrl+T'].miss;
-            let otherSpawn = statTracker['Ctrl+J'].total + statTracker['Ctrl+T'].total;
+            // 기타 병합 연합 오답 산출 (S, D, Z 복합 산출)
+            let otherMiss = statTracker['Ctrl+S'].miss + statTracker['Ctrl+D'].miss + statTracker['Ctrl+Z'].miss;
+            let otherSpawn = statTracker['Ctrl+S'].total + statTracker['Ctrl+D'].total + statTracker['Ctrl+Z'].total;
             let otherRate = otherSpawn > 0 ? Math.round((otherMiss / otherSpawn) * 100) : 0;
             const statOther = document.getElementById('stat-other');
             const statOtherBar = document.getElementById('stat-other-bar');
@@ -1286,15 +1354,14 @@
                     reportEl.innerHTML = `
                         "수강생 홍길동님, 최종 종합 단축키 연산 정확도는 <strong class='text-emerald-400'>${accuracy}%</strong>입니다. 
                         마왕 퇴치에 성공하여 손가락 근육 반사 신경이 완전히 깨어났음을 확인했습니다. 
-                        특히 <strong class='text-indigo-300'>Ctrl+J(레이어 복제)</strong>와 <strong class='text-indigo-300'>Ctrl+D</strong>는 입력 지연 시간 0.2초 이하로 극도로 우수합니다. 
-                        다만 3개의 복합키인 <strong>Ctrl+Shift+N</strong>에서 손가락 꼬임 지연 양상이 미세 포착되었습니다."
+                        특히 콤보 공격을 통해 최대 대미지를 우수하게 누적시켰습니다. 
+                        오직 기능설명만 보고 알맞은 단축키를 떠올리는 암기 피지컬 수준이 상위 5%에 도달했습니다."
                     `;
                 } else {
                     reportEl.innerHTML = `
                         "아쉽게 야근 마왕 격파에는 실패하였으나, 정확도 <strong class='text-amber-400'>${accuracy}%</strong>로 기초 이해도는 매우 튼튼합니다. 
-                        실패 요인은 마우스 위주의 습관으로 인한 연상 간섭 현상입니다. 
-                        특히 <strong class='text-rose-400'>Ctrl+Shift+N</strong> 새 레이어 생성 키 입력 속도가 다소 느려 보스에게 턴을 넘겨주었습니다. 
-                        AI가 이 취약 단축키를 중점 편성한 맞춤 복습 스테이지를 생성했으니 재도전하세요!"
+                        보드가 판정선에 닿자마자 생기는 멘탈 대미지 대처 속도가 조금 늦었습니다. 
+                        AI가 취약 단축키를 중점 편성한 맞춤 복습 스테이지를 생성했으니 재도전하세요!"
                     `;
                 }
             }
@@ -1308,25 +1375,41 @@
             if (statBarEl) statBarEl.style.width = `${rate}%`;
         }
 
+        // 게임 리셋 및 강의창 복귀
         function resetGameAndRestart() {
             changeScreen('screen-lecture');
             resetGameValues();
         }
 
-        // --- 물리 및 가상 기계식 키보드 시각 제어기 ---
+        // --- 물리 및 가상 기계식 키보드 풀 매핑 컬러 연동 제어기 ---
         function highlightVirtualKey(keySymbol, active) {
-            const keyElement = document.getElementById(`key-${keySymbol.toLowerCase()}`);
+            let targetId = `key-${keySymbol.toLowerCase()}`;
+            
+            // 특수 키 아이디 매핑 치환
+            if (keySymbol === ' ') targetId = 'key-space';
+            if (keySymbol === 'control' || keySymbol === 'ctrl') targetId = 'key-ctrl';
+            if (keySymbol === 'shift') targetId = 'key-shift';
+            if (keySymbol === 'alt') targetId = 'key-alt';
+            if (keySymbol === 'meta') targetId = 'key-meta';
+            if (keySymbol === 'tab') targetId = 'key-tab';
+            if (keySymbol === 'capslock' || keySymbol === 'caps') targetId = 'key-caps';
+            if (keySymbol === 'enter') targetId = 'key-enter';
+            if (keySymbol === ',' || keySymbol === '<') targetId = 'key-comma';
+            if (keySymbol === '.' || keySymbol === '>') targetId = 'key-period';
+
+            const keyElement = document.getElementById(targetId);
             if (keyElement) {
                 if (active) {
-                    // 기본 파란 불빛으로 점등
-                    keyElement.classList.add('key-glow');
-                    // 특수 레인 컬러와 연동되는 특수 키 캡 점등 연출 보강
-                    if (keySymbol === 'q' || keySymbol === 'n') keyElement.classList.add('key-active-blue');
-                    if (keySymbol === 'w' || keySymbol === 'd') keyElement.classList.add('key-active-green');
-                    if (keySymbol === 'e' || keySymbol === 'j') keyElement.classList.add('key-active-purple');
-                    if (keySymbol === 'r' || keySymbol === 't') keyElement.classList.add('key-active-rose');
+                    // 키보드를 누르면 어떤 키든 고급스러운 Indigo 광원 스타일 활성화
+                    keyElement.style.backgroundColor = '#4f46e5';
+                    keyElement.style.color = '#ffffff';
+                    keyElement.style.boxShadow = '0 0 15px #4f46e5, inset 0 0 5px #ffffff';
+                    keyElement.style.transform = 'translateY(2px)';
                 } else {
-                    keyElement.classList.remove('key-glow', 'key-active-blue', 'key-active-green', 'key-active-purple', 'key-active-rose');
+                    keyElement.style.backgroundColor = '';
+                    keyElement.style.color = '';
+                    keyElement.style.boxShadow = '';
+                    keyElement.style.transform = '';
                 }
             }
         }
@@ -1335,49 +1418,41 @@
         window.addEventListener('keydown', (e) => {
             const key = e.key.toLowerCase();
             const isCtrl = e.ctrlKey || e.metaKey;
-            const isShift = e.shiftKey;
 
-            // 기계식 키보드 하이라이팅 연계
-            if (isCtrl) highlightVirtualKey('ctrl', true);
-            if (isShift) highlightVirtualKey('shift', true);
+            // 기계식 키보드 전체 풀 컬러 하이라이팅 연계
             highlightVirtualKey(e.key, true);
 
             if (!gameActive) return;
 
-            // 브라우저 기본 단축키 간섭 강제 차단 (Ctrl+D, Ctrl+J, Ctrl+T 등 브라우저 단에서 통제 가능한 키)
-            if (isCtrl && (key === 'd' || key === 'j' || key === 't' || key === 'n' || key === 'a' || key === 's')) {
+            // 브라우저 기본 단축키 간섭 강제 차단 (Ctrl+Q, Ctrl+A, Ctrl+S, Ctrl+D, Ctrl+Z 완벽 차단)
+            if (isCtrl && (key === 'q' || key === 'a' || key === 's' || key === 'd' || key === 'z')) {
                 e.preventDefault();
                 e.stopPropagation();
             }
 
-            // [1] 실제 포토샵 단축키 조합 판정 (작동 가능한 브라우저 단축키 차단 성공 시 매칭)
+            // 실제 가상 임의 마스터 단축키 조합 판정
             let detectedShortcut = null;
-            if (isCtrl && isShift && key === 'n') {
-                detectedShortcut = 'Ctrl+Shift+N';
-            } else if (isCtrl && !isShift && key === 'd') {
+            if (isCtrl && key === 'q') {
+                detectedShortcut = 'Ctrl+Q';
+            } else if (isCtrl && key === 'a') {
+                detectedShortcut = 'Ctrl+A';
+            } else if (isCtrl && key === 's') {
+                detectedShortcut = 'Ctrl+S';
+            } else if (isCtrl && key === 'd') {
                 detectedShortcut = 'Ctrl+D';
-            } else if (isCtrl && !isShift && key === 'j') {
-                detectedShortcut = 'Ctrl+J';
-            } else if (isCtrl && !isShift && key === 't') {
-                detectedShortcut = 'Ctrl+T';
+            } else if (isCtrl && key === 'z') {
+                detectedShortcut = 'Ctrl+Z';
             }
 
             if (detectedShortcut) {
-                checkShortcutInput(detectedShortcut, -1);
-                return;
+                const laneIdx = shortcutMapping.findIndex(m => m.text === detectedShortcut);
+                if (laneIdx !== -1) {
+                    checkShortcutInput(detectedShortcut, laneIdx);
+                }
             }
-
-            // [2] 쾌적한 데모/테스트 및 브라우저 차단 우회를 위한 단일 대응 키 (Q, W, E, R)
-            if (key === 'q') checkShortcutInput(null, 0);
-            if (key === 'w') checkShortcutInput(null, 1);
-            if (key === 'e') checkShortcutInput(null, 2);
-            if (key === 'r') checkShortcutInput(null, 3);
         });
 
         window.addEventListener('keyup', (e) => {
-            const key = e.key.toLowerCase();
-            highlightVirtualKey('ctrl', e.ctrlKey);
-            highlightVirtualKey('shift', e.shiftKey);
             highlightVirtualKey(e.key, false);
         });
 
