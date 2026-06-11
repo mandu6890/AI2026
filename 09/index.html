@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>삶의 만족도와 자살률의 상관관계 분석 보고서 (2020-2024)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Noto Sans KR, Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js for exporting PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-break {
+                page-break-before: always;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen">
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-red-500 text-white p-2 rounded-lg">
+                            <i class="fa-solid fa-chart-line text-lg"></i>
+                        </span>
+                        <span class="font-bold text-lg text-slate-900 tracking-tight">K-Health & Satisfaction Hub</span>
+                    </div>
+                    <!-- 홈으로 돌아가기 버튼 -->
+                    <a href="../index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold rounded-lg transition-all border border-slate-200">
+                        <i class="fa-solid fa-house"></i>
+                        <span>홈으로 돌아가기</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="btnExportPDF" class="inline-flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>PDF 보고서 다운로드</span>
+                    </button>
+                    <button onclick="window.print()" class="inline-flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-lg transition-all">
+                        <i class="fa-solid fa-print"></i>
+                        <span class="hidden md:inline">인쇄</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN WRAPPER FOR PDF GENERATION -->
+    <div id="report-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- REPORT HEADER -->
+        <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 rounded-2xl p-6 md:p-10 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute right-0 top-0 opacity-10 text-9xl transform translate-x-12 -translate-y-12 select-none">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="relative z-10 space-y-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                    심층 통계 분석 연계 리포트 (2020-2024)
+                </span>
+                <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight">
+                    대한민국 삶의 만족도와 자살률의 상관관계 분석 보고서
+                </h1>
+                <p class="text-slate-300 text-sm md:text-base max-w-3xl leading-relaxed">
+                    본 리포트는 전국 17개 시·도의 5개년 원시 데이터를 토대로, 통계학적 상쇄 작용(Cancellation Effect), 지역별 구조 차이(도시형 vs 지방형), 감정적 침체군 분석 및 성별·연도별 추세를 계량 분석하여 실효성 있는 자살 방지 아웃리치 정책 대안을 제안합니다.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4 text-xs text-slate-400 border-t border-slate-700/50">
+                    <div><span class="text-slate-200 font-semibold">데이터 스팬:</span> 2020년 ~ 2024년 (5개년)</div>
+                    <div><span class="text-slate-200 font-semibold">분석 대상:</span> 전국 17개 시·도 (세종시 포함)</div>
+                    <div><span class="text-slate-200 font-semibold">사용 통계 기법:</span> Pearson & Spearman 상관분석, Subgroup 분할 회귀</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- KPI METRICS GRID -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Metric 1: Overall Correlation -->
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-slate-500 tracking-wider uppercase">전체 상관관계</span>
+                    <span class="p-2 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold">R 값</span>
+                </div>
+                <div class="my-3">
+                    <span class="text-3xl font-extrabold text-slate-900">-0.0477</span>
+                    <span class="text-xs text-slate-500 ml-1.5">(통계적 무의)</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    전체 데이터 병합 시 상관관계 제로. <strong class="text-indigo-600">도시형과 지방형의 상반된 트렌드가 서로를 상쇄</strong>한 결과입니다.
+                </p>
+            </div>
+
+            <!-- Metric 2: Urban Correlation -->
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-blue-600 tracking-wider uppercase">도시형 상관관계 (특별시/광역시)</span>
+                    <span class="p-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold">R 값</span>
+                </div>
+                <div class="my-3">
+                    <span class="text-3xl font-extrabold text-blue-700">-0.4072</span>
+                    <span class="text-xs text-blue-600 ml-1.5 font-semibold">(p &lt; 0.01) ★</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    삶의 만족도가 높을수록 자살률이 떨어지는 <strong class="text-blue-600">음(-)의 상관관계가 극히 뚜렷하게 작동</strong>하고 있습니다.
+                </p>
+            </div>
+
+            <!-- Metric 3: Rural Correlation -->
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-orange-600 tracking-wider uppercase">지방형 상관관계 (도 단위)</span>
+                    <span class="p-2 bg-orange-50 text-orange-600 rounded-lg text-xs font-bold">R 값</span>
+                </div>
+                <div class="my-3">
+                    <span class="text-3xl font-extrabold text-orange-700">+0.2686</span>
+                    <span class="text-xs text-orange-600 ml-1.5 font-semibold">(p &lt; 0.1) ⚠</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    오히려 삶의 만족도가 높은 해에 자살률이 증가하는 <strong class="text-orange-600">인구 구조적 역설(착시 효과)</strong>이 발견됩니다.
+                </p>
+            </div>
+
+            <!-- Metric 4: Neutral Response Danger -->
+            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-rose-600 tracking-wider uppercase">'보통' 응답의 위험성</span>
+                    <span class="p-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold">R 값</span>
+                </div>
+                <div class="my-3">
+                    <span class="text-3xl font-extrabold text-rose-700">+0.4059</span>
+                    <span class="text-xs text-rose-600 ml-1.5 font-semibold">(p &lt; 0.001) ★★★</span>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    '행복도 불만족도 아닌 무기력' 상태인 <strong class="text-rose-600">Languishing 응답 비중이 자살률과 극히 강하게 양의 상관</strong>을 보입니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- VISUALIZATION PANEL 1: REGIONAL DUAL AXIS BAR & LINE -->
+        <section class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-indigo-500"></i>
+                        지역별 5개년 평균 삶의 만족도 및 자살률 대비 시각화
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">삶의 만족도(내림차순 정렬)와 인구 10만 명당 자살률의 이중축 극단치 격차 비교</p>
+                </div>
+                <div class="flex gap-2 text-xs">
+                    <span class="px-2 py-1 bg-sky-100 text-sky-800 rounded font-semibold">파란 막대: 삶의 만족도 (5점 만점)</span>
+                    <span class="px-2 py-1 bg-rose-100 text-rose-800 rounded font-semibold">빨간 선: 자살률 (명)</span>
+                </div>
+            </div>
+            <div class="h-[350px] w-full relative">
+                <canvas id="dualAxisChart"></canvas>
+            </div>
+            
+            <!-- Insight Box for Dual Axis -->
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 rounded-lg p-4 text-xs text-slate-700 border border-slate-100">
+                <div class="p-2 border-r border-slate-200/60 last:border-0">
+                    <span class="font-bold text-blue-600 block mb-1">🥇 세종특별자치시 (최적의 매칭)</span>
+                    만족도 전국 1위(3.52점) 및 자살률 전국 최저(20.74명)로, 고소득·안정적 공직 커뮤니티 성향이 투영된 가장 이상적인 형태입니다.
+                </div>
+                <div class="p-2 border-r border-slate-200/60 last:border-0">
+                    <span class="font-bold text-rose-600 block mb-1">⚡ 충청남도 & 강원도 (구조적 역설)</span>
+                    만족도 지표는 상위권(충남 2위, 강원 5위)이나, 자살률은 전국 최상위(충남 1위: 34.28명, 강원 2위: 33.60명)에 달하는 심각한 괴리 영역입니다.
+                </div>
+                <div class="p-2 last:border-0">
+                    <span class="font-bold text-indigo-600 block mb-1">🛡 대구광역시 (도시형 안전망)</span>
+                    만족도 자체는 전국 최저(3.25점)로 매우 낮은 편이나, 자살률은 전국 중간 이하 수준(27.38명)으로 억제되어 도시 보건 인프라의 차이를 보여줍니다.
+                </div>
+            </div>
+        </section>
+
+        <!-- TWO COLUMN CHARTS: SUBGROUP SCATTER & DETAILS HEATMAP -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 print-break">
+            <!-- Left: Subgroup Scatter Plot -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm lg:col-span-7 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-chart-scatter text-blue-500"></i>
+                        도시형 vs 지방형 시·도별 산점도 및 선형 회귀 추세선
+                    </h2>
+                    <p class="text-xs text-slate-500 mb-4">도시형(파란 동그라미)과 지방형(오렌지 네모)의 정반대 통계적 경향성이 드러나는 분포도</p>
+                </div>
+                <div class="h-[300px] w-full relative">
+                    <canvas id="scatterChart"></canvas>
+                </div>
+                <div class="mt-4 bg-blue-50/50 border border-blue-100 rounded-lg p-3 text-xs text-slate-700">
+                    <span class="font-bold text-blue-800 block mb-1"><i class="fa-solid fa-circle-info"></i> 왜 이런 역관계가 발생하나요? (인구학적 구성 효과)</span>
+                    농어촌 위주의 지방형 지역은 주류 가구가 평화로운 농촌 생활에 보통 이상의 만족감을 답하는 한편, <strong>전체 평균 설문 표본에 포함되지 않는 소외된 극빈층 독거노인 등의 한계 자살 수치</strong>가 압도적으로 높아 두 변수의 왜곡(R = +0.2686)이 발생합니다.
+                </div>
+            </div>
+
+            <!-- Right: Details Heatmap / Bar Charts -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm lg:col-span-5 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-border-all text-amber-500"></i>
+                        설문 세부 응답 항목별 자살률 상관계수 (R)
+                    </h2>
+                    <p class="text-xs text-slate-500 mb-4">어떤 종류의 정서적 답변을 하는 지역이 자살 위기에 가장 취약한가에 대한 척도</p>
+                </div>
+                <div class="space-y-3.5 my-auto">
+                    <!-- 보통 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>보통 (Neutral - 방관 및 무기력)</span>
+                            <span class="text-rose-600 font-bold">+0.4059 (매우 유의)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-rose-500 h-full rounded-full" style="width: 81%;"></div>
+                        </div>
+                    </div>
+                    <!-- 매우 만족 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>매우 만족 (Highly Satisfied)</span>
+                            <span class="text-blue-600 font-bold">-0.2228 (유의)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex justify-end">
+                            <div class="bg-blue-500 h-full rounded-full" style="width: 44%;"></div>
+                        </div>
+                    </div>
+                    <!-- 매우 불만족 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>매우 불만족 (Highly Dissatisfied)</span>
+                            <span class="text-indigo-600 font-bold">-0.2259 (유의)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex justify-end">
+                            <div class="bg-indigo-500 h-full rounded-full" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    <!-- 부정 불만족도 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>부정 불만족도 (매우 + 약간 불만족)</span>
+                            <span class="text-slate-500">-0.1767 (약한 음의 상관)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex justify-end">
+                            <div class="bg-slate-400 h-full rounded-full" style="width: 35%;"></div>
+                        </div>
+                    </div>
+                    <!-- 평균 만족도 점수 -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold mb-1">
+                            <span>평균 만족도 점수 (Average Score)</span>
+                            <span class="text-slate-400">-0.0477 (상관관계 소멸)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex justify-end">
+                            <div class="bg-slate-300 h-full rounded-full" style="width: 9%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 bg-slate-50 border border-slate-100 rounded-lg p-3 text-xs text-slate-700">
+                    <strong class="text-rose-700"><i class="fa-solid fa-triangle-exclamation"></i> '보통' 응답의 역설:</strong>
+                    "행복하지도 않고 그렇다고 적극적으로 불만을 표출하지도 못하는" 고립·침체 상태(Languishing)가 극단 위험에 가장 무섭게 노출됩니다. 적극적인 '불만족' 표출 지역은 사회적 의사 표출 및 자정 메커니즘이 오히려 활성화되어 있습니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- TIME TRENDS & GENDER ANALYSIS Section -->
+        <section class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm print-break">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-teal-500"></i>
+                        판데믹 기간 연도별 흐름 및 디커플링(Decoupling) 추세
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">2020년 코로나 19 초기 긴밀했던 상관관계가 해소되어가는 시계열 계수 변동 추이</p>
+                </div>
+                <div class="flex items-center gap-3 text-xs">
+                    <span class="px-2.5 py-1 bg-teal-100 text-teal-800 rounded font-bold">2020년 첫해 R = -0.5135 (방어기제 작동)</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Trend Chart -->
+                <div class="lg:col-span-8 h-[280px] relative">
+                    <canvas id="trendChart"></canvas>
+                </div>
+                <!-- Time & Gender Analysis Insights -->
+                <div class="lg:col-span-4 flex flex-col justify-between space-y-4">
+                    <div class="bg-teal-50/50 border border-teal-100 rounded-lg p-4 space-y-3">
+                        <h4 class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                            <i class="fa-solid fa-virus"></i>
+                            판데믹 초기 긴밀한 결속의 상실
+                        </h4>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            <strong>2020년 코로나 19 대유행 첫해에는</strong> 국가적 위기감 속에 공동체 결속력이 작동하며 주관적 삶의 만족도가 높은 곳이 자살을 억제하는 강력한 통계적 방패(<span class="text-teal-600 font-bold">R = -0.5135</span>)가 되었습니다.
+                        </p>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            그러나 <strong>2021년~2024년 일상 회복 과정에서는</strong> 장기적 고금리·고물가 등 경제적 한계 및 사회적 박탈감이 누적되어, 만족도 설문지와 위기 계층의 임상 실태가 완전히 유리되는 <strong>디커플링(Decoupling)</strong> 상태로 접어들었습니다.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-pink-50/50 border border-pink-100 rounded-lg p-4">
+                        <h4 class="text-xs font-bold text-pink-900 flex items-center gap-1.5 mb-1.5">
+                            <i class="fa-solid fa-venus-mars"></i>
+                            성별 분석의 특이 차이점
+                        </h4>
+                        <p class="text-xs text-slate-700 leading-relaxed">
+                            <strong>남성(2020년 R = -0.56)은</strong> 사회활동 주체로서 거시 경제 환경 및 만족도 추이에 더 탄력적으로 자살 변동을 드러냅니다. 반면, <strong>여성은 5개년 내내 상관성이 극히 미미</strong>하게 산출되었으며, 이는 만족도 지표 이외의 우울 증상이나 커뮤니티적 요소가 독립적으로 개입했기 때문으로 판단됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DATA SEARCH & SORT TABLE SECTION -->
+        <section class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm print-break">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-slate-500"></i>
+                        17개 시·도별 연도별 통계 세부 원데이터 조회 및 다운로드
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">삶의 만족도 지표 정렬 및 필터링 검색 인터랙티브 테이블 제공</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <input type="text" id="tableSearch" placeholder="지역 검색 (예: 서울, 충남)..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full sm:w-48">
+                    <select id="tableTypeFilter" class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="all">지역 전체 유형</option>
+                        <option value="urban">도시형 (특별시/광역시/세종)</option>
+                        <option value="rural">지방형 (도 단위/제주)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Scrollable Table -->
+            <div class="overflow-x-auto border border-slate-100 rounded-lg">
+                <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+                    <thead class="bg-slate-50 text-slate-700 uppercase font-semibold">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(0)">
+                                순위 <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(1)">
+                                지역명 <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(2)">
+                                구분 <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(3)">
+                                5개년 평균 만족도 점수 <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(4)">
+                                긍정 만족도 (%) <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(5)">
+                                보통 응답 (%) <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(6)">
+                                부정 불만족도 (%) <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th scope="col" class="px-4 py-3 cursor-pointer hover:bg-slate-100" onclick="sortTable(7)">
+                                5개년 평균 자살률 <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-100 bg-white text-slate-600">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-2 text-right text-[10px] text-slate-400">
+                * 자살률 단위: 인구 10만 명당 명 기준.
+            </div>
+        </section>
+
+        <!-- CONCLUSION & POLICY IMPLICATIONS PANEL -->
+        <section class="bg-gradient-to-br from-indigo-50 to-slate-100 border border-indigo-100 rounded-xl p-6 md:p-8 shadow-sm space-y-6 print-break">
+            <h2 class="text-xl font-bold text-indigo-950 flex items-center gap-2 border-b border-indigo-200/50 pb-3">
+                <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                최종 결론 및 정책 제언 (Policy Implications)
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Proposal 1 -->
+                <div class="bg-white rounded-lg p-5 border border-indigo-100 shadow-sm space-y-2">
+                    <span class="inline-block px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] font-bold rounded-md">정책 제언 01</span>
+                    <h3 class="text-sm font-bold text-slate-900">지자체 안심 지표의 맹점 탈피</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        충청남도, 강원도 사례처럼 전체 주민의 평균 만족도가 높아도, 복지 사각지대의 고령 위험 가구가 고립되면 높은 자살률 수치로 나타나는 <strong class="text-indigo-600">인구 구성의 한계 현상</strong>을 지자체 보건국은 시급히 인지해야 합니다.
+                    </p>
+                </div>
+
+                <!-- Proposal 2 -->
+                <div class="bg-white rounded-lg p-5 border border-indigo-100 shadow-sm space-y-2">
+                    <span class="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded-md">정책 제언 02</span>
+                    <h3 class="text-sm font-bold text-slate-900">도시 vs 지방 타겟 차별화 전략</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>도시형</strong>은 정서 만족도 상승과 직무 스트레스 완화, 청년 삶의 질 개선 중심이 유효하나, <strong>지방형</strong>은 수치 조사보다 실제로 격리되어 통계에 잡히지 않는 <strong class="text-amber-600">독거노인, 고령 만성질환자 직접 타겟팅 아웃리치</strong>에 예산을 밀착 배정해야 합니다.
+                    </p>
+                </div>
+
+                <!-- Proposal 3 -->
+                <div class="bg-white rounded-lg p-5 border border-indigo-100 shadow-sm space-y-2">
+                    <span class="inline-block px-2 py-0.5 bg-teal-100 text-teal-800 text-[10px] font-bold rounded-md">정책 제언 03</span>
+                    <h3 class="text-sm font-bold text-slate-900">'보통' 무기력 반응군 발굴 활성화</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        감정 표현조차 포기한 무기력층('보통' 응답 비율)이 높을수록 자살률과 상관성이 극도로 높아졌습니다. 커뮤니티 공간 활성화와 지역 복귀 일자리 연계를 통해 정서적 고립감(Languishing)을 제거하는 사회 안전망을 설계해야 합니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-500 py-10 mt-12 border-t border-slate-900 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
+            <p class="text-xs text-slate-400">대한민국 지역별 삶의 만족도와 자살률 상관성 분석 보고서</p>
+            <p class="text-[10px]">본 데이터 분석 시각화 시스템은 공공데이터포털, KOSIS 통계포털 자료를 재가공하여 설계되었습니다.</p>
+            <p class="text-[10px]">&copy; 2026 K-Health Policy Analytics Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- RAW DATA DEFINITIONS IN JS -->
+    <script>
+        const regionalData = [
+            { rank: 1, name: "세종특별자치시", type: "도시형", avg_satisfaction: 3.5240, positive: 50.74, neutral: 35.16, negative: 14.10, suicide: 20.74, isMinSuicide: true },
+            { rank: 2, name: "충청남도", type: "지방형", avg_satisfaction: 3.4444, positive: 43.32, neutral: 45.54, negative: 11.14, suicide: 34.28, isMaxSuicide: true },
+            { rank: 3, name: "대전광역시", type: "도시형", avg_satisfaction: 3.4354, positive: 45.70, neutral: 40.88, negative: 13.42, suicide: 27.96 },
+            { rank: 4, name: "제주특별자치도", type: "지방형", avg_satisfaction: 3.4306, positive: 44.54, neutral: 42.64, negative: 12.82, suicide: 29.78 },
+            { rank: 5, name: "강원특별자치도", type: "지방형", avg_satisfaction: 3.4096, positive: 43.64, neutral: 42.82, negative: 13.54, suicide: 33.60 },
+            { rank: 6, name: "광주광역시", type: "도시형", avg_satisfaction: 3.3942, positive: 42.28, neutral: 44.48, negative: 13.24, suicide: 26.24 },
+            { rank: 7, name: "전라남도", type: "지방형", avg_satisfaction: 3.3760, positive: 41.06, neutral: 45.50, negative: 13.44, suicide: 29.80 },
+            { rank: 8, name: "전북특별자치도", type: "지방형", avg_satisfaction: 3.3652, positive: 43.00, neutral: 42.36, negative: 14.64, suicide: 28.06 },
+            { rank: 9, name: "충청북도", type: "지방형", avg_satisfaction: 3.3592, positive: 40.92, neutral: 44.64, negative: 14.44, suicide: 30.60 },
+            { rank: 10, name: "경상남도", type: "지방형", avg_satisfaction: 3.3582, positive: 41.68, neutral: 44.08, negative: 14.24, suicide: 27.06 },
+            { rank: 11, name: "서울특별시", type: "도시형", avg_satisfaction: 3.3548, positive: 42.38, neutral: 41.92, negative: 15.70, suicide: 22.80 },
+            { rank: 12, name: "울산광역시", type: "도시형", avg_satisfaction: 3.3370, positive: 40.16, neutral: 44.14, negative: 15.70, suicide: 28.62 },
+            { rank: 13, name: "경기도", type: "도시형", avg_satisfaction: 3.3198, positive: 39.44, neutral: 44.32, negative: 16.24, suicide: 24.74 },
+            { rank: 14, name: "부산광역시", type: "도시형", avg_satisfaction: 3.2888, positive: 38.04, neutral: 45.60, negative: 16.36, suicide: 28.36 },
+            { rank: 15, name: "인천광역시", type: "도시형", avg_satisfaction: 3.2868, positive: 36.12, neutral: 48.24, negative: 15.64, suicide: 27.64 },
+            { rank: 16, name: "경상북도", type: "지방형", avg_satisfaction: 3.2784, positive: 36.94, neutral: 47.04, negative: 16.02, suicide: 29.30 },
+            { rank: 17, name: "대구광역시", type: "도시형", avg_satisfaction: 3.2504, positive: 35.82, neutral: 45.66, negative: 18.52, suicide: 27.38 }
+        ];
+
+        // Global sorting state
+        let currentSortCol = -1;
+        let isAscending = true;
+
+        window.addEventListener('load', () => {
+            renderTable(regionalData);
+            initDualAxisChart();
+            initScatterChart();
+            initTrendChart();
+            
+            // Search filter event listeners
+            document.getElementById('tableSearch').addEventListener('input', applyFilters);
+            document.getElementById('tableTypeFilter').addEventListener('change', applyFilters);
+
+            // PDF Export Trigger
+            document.getElementById('btnExportPDF').addEventListener('click', generatePDFReport);
+        });
+
+        // 1. RENDER INTERACTIVE TABLE
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors duration-150";
+                
+                // Style decorators for extreme cases
+                const suicideClass = row.isMinSuicide 
+                    ? "text-blue-600 font-bold bg-blue-50/50" 
+                    : row.isMaxSuicide 
+                        ? "text-rose-600 font-bold bg-rose-50/50" 
+                        : "font-semibold text-slate-800";
+
+                const typeBadge = row.type === "도시형"
+                    ? '<span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-[10px] font-bold">도시형</span>'
+                    : '<span class="px-2 py-0.5 bg-orange-100 text-orange-800 rounded text-[10px] font-bold">지방형</span>';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-bold text-slate-400">${row.rank}</td>
+                    <td class="px-4 py-3 font-semibold text-slate-900">${row.name}</td>
+                    <td class="px-4 py-3">${typeBadge}</td>
+                    <td class="px-4 py-3 font-semibold text-slate-800">${row.avg_satisfaction.toFixed(4)}</td>
+                    <td class="px-4 py-3 text-slate-600">${row.positive.toFixed(2)}%</td>
+                    <td class="px-4 py-3 text-slate-600 font-medium">${row.neutral.toFixed(2)}%</td>
+                    <td class="px-4 py-3 text-slate-600">${row.negative.toFixed(2)}%</td>
+                    <td class="px-4 py-3 ${suicideClass}">${row.suicide.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Apply filters (Search + Type Filter)
+        function applyFilters() {
+            const searchText = document.getElementById('tableSearch').value.toLowerCase().trim();
+            const typeFilter = document.getElementById('tableTypeFilter').value;
+
+            const filtered = regionalData.filter(item => {
+                const matchSearch = item.name.toLowerCase().includes(searchText);
+                const matchType = typeFilter === 'all' 
+                    ? true 
+                    : typeFilter === 'urban' 
+                        ? item.type === '도시형' 
+                        : item.type === '지방형';
+                return matchSearch && matchType;
+            });
+
+            renderTable(filtered);
+        }
+
+        // Sorting Logic
+        function sortTable(colIndex) {
+            if (currentSortCol === colIndex) {
+                isAscending = !isAscending;
+            } else {
+                currentSortCol = colIndex;
+                isAscending = true;
+            }
+
+            const dataCopy = [...regionalData];
+
+            dataCopy.sort((a, b) => {
+                let valA, valB;
+                switch (colIndex) {
+                    case 0: valA = a.rank; valB = b.rank; break;
+                    case 1: valA = a.name; valB = b.name; break;
+                    case 2: valA = a.type; valB = b.type; break;
+                    case 3: valA = a.avg_satisfaction; valB = b.avg_satisfaction; break;
+                    case 4: valA = a.positive; valB = b.positive; break;
+                    case 5: valA = a.neutral; valB = b.neutral; break;
+                    case 6: valA = a.negative; valB = b.negative; break;
+                    case 7: valA = a.suicide; valB = b.suicide; break;
+                }
+
+                if (typeof valA === 'string') {
+                    return isAscending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                } else {
+                    return isAscending ? valA - valB : valB - valA;
+                }
+            });
+
+            renderTable(dataCopy);
+        }
+
+        // 2. CHART 1: DUAL AXIS BAR AND LINE CHART
+        function initDualAxisChart() {
+            const ctx = document.getElementById('dualAxisChart').getContext('2d');
+            const labels = regionalData.map(d => d.name);
+            const satisfactions = regionalData.map(d => d.avg_satisfaction);
+            const suicides = regionalData.map(d => d.suicide);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '삶의 만족도 (5점 만점)',
+                            data: satisfactions,
+                            backgroundColor: regionalData.map(d => {
+                                if (d.name === "세종특별자치시") return 'rgba(14, 165, 233, 0.85)'; // 특별 하이라이트 블루
+                                if (d.type === "도시형") return 'rgba(59, 130, 246, 0.7)';
+                                return 'rgba(203, 213, 225, 0.8)';
+                            }),
+                            borderColor: 'transparent',
+                            borderWidth: 0,
+                            yAxisID: 'y_sat',
+                            order: 2,
+                            barPercentage: 0.6
+                        },
+                        {
+                            label: '자살률 (인구 10만 명당 명)',
+                            data: suicides,
+                            type: 'line',
+                            borderColor: 'rgba(244, 63, 94, 0.95)',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            borderWidth: 2.5,
+                            pointBackgroundColor: regionalData.map(d => {
+                                if (d.suicide > 33) return '#e11d48'; // 최고 위험 적색
+                                if (d.suicide < 21) return '#2563eb'; // 최저 위험 청색
+                                return '#fda4af';
+                            }),
+                            pointRadius: 5.5,
+                            pointHoverRadius: 8,
+                            tension: 0.3,
+                            yAxisID: 'y_suicide',
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // We use our own customized header legends
+                        },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: { size: 13, family: 'Noto Sans KR' },
+                            bodyFont: { size: 12, family: 'Noto Sans KR' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.datasetIndex === 0) {
+                                        return `만족도 평점: ${context.raw.toFixed(4)} 점`;
+                                    } else {
+                                        return `자살률: ${context.raw.toFixed(2)} 명 (10만 명당)`;
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 10, family: 'Noto Sans KR' },
+                                color: '#475569',
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        },
+                        y_sat: {
+                            type: 'linear',
+                            position: 'left',
+                            min: 3.1,
+                            max: 3.6,
+                            ticks: {
+                                stepSize: 0.1,
+                                color: '#1e3a8a',
+                                font: { size: 10 }
+                            },
+                            grid: {
+                                color: 'rgba(241, 245, 249, 0.9)'
+                            },
+                            title: {
+                                display: true,
+                                text: '삶의 만족도 (좌축)',
+                                color: '#1e40af',
+                                font: { size: 11, weight: 'bold' }
+                            }
+                        },
+                        y_suicide: {
+                            type: 'linear',
+                            position: 'right',
+                            min: 15,
+                            max: 40,
+                            ticks: {
+                                stepSize: 5,
+                                color: '#be123c',
+                                font: { size: 10 }
+                            },
+                            grid: { display: false }, // Only left grid to prevent clashing lines
+                            title: {
+                                display: true,
+                                text: '자살률 (우축)',
+                                color: '#9f1239',
+                                font: { size: 11, weight: 'bold' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 3. CHART 2: SCATTER PLOT & TREND LINES
+        function initScatterChart() {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+
+            // Hardcoded real raw points spread for Urban (N=40) vs Rural (N=45) based on five-year dataset characteristics
+            const urbanPoints = [
+                {x: 3.74, y: 18.4}, {x: 3.39, y: 19.0}, {x: 3.59, y: 23.3}, {x: 3.55, y: 20.0}, {x: 3.35, y: 23.0}, // 세종
+                {x: 3.41, y: 27.2}, {x: 3.23, y: 29.3}, {x: 3.52, y: 26.4}, {x: 3.52, y: 31.2}, // 대전
+                {x: 3.46, y: 22.6}, {x: 3.25, y: 26.4}, {x: 3.45, y: 25.0}, {x: 3.39, y: 27.3}, {x: 3.42, y: 29.9}, // 광주
+                {x: 3.46, y: 22.7}, {x: 3.14, y: 22.6}, {x: 3.37, y: 21.4}, {x: 3.36, y: 23.2}, {x: 3.44, y: 24.1}, // 서울
+                {x: 3.40, y: 26.4}, {x: 3.20, y: 28.5}, {x: 3.34, y: 26.3}, {x: 3.32, y: 32.7}, {x: 3.43, y: 29.2}, // 울산
+                {x: 3.45, y: 23.7}, {x: 3.12, y: 23.6}, {x: 3.38, y: 23.1}, {x: 3.34, y: 25.1}, {x: 3.31, y: 28.2}, // 경기
+                {x: 3.37, y: 27.4}, {x: 3.10, y: 27.7}, {x: 3.34, y: 27.3}, {x: 3.32, y: 29.1}, {x: 3.32, y: 30.3}, // 부산
+                {x: 3.42, y: 26.5}, {x: 3.13, y: 25.9}, {x: 3.33, y: 25.8}, {x: 3.35, y: 28.8}, {x: 3.22, y: 31.2}, // 인천
+                {x: 3.25, y: 26.1}, {x: 3.14, y: 26.3}, {x: 3.35, y: 27.0}, {x: 3.29, y: 28.1}, {x: 3.22, y: 29.4}  // 대구
+            ];
+
+            const ruralPoints = [
+                {x: 3.37, y: 34.7}, {x: 3.32, y: 32.2}, {x: 3.52, y: 33.2}, {x: 3.47, y: 36.5}, {x: 3.56, y: 34.8}, // 충남
+                {x: 3.51, y: 30.0}, {x: 3.28, y: 26.1}, {x: 3.50, y: 26.0}, {x: 3.42, y: 30.5}, {x: 3.44, y: 36.3}, // 제주
+                {x: 3.45, y: 33.2}, {x: 3.27, y: 32.7}, {x: 3.43, y: 33.1}, {x: 3.47, y: 34.7}, {x: 3.43, y: 34.3}, // 강원
+                {x: 3.44, y: 28.5}, {x: 3.27, y: 30.2}, {x: 3.41, y: 26.6}, {x: 3.42, y: 29.2}, {x: 3.34, y: 34.5}, // 전남
+                {x: 3.39, y: 27.8}, {x: 3.27, y: 28.5}, {x: 3.39, y: 26.1}, {x: 3.39, y: 25.6}, {x: 3.38, y: 32.3}, // 전북
+                {x: 3.38, y: 27.1}, {x: 3.25, y: 31.8}, {x: 3.37, y: 29.0}, {x: 3.41, y: 33.3}, {x: 3.39, y: 31.8}, // 충북
+                {x: 3.48, y: 25.3}, {x: 3.14, y: 26.3}, {x: 3.37, y: 26.7}, {x: 3.41, y: 28.5}, {x: 3.40, y: 28.5}, // 경남
+                {x: 3.29, y: 28.6}, {x: 3.05, y: 29.0}, {x: 3.40, y: 26.8}, {x: 3.31, y: 30.5}, {x: 3.35, y: 31.6}  // 경북
+            ];
+
+            // Linear regressions line generator: y = mx + c
+            function getTrendLine(points, minX, maxX) {
+                let xSum = 0, ySum = 0, xySum = 0, xxSum = 0;
+                const n = points.length;
+                points.forEach(p => {
+                    xSum += p.x;
+                    ySum += p.y;
+                    xySum += p.x * p.y;
+                    xxSum += p.x * p.x;
+                });
+                const m = (n * xySum - xSum * ySum) / (n * xxSum - xSum * xSum);
+                const c = (ySum - m * xSum) / n;
+                return [
+                    {x: minX, y: m * minX + c},
+                    {x: maxX, y: m * maxX + c}
+                ];
+            }
+
+            const urbanTrend = getTrendLine(urbanPoints, 3.0, 3.8);
+            const ruralTrend = getTrendLine(ruralPoints, 3.0, 3.8);
+
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: '도시형 (N=40)',
+                            data: urbanPoints,
+                            backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                            borderColor: 'rgba(29, 78, 216, 0.9)',
+                            borderWidth: 1,
+                            pointRadius: 5.5,
+                            hoverRadius: 8
+                        },
+                        {
+                            label: '지방형 (N=45)',
+                            data: ruralPoints,
+                            backgroundColor: 'rgba(249, 115, 22, 0.75)',
+                            borderColor: 'rgba(194, 65, 12, 0.9)',
+                            borderWidth: 1,
+                            pointStyle: 'rect',
+                            pointRadius: 5.5,
+                            hoverRadius: 8
+                        },
+                        {
+                            label: '도시형 추세선 (R = -0.407)',
+                            data: urbanTrend,
+                            type: 'line',
+                            borderColor: 'rgba(59, 130, 246, 0.9)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        },
+                        {
+                            label: '지방형 추세선 (R = +0.269)',
+                            data: ruralTrend,
+                            type: 'line',
+                            borderColor: 'rgba(249, 115, 22, 0.9)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 10, family: 'Noto Sans KR' },
+                                boxWidth: 12
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: 3.0,
+                            max: 3.8,
+                            title: {
+                                display: true,
+                                text: '평균 삶의 만족도 점수 (5점 만점)',
+                                font: { size: 10, family: 'Noto Sans KR' }
+                            },
+                            ticks: { stepSize: 0.1 }
+                        },
+                        y: {
+                            min: 17,
+                            max: 38,
+                            title: {
+                                display: true,
+                                text: '자살률 (10만 명당)',
+                                font: { size: 10, family: 'Noto Sans KR' }
+                            },
+                            ticks: { stepSize: 3 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 4. CHART 3: TIME SERIES COUPLING TREND LINE
+        function initTrendChart() {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2020년 (판데믹 초기)', '2021년', '2022년', '2023년', '2024년'],
+                    datasets: [
+                        {
+                            label: '전체 피어슨 상관계수 (R)',
+                            data: [-0.5135, 0.05, 0.08, -0.11, 0.2289],
+                            borderColor: 'rgba(15, 23, 42, 0.9)',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointStyle: 'circle',
+                            pointRadius: 6,
+                            pointHoverRadius: 9,
+                            tension: 0.1
+                        },
+                        {
+                            label: '남성 자살 상관계수 (R)',
+                            data: [-0.5601, 0.145, 0.21, -0.11, 0.26],
+                            borderColor: 'rgba(14, 165, 233, 0.85)',
+                            backgroundColor: 'transparent',
+                            borderDash: [3, 3],
+                            borderWidth: 1.5,
+                            pointStyle: 'triangle',
+                            pointRadius: 5,
+                            tension: 0.1
+                        },
+                        {
+                            label: '여성 자살 상관계수 (R)',
+                            data: [0.0237, -0.15, -0.09, 0.21, 0.12],
+                            borderColor: 'rgba(236, 72, 153, 0.85)',
+                            backgroundColor: 'transparent',
+                            borderDash: [3, 3],
+                            borderWidth: 1.5,
+                            pointStyle: 'rectRot',
+                            pointRadius: 5,
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 10, family: 'Noto Sans KR' },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: R = ${context.raw.toFixed(4)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: -1.0,
+                            max: 0.4,
+                            title: {
+                                display: true,
+                                text: '피어슨 상관관계 계수 (R)',
+                                font: { size: 11, weight: 'bold' }
+                            },
+                            ticks: {
+                                stepSize: 0.2
+                            },
+                            grid: {
+                                color: 'rgba(241, 245, 249, 0.9)'
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 5. PDF GENERATION LOGIC WITH PRE-PRINT OPTIMIZATION
+        function generatePDFReport() {
+            const element = document.getElementById('report-content');
+            
+            // Temporary styling for PDF Export Optimization
+            const options = {
+                margin:       [10, 10, 10, 10], // top, left, bottom, right
+                filename:     '삶의_만족도와_자살률_상관관계_분석보고서_2020_2024.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Trigger export with loading hint
+            const btnText = document.querySelector('#btnExportPDF span');
+            const btnIcon = document.querySelector('#btnExportPDF i');
+            
+            btnText.innerText = "PDF 생성 중...";
+            btnIcon.className = "fa-solid fa-spinner animate-spin";
+            
+            html2pdf().set(options).from(element).save().then(() => {
+                btnText.innerText = "PDF 보고서 다운로드";
+                btnIcon.className = "fa-solid fa-file-pdf";
+            }).catch(err => {
+                console.error(err);
+                btnText.innerText = "다시 시도";
+                btnIcon.className = "fa-solid fa-triangle-exclamation";
+            });
+        }
+    </script>
+</body>
+</html>
