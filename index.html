@@ -461,7 +461,51 @@
                 `
             },
             { id: 6, title: "AI 윤리와 사회적 책임", tools: ["Ethics", "Policy"], theme: "theme-blue", icon: "fa-scale-balanced" },
-            { id: 7, title: "자연어 처리 모델 활용", tools: ["Python", "HuggingFace"], theme: "theme-violet", icon: "fa-language" },
+            { 
+                id: 7, 
+                title: "안티그래비티 분석 보고서", 
+                tools: ["Google", "Python", "Data Analysis"], 
+                theme: "theme-violet", 
+                icon: "fa-atom",
+                content: `
+                    <div class="space-y-12">
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 07</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">안티그래비티 분석 보고서</h2>
+                            </div>
+                            <a href="./09/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
+                        </header>
+                        
+                        <div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8">
+                            <h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fab fa-google mr-2"></i>구글 안티그래비티 데이터 분석</h4>
+                            <p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">
+                                구글 안티그래비티 환경을 통해 수집된 사용자의 상호작용 및 시각 데이터 로그를 분석하여 데이터 분석 역량을 기르고, 논리적인 가설 검증과 시각화 자료를 토대로 체계적인 데이터 분석 보고서를 작성 및 생성하는 프로젝트입니다.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center text-violet-600 dark:text-violet-400 mb-6 text-xl">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자료 정제 및 수치 분석</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">구글의 재미있는 인터랙티브 실험 속 중력 해제 상태 로그에서 노이즈를 식별 및 제거하고 핵심 경향성을 정제하는 역량을 키웁니다.</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center text-violet-600 dark:text-violet-400 mb-6 text-xl">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자동화 보고서 생성</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Python의 데이터프레임을 시각 구조화하고 결론 도출 결과가 반영된 완성도 높은 보고서 생성 흐름을 구성했습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
             { id: 8, title: "AI 영상 시나리오 제작", tools: ["ChatGPT", "Runway"], theme: "theme-amber", icon: "fa-film" },
             { id: 9, title: "데이터 기반 문제해결", tools: ["ML", "Scikit-learn"], theme: "theme-emerald", icon: "fa-lightbulb" },
             { id: 10, title: "최종 AI 리터러시 프로젝트", tools: ["Integrated", "Streamlit"], theme: "theme-violet", icon: "fa-rocket" }
