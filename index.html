@@ -244,7 +244,7 @@
         <div class="max-w-7xl mx-auto">
             <div class="mb-16">
                 <h2 class="text-4xl font-black mb-3 text-slate-900 dark:text-white">Portfolio Projects</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">학습의 기록과 창의적 결과물 10선</p>
+                <p class="text-slate-500 dark:text-slate-400 text-lg">학습의 기록과 창의적 결과물 7선</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="portfolio-grid"></div>
         </div>
@@ -406,6 +406,51 @@
             },
             { 
                 id: 4, 
+                title: "중간고사 레포트", 
+                tools: ["Midterm", "Research"], 
+                theme: "theme-blue", 
+                icon: "fa-file-signature",
+                content: `
+                    <div class="space-y-12">
+                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                            <div>
+                                <span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 04</span>
+                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">중간고사 레포트</h2>
+                            </div>
+                            <a href="./05/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group">
+                                <span>결과물 보기</span>
+                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            </a>
+                        </header>
+                        
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-[2rem] border border-blue-100 dark:border-blue-800/50 mb-8">
+                            <h4 class="text-blue-800 dark:text-blue-300 font-bold text-xl mb-4"><i class="fas fa-graduation-cap mr-2"></i>AI 리터러시 중간고사 평가 결과</h4>
+                            <p class="text-lg text-blue-900/70 dark:text-blue-400/80 leading-relaxed font-light">
+                                학기 전반에 걸쳐 학습한 AI 이론과 실무 도구들의 사용법을 종합하여 현대 정보사회에서 필요한 AI 활용 능력과 윤리적 자세에 대해 깊이 고찰한 중간 평가용 레포트입니다.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
+                                    <i class="fas fa-book-reader"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">이론 고찰 및 탐색</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인공지능의 핵심 이론들을 복습하고, 이를 바탕으로 한 사회적 영향 분석을 포함하고 있습니다.</p>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">실제 사례 분석 및 평가</h4>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">학습한 인공지능 프레임워크와 방법론을 실제 비즈니스 모델이나 사회적 난제 해결에 대응하여 평가한 과정이 담겨 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            { 
+                id: 5, 
                 title: "코랩 데이터 분석", 
                 tools: ["Python", "Colab"], 
                 theme: "theme-amber", 
@@ -414,7 +459,7 @@
                     <div class="space-y-12">
                         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                             <div>
-                                <span class="text-amber-600 dark:text-amber-400 font-black tracking-widest text-xs uppercase">Assignment 04</span>
+                                <span class="text-amber-600 dark:text-amber-400 font-black tracking-widest text-xs uppercase">Assignment 05</span>
                                 <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 데이터 분석</h2>
                             </div>
                             <a href="./06/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 group">
@@ -433,7 +478,7 @@
                 `
             },
             { 
-                id: 5, 
+                id: 6, 
                 title: "부산 유튜브 댓글 분석", 
                 tools: ["Python", "YouTube API"], 
                 theme: "theme-emerald", 
@@ -442,7 +487,7 @@
                     <div class="space-y-12">
                         <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                             <div>
-                                <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 05</span>
+                                <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 06</span>
                                 <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">부산 유튜브 댓글 분석</h2>
                             </div>
                             <a href="./07/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
@@ -460,7 +505,6 @@
                     </div>
                 `
             },
-            { id: 6, title: "AI 윤리와 사회적 책임", tools: ["Ethics", "Policy"], theme: "theme-blue", icon: "fa-scale-balanced" },
             { 
                 id: 7, 
                 title: "안티그래비티 분석 보고서", 
@@ -493,22 +537,19 @@
                                     <i class="fas fa-chart-line"></i>
                                 </div>
                                 <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자료 정제 및 수치 분석</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">구글의 재미있는 인터랙티브 실험 속 중력 해제 상태 로그에서 노이즈를 식별 및 제거하고 핵심 경향성을 정제하는 역량을 키웁니다.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인터랙티브 실험 속 중력 해제 상태 로그에서 노이즈를 식별 및 제거하고 핵심 경향성을 분석하는 보고서 역량을 기릅니다.</p>
                             </div>
                             <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
                                 <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center text-violet-600 dark:text-violet-400 mb-6 text-xl">
                                     <i class="fas fa-file-invoice"></i>
                                 </div>
                                 <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자동화 보고서 생성</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Python의 데이터프레임을 시각 구조화하고 결론 도출 결과가 반영된 완성도 높은 보고서 생성 흐름을 구성했습니다.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">수집된 유저 액션 흐름 데이터를 바탕으로, 결과 도출 흐름이 명확히 담긴 고품질 보고서를 체계적으로 구축하는 역량을 키웁니다.</p>
                             </div>
                         </div>
                     </div>
                 `
-            },
-            { id: 8, title: "AI 영상 시나리오 제작", tools: ["ChatGPT", "Runway"], theme: "theme-amber", icon: "fa-film" },
-            { id: 9, title: "데이터 기반 문제해결", tools: ["ML", "Scikit-learn"], theme: "theme-emerald", icon: "fa-lightbulb" },
-            { id: 10, title: "최종 AI 리터러시 프로젝트", tools: ["Integrated", "Streamlit"], theme: "theme-violet", icon: "fa-rocket" }
+            }
         ];
 
         const grid = document.getElementById('portfolio-grid');
@@ -539,7 +580,7 @@
                         `).join('')}
                     </div>
                     <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest" style="color: var(--theme-color);">
-                        <span>Project 0${item.id}</span>
+                        <span>Project 0${index + 1}</span>
                         <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                     </div>
                 </div>
