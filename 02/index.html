@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap');
 
         :root {
             --bg-light: #f0f7ff;
@@ -54,6 +54,28 @@
             from { background-position: 0% 0%; }
             to { background-position: -200% 0%; }
         }
+
+        /* --- Home Return Button Styling --- */
+        .home-btn {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        .light-mode .home-btn { background-color: #ffffff; color: #3b82f6; border-color: #dbeafe; }
+        .dark-mode .home-btn { background-color: #121011; color: #f9a8d4; border-color: rgba(249, 168, 212, 0.2); }
+        .home-btn:hover { transform: scale(1.05); }
 
         /* --- Theme Toggle Custom Styling --- */
         .mode-toggle {
@@ -119,6 +141,28 @@
         .light-mode #open-infographic { background-color: var(--accent-light); color: white; }
         .dark-mode #open-infographic { background-color: var(--accent-dark); color: white; }
 
+        /* --- 핵심 키워드 패널 및 코드 태그 --- */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+        .dark-mode .keyword-card {
+            background-color: var(--card-dark) !important;
+            border: 1px solid rgba(249, 168, 212, 0.1);
+        }
+
+        .light-mode .code-tag {
+            background-color: #f3f4f6;
+            color: #1e293b;
+        }
+
+        .dark-mode .code-tag {
+            background-color: #1a1617; 
+            color: var(--primary-dark);
+            border: 1px solid rgba(249, 168, 212, 0.2);
+        }
+
         /* Modal */
         #infographic-modal {
             display: none; position: fixed;
@@ -140,6 +184,11 @@
 <body class="light-mode">
     <div id="progress" class="progress-bar" style="width: 0%"></div>
 
+    <!-- Return to Home Button -->
+    <a href="../index.html" id="home-return-btn" class="home-btn">
+        <i class="fas fa-arrow-left mr-2"></i> 홈으로 돌아가기
+    </a>
+
     <!-- Theme Toggle -->
     <button id="theme-toggle" class="mode-toggle">
         <i id="theme-icon" class="fas fa-moon text-2xl"></i>
@@ -147,15 +196,15 @@
 
     <!-- Header -->
     <header class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <div class="badge">2025 AI 브리핑 보고서</div>
+        <div class="badge">2026 AI 패러다임 브리핑</div>
         <h1 class="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-tight">
             AI의 이해:<br/>
             <span class="wave-text">지능의 진화</span>
         </h1>
         
-        <p class="text-lg md:text-xl max-w-2xl opacity-80 leading-relaxed font-medium mt-4">
-            도구에서 동료로, 약인공지능에서 강인공지능(AGI)으로 향하는<br/> 
-            인공지능 패러다임의 대전환을 대학생의 시선에서 탐구합니다.
+        <p class="text-lg md:text-xl max-w-3xl opacity-80 leading-relaxed font-medium mt-4">
+            단순 도구에서 자율적인 가상 동료로, 약인공지능(Narrow AI)에서 강인공지능(AGI)의 임계점으로 향하는<br/> 
+            인공지능의 역사와 핵심 메커니즘을 대학생의 시선에서 입체적으로 파악합니다.
         </p>
 
         <div class="header-btn-group">
@@ -171,54 +220,188 @@
         </div>
     </header>
 
-    <!-- Timeline Section -->
+    <!-- Section 1. Timeline Section -->
     <section id="history" class="py-24 px-6 max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold mb-16 flex items-center">
-            <i class="fas fa-history mr-4"></i> 인공지능의 연대기
+        <h2 class="text-3xl font-extrabold mb-16 flex items-center">
+            <i class="fas fa-history mr-4 text-blue-500 dark:text-pink-400"></i> 인공지능의 연대기
         </h2>
         
         <div class="relative border-l-2 border-current ml-4 pl-8 space-y-12">
+            <!-- 1950 태동기 -->
             <div class="timeline-item relative">
                 <span class="text-sm font-bold opacity-60">1950 - 1956</span>
-                <h3 class="text-xl font-bold">태동과 탄생</h3>
-                <p class="mt-2 opacity-80">앨런 튜링의 '튜링 테스트' 제안과 다트머스 회의를 통한 'AI' 용어의 공식 채택.</p>
+                <h3 class="text-xl font-bold">태동과 공식적 탄생</h3>
+                <p class="mt-2 opacity-80 leading-relaxed">
+                    <strong>앨런 튜링</strong>의 '튜링 테스트' 제안(1950) 및 다트머스 회의(1956)를 통한 '인공지능' 용어 공식 채택. 초기에는 명확한 규칙 기반의 <strong>기호주의 (Symbolism)</strong> 관점으로 출발했습니다.
+                </p>
             </div>
+            <!-- 겨울기 -->
+            <div class="timeline-item relative">
+                <span class="text-sm font-bold opacity-40">1970s - 1980s</span>
+                <h3 class="text-xl font-bold opacity-50">정체기와 '인공지능의 겨울'</h3>
+                <p class="mt-2 opacity-60 leading-relaxed italic">
+                    하드웨어 연산 능력의 극심한 한계와 데이터 기법의 미성숙으로 인해 두 차례의 AI 겨울이 찾아옵니다. 초기 모델인 퍼셉트론의 논리적 한계가 드러나며 신경망 연구가 암흑기에 진입했습니다.
+                </p>
+            </div>
+            <!-- 딥러닝 혁명 -->
             <div class="timeline-item relative">
                 <span class="text-sm font-bold opacity-60">2010s</span>
-                <h3 class="text-xl font-bold">딥러닝 혁명</h3>
-                <p class="mt-2 opacity-80">빅데이터와 GPU의 결합. AlexNet(2012)과 AlphaGo(2016)가 세상에 충격을 줌.</p>
+                <h3 class="text-xl font-bold">딥러닝 혁명과 연결주의의 부활</h3>
+                <p class="mt-2 opacity-80 leading-relaxed">
+                    대규모 빅데이터와 강력한 GPU 하드웨어의 부상으로 데이터 기반 신경망을 학습시키는 <strong>연결주의(Connectionism)</strong>가 완전히 부활했습니다. 이미지넷 대회를 휩쓴 <strong>AlexNet(2012)</strong>과 인간 챔피언을 꺾은 <strong>AlphaGo(2016)</strong>가 이 시기의 주인공입니다.
+                </p>
             </div>
+            <!-- 현재 생성형 AI -->
             <div class="timeline-item relative">
-                <span class="text-sm font-bold opacity-60">현재 - 2030</span>
-                <h3 class="text-xl font-bold">생성형 AI & AGI</h3>
-                <p class="mt-2 opacity-80">트랜스포머 아키텍처와 AGI 임계점 도래. 인간 지능에 도전하는 자율 시스템.</p>
+                <span class="text-sm font-bold opacity-60">2017 - 현재</span>
+                <h3 class="text-xl font-bold">생성형 AI 시대의 대도약</h3>
+                <p class="mt-2 opacity-80 leading-relaxed">
+                    구글 연구진의 <strong>'트랜스포머' 아키텍처(2017)</strong> 발표로 현대 LLM의 근간이 세워졌습니다. 기존의 정보를 단순히 분류·분별하던 기존 AI에서 벗어나 대규모 문맥 속에서 확률을 계산해 독창적인 콘텐츠를 생산하는 시대가 되었습니다.
+                </p>
+            </div>
+            <!-- 미래 AGI -->
+            <div class="timeline-item relative border-dashed">
+                <span class="text-sm font-bold text-red-500">2025 - 2030 (예측)</span>
+                <h3 class="text-xl font-bold text-red-500 dark:text-red-400">AGI 임계점 및 기술 민주화</h3>
+                <p class="mt-2 opacity-80 leading-relaxed font-medium">
+                    중국 <strong>DeepSeek의 비용 효율화 쇼크(2025)</strong>로 시작되어, 막대한 하드웨어 자본 투입 중심에서 고도로 극대화된 알고리즘 설계 경쟁으로 체질이 대전환되는 기점을 맞이하고 있습니다. 2030년 내로 도래할 인간 수준의 <strong>AGI(강인공지능)</strong> 시대를 향해 급속히 진화하고 있습니다.
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Intelligence Hierarchy -->
+    <!-- Section 2. Core Tech Keywords -->
+    <section id="tech" class="py-24 px-6 bg-current/5">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-extrabold mb-4 text-center">생성형 기술의 본질과 핵심 키워드</h2>
+            <p class="text-center opacity-70 mb-16 max-w-2xl mx-auto">가장 트렌디한 AI 분야의 3대 핵심 기반 기술을 통해 기술의 도약 방식을 입체적으로 학습합니다.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Transformer -->
+                <div class="card keyword-card p-8 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="text-4xl mb-6">🧠</div>
+                        <h3 class="text-xl font-bold mb-4">트랜스포머 아키텍처</h3>
+                        <p class="text-sm opacity-80 leading-relaxed mb-6">
+                            입력 문장의 모든 단어 간 관계를 한 번에 연산하는 <strong>'셀프 어텐션(Self-Attention)'</strong>이 핵심입니다. 기존 RNN의 순차적 연산 한계를 뛰어넘어 무한한 크기의 병렬 처리를 가능케 했습니다.
+                        </p>
+                    </div>
+                    <span class="text-xs font-mono code-tag p-2.5 rounded self-start mt-2">Attention(Q,K,V) = softmax(QKᵀ / √d_k)V</span>
+                </div>
+
+                <!-- Agentic AI -->
+                <div class="card keyword-card p-8 bg-white flex flex-col justify-between">
+                    <div>
+                        <div class="text-4xl mb-6">🤖</div>
+                        <h3 class="text-xl font-bold mb-4">에이전틱 AI (Agentic AI)</h3>
+                        <p class="text-sm opacity-80 leading-relaxed mb-6">
+                            지시받은 텍스트 생성에 그치지 않고, 시스템 스스로 목표 달성을 위한 하위 단계를 수립하고 외부 API 도구 사용 및 DB 업데이트를 독자적으로 해결하는 <strong>'자율적인 업무 수행 루프'</strong>입니다.
+                        </p>
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap mt-2">
+                        <span class="text-[10px] font-semibold border border-current px-2.5 py-1 rounded">인식 (Observe)</span>
+                        <span class="text-[10px] font-semibold border border-current px-2.5 py-1 rounded">계획 (Plan)</span>
+                        <span class="text-[10px] font-semibold border border-current px-2.5 py-1 rounded">조치 (Act)</span>
+                        <span class="text-[10px] font-semibold border border-current px-2.5 py-1 rounded">평가 (Evaluate)</span>
+                    </div>
+                </div>
+
+                <!-- DeepSeek Shock -->
+                <div class="card keyword-card p-8 bg-white flex flex-col justify-between border-2 border-blue-400/30 dark:border-pink-400/30">
+                    <div>
+                        <div class="text-4xl mb-6">⚡</div>
+                        <h3 class="text-xl font-bold mb-4">DeepSeek 쇼크와 효율성</h3>
+                        <p class="text-sm opacity-80 leading-relaxed mb-6">
+                            서구 거대 테크 기업 대비 단 1/100에 불과한 비용(약 75억 원)으로 전 세계 최고 수준의 오픈 웨이트(Open-weight) 모델을 구현해 냈습니다. <strong>MoE(Mixture-of-Experts)</strong> 고도화를 활용한 AI 경제학의 새 지평입니다.
+                        </p>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <span class="text-[10px] bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-2.5 py-1 rounded font-bold">오픈웨이트 가중치 공개</span>
+                        <span class="text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2.5 py-1 rounded font-bold">알고리즘 극한 효율화</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Global LLM Model Comparison -->
+    <section class="py-24 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-extrabold mb-4 text-left">글로벌 리더십 모델 분석</h2>
+        <p class="opacity-70 mb-12">현재 글로벌 지능 시장을 점유하고 있는 주요 초거대 인공지능 모델들의 정체성과 핵심적 비교 강점 요약입니다.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- ChatGPT -->
+            <div class="p-8 rounded-3xl border border-current/10 bg-white/40 dark:bg-white/5">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-xl">🟢</span>
+                    <h3 class="text-xl font-bold">OpenAI ChatGPT</h3>
+                </div>
+                <ul class="space-y-3 text-sm opacity-90 leading-relaxed">
+                    <li>• <strong>추론 모델(o1, o3)의 한계 돌파</strong>: 수학, 코딩 등 복잡한 학술 연구 및 다차원 추론 해결 능력 독보적 우위.</li>
+                    <li>• <strong>고성능 멀티모달</strong>: 시각, 청각, 텍스트가 자연스럽게 통합되어 실시간 대화식 인지 기능 수행.</li>
+                </ul>
+            </div>
+            <!-- Claude -->
+            <div class="p-8 rounded-3xl border border-current/10 bg-white/40 dark:bg-white/5">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-xl">🟠</span>
+                    <h3 class="text-xl font-bold">Anthropic Claude</h3>
+                </div>
+                <ul class="space-y-3 text-sm opacity-90 leading-relaxed">
+                    <li>• <strong>헌법적 AI (Constitutional AI)</strong>: 인류 가치 조율에 특화되어 독창적이면서 안전하고 정제된 고품질 인문 텍스트 산출.</li>
+                    <li>• <strong>대규모 컨텍스트 윈도우</strong>: 20만 토큰 이상의 방대한 대학교 전공 서적 및 논문 자료를 단 한 번에 분석.</li>
+                </ul>
+            </div>
+            <!-- Gemini -->
+            <div class="p-8 rounded-3xl border border-current/10 bg-white/40 dark:bg-white/5">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-xl">🔵</span>
+                    <h3 class="text-xl font-bold">Google Gemini</h3>
+                </div>
+                <ul class="space-y-3 text-sm opacity-90 leading-relaxed">
+                    <li>• <strong>구글 서비스 전방위 결합</strong>: Gmail, 유튜브, Google Docs 등과 직접 연결되어 학업 및 비즈니스 워크플로우 자동화.</li>
+                    <li>• <strong>사실 확인(Double-Check)</strong>: 검색 엔진과 결합되어 생성 정보가 사실인지 실시간 검증 및 하이퍼링크 제공.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3. Intelligence Steps (Interactive) -->
     <section id="intelligence-steps" class="py-24 px-6 max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold mb-12">지능의 3단계 계층</h2>
+        <h2 class="text-3xl font-extrabold mb-4">지능의 3단계 계층</h2>
+        <p class="opacity-70 mb-12">인공지능의 지적 도달 범위 및 인지 깊이에 따른 구조적 구분입니다.</p>
         <div class="grid grid-cols-1 gap-6 mb-12">
+            <!-- Step 1 -->
             <div class="step-card flex items-center p-6 rounded-3xl">
                 <div class="step-icon">1</div>
                 <div>
-                    <h4 class="font-bold">약인공지능 (Narrow AI)</h4>
-                    <p class="text-sm opacity-70">특정 도메인에서만 동작. 현재 상용화 단계.</p>
+                    <h4 class="font-bold text-lg">약인공지능 (Narrow AI)</h4>
+                    <p class="text-sm opacity-70 mt-1">
+                        바둑(알파고), 대화형 번역, 단일 음성 인식과 같이 <strong>특정 도메인의 작업</strong>만 전문적으로 해결하도록 훈련된 수준입니다. 자율적인 추론 및 일반화 범위는 극히 제한되어 있으며 이미 사회 곳곳에 상용화되어 사용 중입니다.
+                    </p>
                 </div>
             </div>
+            
+            <!-- Step 2 -->
             <div class="step-card flex items-center p-6 rounded-3xl">
                 <div class="step-icon">2</div>
                 <div>
-                    <h4 class="font-bold">강인공지능 (AGI)</h4>
-                    <p class="text-sm opacity-70">범용적 학습 및 추론. 인간과 대등한 인지 능력 예측.</p>
+                    <h4 class="font-bold text-lg">강인공지능 (AGI - Artificial General Intelligence)</h4>
+                    <p class="text-sm opacity-70 mt-1 font-medium">
+                        인간과 완벽히 동등하거나 그 이상의 범용적 자가 학습, 추론 및 응용력을 갖추어 <strong>다양한 지적 분야의 지능을 수행</strong>할 수 있는 미래의 정점입니다. 전문가들은 2025~2030년 사이에 도래할 것으로 조심스레 예측하고 있습니다.
+                    </p>
                 </div>
             </div>
+
+            <!-- Step 3 -->
             <div class="step-card flex items-center p-6 rounded-3xl">
                 <div class="step-icon">3</div>
                 <div>
-                    <h4 class="font-bold">초인공지능 (ASI)</h4>
-                    <p class="text-sm opacity-70">인류 전체의 지성을 압도하는 전방위적 지성.</p>
+                    <h4 class="font-bold text-lg">초인공지능 (ASI - Artificial Superintelligence)</h4>
+                    <p class="text-sm opacity-70 mt-1">
+                        전 세계 인류 전체의 지성을 결합한 것보다 월등히 높은 자가 증폭 지성 시스템을 구축하여 경제, 사회, 우주 물리학을 망라한 초지능 연구 대상을 주도하는 가상의 이론적 미래 단계입니다.
+                    </p>
                 </div>
             </div>
         </div>
@@ -227,6 +410,92 @@
             <button id="open-infographic" class="btn-action">
                 <i class="fas fa-chart-pie mr-3"></i> 인포그래픽 확인하기
             </button>
+        </div>
+    </section>
+
+    <!-- Section: Ethics, Alignment, Regulations -->
+    <section class="py-24 px-6 bg-current/5">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-extrabold mb-4 text-center">AI 정렬 연구 및 글로벌 규제</h2>
+            <p class="text-center opacity-70 mb-16 max-w-2xl mx-auto">기술 발전 속도에 발맞추어 인류의 안전과 저작권을 보장하기 위해 제도화되는 거버넌스 프레임워크입니다.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Tech Fixes -->
+                <div class="p-8 rounded-3xl bg-white dark:bg-black/30 border border-current/10">
+                    <h3 class="text-xl font-bold mb-6 text-blue-500 dark:text-pink-400">할루시네이션 극복과 모델 정렬</h3>
+                    <div class="space-y-6 text-sm leading-relaxed">
+                        <div>
+                            <span class="font-bold text-base block mb-1">RAG (검색 증강 생성, Retrieval-Augmented Generation)</span>
+                            <p class="opacity-80">학습 데이터에만 의존하지 않고, 외부 신뢰 데이터베이스를 실시간 검색하여 사실적인 정보 증거를 찾아 답변을 보강함으로써 왜곡된 정보(환각 현상)를 방지하는 최첨단 보조 기술입니다.</p>
+                        </div>
+                        <div>
+                            <span class="font-bold text-base block mb-1">RLHF (인간 피드백 기반 강화 학습)</span>
+                            <p class="opacity-80">인공지능 모델이 생성한 답변들을 인간 평가단이 직접 채점하고 피드백을 축적함으로써 모델이 인간 윤리 및 가치관과 완벽히 일치(Alignment)되도록 정렬하는 핵심 튜닝입니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EU AI ACT -->
+                <div class="p-8 rounded-3xl bg-white dark:bg-black/30 border border-current/10">
+                    <h3 class="text-xl font-bold mb-6 text-blue-500 dark:text-pink-400">EU 인공지능법 (AI Act)</h3>
+                    <p class="text-sm opacity-80 mb-6 leading-relaxed">
+                        세계 최초로 통과된 인공지능 포괄 법안으로, 시스템의 위험 수준에 따라 AI 규제를 단계별로 가혹하게 제한하는 '위험 기반 접근 방식'입니다.
+                    </p>
+                    <div class="space-y-4 text-xs">
+                        <div class="p-3 bg-red-100 dark:bg-red-950/20 rounded-lg">
+                            <strong class="text-red-700 dark:text-red-300 block mb-1">1. 수용 불가능한 위험 (완전 금지)</strong>
+                            사회적 신용 평가 점수(Social Scoring), 무단 실시간 생체인식 등 기본권을 완전히 침해하는 위험 기술은 전면 금지됩니다.
+                        </div>
+                        <div class="p-3 bg-amber-100 dark:bg-amber-950/20 rounded-lg">
+                            <strong class="text-amber-700 dark:text-amber-300 block mb-1">2. 고위험 AI (엄격 제어)</strong>
+                            의료 보건, 채용 심사, 자율주행 등 삶에 큰 영향력을 가지는 영역은 투명성 확보, 정기 감독 보고 의무화 및 설계 표준화 준수 조치를 부과받습니다.
+                        </div>
+                        <div class="p-3 bg-green-100 dark:bg-green-950/20 rounded-lg">
+                            <strong class="text-green-700 dark:text-green-300 block mb-1">3. 제한된 위험 (투명성 준수)</strong>
+                            단순 AI 챗봇 등은 사용자에게 "이 서비스는 기계입니다"라는 투명한 사실을 인지시키는 의무만 제공하면 사용이 자유롭습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Industry & Economic Impact -->
+    <section class="py-24 px-6 max-w-5xl mx-auto">
+        <h2 class="text-3xl font-extrabold mb-4 text-center">전 산업적 파급력 및 온디바이스 AI</h2>
+        <p class="text-center opacity-70 mb-16 max-w-xl mx-auto">AI 패러다임이 창출하는 거시 경제적 이정표와 디바이스 생태계의 대격변 모델 분석입니다.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Economic Value -->
+            <div>
+                <h3 class="text-2xl font-bold mb-4">연간 최대 4.4조 달러 가치 창출</h3>
+                <p class="text-sm opacity-80 leading-relaxed mb-6">
+                    생성형 기술의 도입으로 글로벌 비즈니스 생산성이 획기적으로 상승하고 있습니다. 소프트웨어 엔지니어링 개발 효율이 약 56% 폭증하고, 전문 고객 서비스 문제 해결 건수는 약 14% 상승하며 질적 상향 평준화를 이뤄가고 있습니다. 국내 대기업들 역시 독자적 거버넌스 연합을 형성하여 기술 경쟁에 대응하고 있습니다.
+                </p>
+                <!-- Mini Metric Badges -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-current/5">
+                        <span class="text-sm opacity-60 block">SW 개발 속도</span>
+                        <span class="text-2xl font-black text-blue-500 dark:text-pink-400">56% 향상</span>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-current/5">
+                        <span class="text-sm opacity-60 block">글로벌 추가 GDP</span>
+                        <span class="text-2xl font-black text-blue-500 dark:text-pink-400">최대 4%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- On-device AI -->
+            <div class="p-8 rounded-3xl bg-white/50 dark:bg-white/5 border border-current/5">
+                <h3 class="text-xl font-bold mb-4">온디바이스 AI & 개인용 인공지능 (PAI)</h3>
+                <p class="text-sm opacity-80 leading-relaxed mb-6">
+                    네트워크나 클라우드 서버와의 연결 없이 기기 내부의 온칩 NPU(신경망 처리장치)를 통해 지능 연산을 스스로 끝내는 흐름입니다. 외부 서버로 데이터가 나가지 않으므로 <strong>철저한 개인정보 보호 및 즉시성</strong>이 보장됩니다.
+                </p>
+                <ul class="space-y-3 text-xs leading-relaxed opacity-90">
+                    <li>💡 <strong>초개인화 디지털 비서</strong>: 기기가 사용자의 일상 맥락과 생체 데이터를 가장 정교하게 파악하여 1대1 케어.</li>
+                    <li>🔒 <strong>오프라인 고성능 연산</strong>: 산간 지역, 해외 로밍 불가 지역에서도 실시간 자율주행 및 번역 연산 중단 없음.</li>
+                </ul>
+            </div>
         </div>
     </section>
 
@@ -245,8 +514,10 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="py-24 px-6 text-center opacity-60 text-sm border-t border-current/10">
-        <p>© 2025 인공지능 브리핑 보고서 기반 제작</p>
+        <p class="font-bold">인공지능 패러다임 전환과 생성형 기술의 본질적 진화</p>
+        <p class="mt-2 text-xs opacity-75">본 인터랙티브 브리핑 보고서는 2026 AI 연구 가이드라인을 기반으로 제작되었습니다.</p>
     </footer>
 
     <script>
@@ -305,7 +576,7 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.timeline-item, .step-card, section h2, header p, .header-btn-group, #open-infographic').forEach(el => {
+        document.querySelectorAll('.timeline-item, .step-card, section h2, header p, .header-btn-group, #open-infographic, .card, ul, h3').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease-out';
