@@ -166,7 +166,13 @@
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 p-6">
         <div class="max-w-6xl mx-auto flex justify-between items-center p-4 px-10 card shadow-xl rounded-full">
-            <h1 class="text-2xl font-extrabold tracking-tight">정민우 <span class="wave-text">Media</span></h1>
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-extrabold tracking-tight">정민우 <span class="wave-text">Media</span></h1>
+                <!-- "홈으로 돌아가기" 버튼 추가 -->
+                <a href="../index.html" class="text-xs md:text-sm font-bold opacity-80 hover:opacity-100 px-4 py-1.5 rounded-full border border-current hover:scale-105 transition-all duration-300 flex items-center gap-1">
+                    🏠 홈으로 돌아가기
+                </a>
+            </div>
             <div class="flex items-center gap-6">
                 <span class="text-sm opacity-50 font-bold hidden md:block">PNU Media Comm.</span>
                 <button id="theme-toggle"><span id="theme-icon" class="text-2xl">🌙</span></button>
@@ -228,7 +234,7 @@
             </div>
         </section>
 
-        <!-- 2. Major Section (UPDATED) -->
+        <!-- 2. Major Section -->
         <section class="mb-56 scroll-reveal" id="major">
             <div class="text-center mb-20">
                 <h2 class="text-5xl font-black mb-6">미디어커뮤니케이션학과 <span class="wave-text">소개</span></h2>
@@ -248,7 +254,6 @@
                 </div>
             </div>
             <div class="flex justify-center mt-12">
-                <!-- 버튼을 '학과소개 PPT 다운로드 하기'로 변경 및 mw2.pdf 연결 -->
                 <a href="mw2.pdf" download="mw2.pdf" class="btn-filled px-16 py-7 rounded-full text-2xl shadow-2xl flex items-center gap-5">
                     <span>📑</span> 학과소개 PPT 다운로드 하기
                 </a>
