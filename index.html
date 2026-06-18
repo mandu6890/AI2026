@@ -144,11 +144,13 @@
         .theme-emerald { --theme-color: #10b981; --theme-bg: #ecfdf5; --theme-color-op: rgba(16, 185, 129, 0.6); }
         .theme-violet { --theme-color: #8b5cf6; --theme-bg: #f5f3ff; --theme-color-op: rgba(139, 92, 246, 0.6); }
         .theme-amber { --theme-color: #f59e0b; --theme-bg: #fffbeb; --theme-color-op: rgba(245, 158, 11, 0.6); }
+        .theme-rose { --theme-color: #f43f5e; --theme-bg: #fff1f2; --theme-color-op: rgba(244, 63, 94, 0.6); }
         
         .dark .theme-blue { --theme-bg: rgba(30, 58, 138, 0.3); }
         .dark .theme-emerald { --theme-bg: rgba(6, 78, 59, 0.3); }
         .dark .theme-violet { --theme-bg: rgba(76, 29, 149, 0.3); }
         .dark .theme-amber { --theme-bg: rgba(120, 53, 15, 0.3); }
+        .dark .theme-rose { --theme-bg: rgba(159, 18, 57, 0.3); }
 
         .modal-overlay {
             background: rgba(15, 23, 42, 0.85);
@@ -244,7 +246,7 @@
         <div class="max-w-7xl mx-auto">
             <div class="mb-16">
                 <h2 class="text-4xl font-black mb-3 text-slate-900 dark:text-white">Portfolio Projects</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">학습의 기록과 창의적 결과물 7선</p>
+                <p class="text-slate-500 dark:text-slate-400 text-lg">학습의 기록과 창의적 결과물 10선</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10" id="portfolio-grid"></div>
         </div>
@@ -324,232 +326,16 @@
         }
 
         const assignments = [
-            { 
-                id: 1, 
-                title: "AI의 이해", 
-                tools: ["NotebookLM", "Google"], 
-                theme: "theme-blue", 
-                icon: "fa-book",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 01</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">AI의 이해</h2>
-                            </div>
-                            <a href="./02/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        <p class="text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-                            구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 인공지능의 역사와 기초 원리를 학습한 기록입니다.
-                        </p>
-                    </div>
-                `
-            },
-            { 
-                id: 2, 
-                title: "데이터 스토리텔링", 
-                tools: ["Gemini", "Storybook"], 
-                theme: "theme-emerald", 
-                icon: "fa-book-open",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 02</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">데이터 스토리텔링</h2>
-                            </div>
-                            <a href="./03/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2rem] border border-emerald-100 dark:border-emerald-800/50 mb-8">
-                            <h4 class="text-emerald-800 dark:text-emerald-300 font-bold text-xl mb-4"><i class="fas fa-magic mr-2"></i>제미나이 스토리북</h4>
-                            <p class="text-lg text-emerald-900/70 dark:text-emerald-400/80 leading-relaxed font-light">
-                                공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력있는 리포트를 작성하여 스토리북으로 만들기
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            { 
-                id: 3, 
-                title: "웹기술의 이해", 
-                tools: ["HTML5", "Tailwind", "JS"], 
-                theme: "theme-violet", 
-                icon: "fa-code",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 03</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">웹기술의 이해</h2>
-                            </div>
-                            <a href="./04/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8">
-                            <h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fas fa-laptop-code mr-2"></i>모던 웹 구조와 인터랙션</h4>
-                            <p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">
-                                HTML, CSS, JavaScript를 활용하여 반응형 웹사이트를 구축하고 브라우저의 렌더링 원리와 웹 인터랙션을 학습합니다.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            { 
-                id: 4, 
-                title: "중간고사 레포트", 
-                tools: ["Midterm", "Research"], 
-                theme: "theme-blue", 
-                icon: "fa-file-signature",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 04</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">중간고사 레포트</h2>
-                            </div>
-                            <a href="./05/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-[2rem] border border-blue-100 dark:border-blue-800/50 mb-8">
-                            <h4 class="text-blue-800 dark:text-blue-300 font-bold text-xl mb-4"><i class="fas fa-graduation-cap mr-2"></i>AI 리터러시 중간고사 평가 결과</h4>
-                            <p class="text-lg text-blue-900/70 dark:text-blue-400/80 leading-relaxed font-light">
-                                학기 전반에 걸쳐 학습한 AI 이론과 실무 도구들의 사용법을 종합하여 현대 정보사회에서 필요한 AI 활용 능력과 윤리적 자세에 대해 깊이 고찰한 중간 평가용 레포트입니다.
-                            </p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
-                                    <i class="fas fa-book-reader"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">이론 고찰 및 탐색</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인공지능의 핵심 이론들을 복습하고, 이를 바탕으로 한 사회적 영향 분석을 포함하고 있습니다.</p>
-                            </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl">
-                                    <i class="fas fa-file-invoice"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">실제 사례 분석 및 평가</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">학습한 인공지능 프레임워크와 방법론을 실제 비즈니스 모델이나 사회적 난제 해결에 대응하여 평가한 과정이 담겨 있습니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            { 
-                id: 5, 
-                title: "코랩 데이터 분석", 
-                tools: ["Python", "Colab"], 
-                theme: "theme-amber", 
-                icon: "fa-chart-pie",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-amber-600 dark:text-amber-400 font-black tracking-widest text-xs uppercase">Assignment 05</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 데이터 분석</h2>
-                            </div>
-                            <a href="./06/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-amber-50 dark:bg-amber-900/20 p-8 rounded-[2rem] border border-amber-100 dark:border-amber-800/50 mb-8">
-                            <h4 class="text-amber-800 dark:text-amber-300 font-bold text-xl mb-4"><i class="fas fa-database mr-2"></i>Python 활용 데이터 분석</h4>
-                            <p class="text-lg text-amber-900/70 dark:text-amber-400/80 leading-relaxed font-light">
-                                구글 코랩(Google Colab) 환경에서 파이썬 라이브러리를 활용하여 원시 데이터를 정제하고 유의미한 통계 지표를 산출하는 과정을 학습합니다.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            { 
-                id: 6, 
-                title: "코랩 유튜브 댓글 분석", 
-                tools: ["Python", "YouTube API"], 
-                theme: "theme-emerald", 
-                icon: "fa-play",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 06</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 유튜브 댓글 분석</h2>
-                            </div>
-                            <a href="./07/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2rem] border border-emerald-100 dark:border-emerald-800/50 mb-8">
-                            <h4 class="text-emerald-800 dark:text-emerald-300 font-bold text-xl mb-4"><i class="fab fa-youtube mr-2"></i>소셜 미디어 반응 분석</h4>
-                            <p class="text-lg text-emerald-900/70 dark:text-emerald-400/80 leading-relaxed font-light">
-                                구글 코랩 환경에서 유튜브 콘텐츠의 댓글 데이터를 수집하고, 형태소 분석 및 감성 분석을 통해 사용자의 실시간 반응과 주요 키워드를 도출하는 프로젝트입니다.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            { 
-                id: 7, 
-                title: "안티그래비티 분석 보고서", 
-                tools: ["Google", "Python", "Data Analysis"], 
-                theme: "theme-violet", 
-                icon: "fa-atom",
-                content: `
-                    <div class="space-y-12">
-                        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                            <div>
-                                <span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 07</span>
-                                <h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">안티그래비티 분석 보고서</h2>
-                            </div>
-                            <a href="./09/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group">
-                                <span>결과물 보기</span>
-                                <i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                            </a>
-                        </header>
-                        
-                        <div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8">
-                            <h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fab fa-google mr-2"></i>구글 안티그래비티 데이터 분석</h4>
-                            <p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">
-                                구글 안티그래비티 환경을 통해 수집된 사용자의 상호작용 및 시각 데이터 로그를 분석하여 데이터 분석 역량을 기르고, 논리적인 가설 검증과 시각화 자료를 토대로 체계적인 데이터 분석 보고서를 작성 및 생성하는 프로젝트입니다.
-                            </p>
-                        </div>
-
-                        <div class="grid md:grid-cols-2 gap-8">
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center text-violet-600 dark:text-violet-400 mb-6 text-xl">
-                                    <i class="fas fa-chart-line"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자료 정제 및 수치 분석</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">인터랙티브 실험 속 중력 해제 상태 로그에서 노이즈를 식별 및 제거하고 핵심 경향성을 분석하는 보고서 역량을 기릅니다.</p>
-                            </div>
-                            <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800">
-                                <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center text-violet-600 dark:text-violet-400 mb-6 text-xl">
-                                    <i class="fas fa-file-invoice"></i>
-                                </div>
-                                <h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">자동화 보고서 생성</h4>
-                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">수집된 유저 액션 흐름 데이터를 바탕으로, 결과 도출 흐름이 명확히 담긴 고품질 보고서를 체계적으로 구축하는 역량을 키웁니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                `
-            }
+            { id: 1, title: "AI의 이해", tools: ["NotebookLM", "Google"], theme: "theme-blue", icon: "fa-book", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 01</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">AI의 이해</h2></div><a href="./02/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><p class="text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed">구글의 AI 기반 협업 도구인 NotebookLM을 사용하여 인공지능의 역사와 기초 원리를 학습한 기록입니다.</p></div>` },
+            { id: 2, title: "데이터 스토리텔링", tools: ["Gemini", "Storybook"], theme: "theme-emerald", icon: "fa-book-open", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 02</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">데이터 스토리텔링</h2></div><a href="./03/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2rem] border border-emerald-100 dark:border-emerald-800/50 mb-8"><h4 class="text-emerald-800 dark:text-emerald-300 font-bold text-xl mb-4"><i class="fas fa-magic mr-2"></i>제미나이 스토리북</h4><p class="text-lg text-emerald-900/70 dark:text-emerald-400/80 leading-relaxed font-light">공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력있는 리포트를 작성하여 스토리북으로 만들기</p></div></div>` },
+            { id: 3, title: "웹기술의 이해", tools: ["HTML5", "Tailwind", "JS"], theme: "theme-violet", icon: "fa-code", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 03</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">웹기술의 이해</h2></div><a href="./04/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8"><h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fas fa-laptop-code mr-2"></i>모던 웹 구조와 인터랙션</h4><p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">HTML, CSS, JavaScript를 활용하여 반응형 웹사이트를 구축하고 브라우저의 렌더링 원리와 웹 인터랙션을 학습합니다.</p></div></div>` },
+            { id: 4, title: "중간고사 레포트", tools: ["Midterm", "Research"], theme: "theme-blue", icon: "fa-file-signature", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 04</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">중간고사 레포트</h2></div><a href="./05/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-[2rem] border border-blue-100 dark:border-blue-800/50 mb-8"><h4 class="text-blue-800 dark:text-blue-300 font-bold text-xl mb-4"><i class="fas fa-graduation-cap mr-2"></i>AI 리터러시 중간고사 평가 결과</h4><p class="text-lg text-blue-900/70 dark:text-blue-400/80 leading-relaxed font-light">학기 전반에 걸쳐 학습한 AI 이론과 실무 도구들의 사용법을 종합하여 현대 정보사회에서 필요한 AI 활용 능력과 윤리적 자세에 대해 깊이 고찰한 중간 평가용 레포트입니다.</p></div><div class="grid md:grid-cols-2 gap-8"><div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800"><div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl"><i class="fas fa-book-reader"></i></div><h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">이론 고찰 및 탐색</h4><p class="text-slate-600 dark:text-slate-400 leading-relaxed">인공지능의 핵심 이론들을 복습하고, 이를 바탕으로 한 사회적 영향 분석을 포함하고 있습니다.</p></div><div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800"><div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 text-xl"><i class="fas fa-file-invoice"></i></div><h4 class="font-black text-xl mb-4 text-slate-900 dark:text-white">실제 사례 분석 및 평가</h4><p class="text-slate-600 dark:text-slate-400 leading-relaxed">학습한 인공지능 프레임워크와 방법론을 실제 비즈니스 모델이나 사회적 난제 해결에 대응하여 평가한 과정이 담겨 있습니다.</p></div></div></div>` },
+            { id: 5, title: "코랩 데이터 분석", tools: ["Python", "Colab"], theme: "theme-amber", icon: "fa-chart-pie", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-amber-600 dark:text-amber-400 font-black tracking-widest text-xs uppercase">Assignment 05</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 데이터 분석</h2></div><a href="./06/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-amber-50 dark:bg-amber-900/20 p-8 rounded-[2rem] border border-amber-100 dark:border-amber-800/50 mb-8"><h4 class="text-amber-800 dark:text-amber-300 font-bold text-xl mb-4"><i class="fas fa-database mr-2"></i>Python 활용 데이터 분석</h4><p class="text-lg text-amber-900/70 dark:text-amber-400/80 leading-relaxed font-light">구글 코랩(Google Colab) 환경에서 파이썬 라이브러리를 활용하여 원시 데이터를 정제하고 유의미한 통계 지표를 산출하는 과정을 학습합니다.</p></div></div>` },
+            { id: 6, title: "코랩 유튜브 댓글 분석", tools: ["Python", "YouTube API"], theme: "theme-emerald", icon: "fa-play", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-emerald-600 dark:text-emerald-400 font-black tracking-widest text-xs uppercase">Assignment 06</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">코랩 유튜브 댓글 분석</h2></div><a href="./07/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-emerald-50 dark:bg-emerald-900/20 p-8 rounded-[2rem] border border-emerald-100 dark:border-emerald-800/50 mb-8"><h4 class="text-emerald-800 dark:text-emerald-300 font-bold text-xl mb-4"><i class="fab fa-youtube mr-2"></i>소셜 미디어 반응 분석</h4><p class="text-lg text-emerald-900/70 dark:text-emerald-400/80 leading-relaxed font-light">구글 코랩 환경에서 유튜브 콘텐츠의 댓글 데이터를 수집하고, 형태소 분석 및 감성 분석을 통해 사용자의 실시간 반응과 주요 키워드를 도출하는 프로젝트입니다.</p></div></div>` },
+            { id: 7, title: "축하해요! 부산대 80주년", tools: ["Celebration"], theme: "theme-rose", icon: "fa-fireworks", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-rose-600 dark:text-rose-400 font-black tracking-widest text-xs uppercase">Special Event</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">축하해요! 부산대 80주년</h2></div><a href="./08/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-rose-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-rose-50 dark:bg-rose-900/20 p-8 rounded-[2rem] border border-rose-100 dark:border-rose-800/50"><p class="text-lg text-rose-900/70 dark:text-rose-400/80 leading-relaxed font-light">부산대학교 개교 80주년을 기념하며, 지난 80년의 역사와 함께 미래를 향해 나아가는 대학의 발자취를 되새겨보는 뜻깊은 프로젝트입니다.</p></div></div>` },
+            { id: 8, title: "안티그래비티 분석 보고서", tools: ["Google", "Python", "Data Analysis"], theme: "theme-violet", icon: "fa-atom", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 08</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">안티그래비티 분석 보고서</h2></div><a href="./09/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50 mb-8"><h4 class="text-violet-800 dark:text-violet-300 font-bold text-xl mb-4"><i class="fab fa-google mr-2"></i>구글 안티그래비티 데이터 분석</h4><p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">구글 안티그래비티 환경을 통해 수집된 사용자의 상호작용 및 시각 데이터 로그를 분석하여 데이터 분석 역량을 기르고, 논리적인 가설 검증과 시각화 자료를 토대로 체계적인 데이터 분석 보고서를 작성 및 생성하는 프로젝트입니다.</p></div></div>` },
+            { id: 9, title: "기말고사 레포트", tools: ["Research", "Analysis"], theme: "theme-blue", icon: "fa-file-alt", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-blue-600 dark:text-blue-400 font-black tracking-widest text-xs uppercase">Assignment 09</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">기말고사 레포트</h2></div><a href="./010/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 group"><span>결과물 보기</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></header><div class="bg-blue-50 dark:bg-blue-900/20 p-8 rounded-[2rem] border border-blue-100 dark:border-blue-800/50"><p class="text-lg text-blue-900/70 dark:text-blue-400/80 leading-relaxed font-light">한 학기 동안 학습한 AI 리터러시 전반에 관한 내용을 종합하여, 미래 사회의 변화와 AI 활용 능력의 중요성을 분석한 기말 평가 과제입니다.</p></div></div>` },
+            { id: 10, title: "배운 내용 활용", tools: ["Portfolio", "Creative"], theme: "theme-violet", icon: "fa-lightbulb", content: `<div class="space-y-12"><header class="flex flex-col md:flex-row md:items-end justify-between gap-6"><div><span class="text-violet-600 dark:text-violet-400 font-black tracking-widest text-xs uppercase">Assignment 10</span><h2 class="text-4xl md:text-5xl font-black mt-4 leading-tight text-slate-900 dark:text-white">배운 내용 활용</h2></div></header><div class="bg-violet-50 dark:bg-violet-900/20 p-8 rounded-[2rem] border border-violet-100 dark:border-violet-800/50"><p class="text-lg text-violet-900/70 dark:text-violet-400/80 leading-relaxed font-light">제가 수업시간에 배운 내용을 바탕으로 실제 만들어서 사용한 결과물입니다. 정말 배워가는게 많은 강의였습니다! (홈으로 돌아가는 버튼은 따로 없습니다!)</p></div><div class="flex flex-col sm:flex-row gap-4 mt-8"><a href="./0508/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group"><span>25 동기MT 레크레이션 게임</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a><a href="./0001/index.html" class="inline-flex items-center justify-center px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-violet-500/20 hover:scale-105 active:scale-95 group"><span>엔터테인먼트 콘텐츠 모델</span><i class="fas fa-external-link-alt ml-3 text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i></a></div></div>` }
         ];
 
         const grid = document.getElementById('portfolio-grid');
